@@ -1,5 +1,3 @@
-package com.agilejava.maven.docbkx;
-
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -16,24 +14,24 @@ package com.agilejava.maven.docbkx;
  * limitations under the License.
  */
 
+package com.agilejava.maven.docbkx;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.UnArchiver;
 import org.jaxen.JaxenException;
 import org.jaxen.dom.DOMXPath;
 import org.w3c.dom.Document;
@@ -45,8 +43,8 @@ import com.agilejava.maven.docbkx.spec.Parameter;
 /**
  * The base class for all Mojo's that perform some work based on a DocBook XSL
  * distribution.
- * 
- * 
+ *
+ *
  * @author Wilfred Springer
  */
 public abstract class AbstractBuilderMojo extends AbstractMojo {
@@ -55,7 +53,7 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
      * The type of output to be generated. (Currently matches the name of the
      * directory in the DocBook XSL distribution holding the relevant
      * stylesheets.)
-     * 
+     *
      * @parameter default-value="html"
      */
     private String type;
@@ -68,7 +66,7 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     /**
      * The directory in the jar file in which the DocBook XSL artifacts will be
      * stored.
-     * 
+     *
      * @parameter default-value="META-INF/docbkx"
      */
     private String stylesheetRoot;
@@ -76,28 +74,28 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     /**
      * The location of the stylesheet. Normally this would be derived from the
      * {@link #stylesheetRoot} variable and the type.
-     * 
+     *
      * @parameter
      */
     private String stylesheetLocation;
 
     /**
      * The prefix of any artifactId coming out of this plugin.
-     * 
+     *
      * @parameter expression="docbkx";
      */
     private String artifactIdPrefix;
 
     /**
      * The groupId of any results coming out of this plugin.
-     * 
+     *
      * @parameter expression="net.sf.docbook";
      */
     private String groupId;
 
     /**
      * The DocBook-XSL distribution.
-     * 
+     *
      * @parameter expression="${distribution}"
      * @required
      */
@@ -109,21 +107,16 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     private List parameters;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.archiver.UnArchiver#zip}
-     */
-    private UnArchiver unArchiver;
-
-    /**
      * A comma-separated list of properties that should be exluded from the
      * generated code.
-     * 
+     *
      * @parameter
      */
     private String excludedProperties;
 
     /**
      * Constructs a new instance.
-     * 
+     *
      */
     public AbstractBuilderMojo() {
         try {
@@ -137,7 +130,7 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
 
     /**
      * Returns the version of the docBookXslDistribution.
-     * 
+     *
      * @return The version number of the DocBook XSL distribution.
      */
     public String getVersion() {
@@ -152,21 +145,8 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     }
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        ZipFile zipFile = new ZipFile(distribution, unArchiver,
-                new ZipFileLogger());
-        try {
-            FileUtils.forceDeleteOnExit(zipFile.getExtractedFileRoot());
-        } catch (IOException ioe) {
-            throw new MojoExecutionException(
-                    "Failed to register extracted directory for deletion", ioe);
-        }
-        process(zipFile);
-        try {
-            FileUtils.forceDelete(zipFile.getExtractedFileRoot());
-        } catch (IOException ioe) {
-            throw new MojoExecutionException(
-                    "Failed to delete extracted directory. ", ioe);
-        }
+        ZipFileProcessor processor = new ZipFileProcessor(distribution);
+        process(processor);
     }
 
     private String getCatalogKey() {
@@ -181,48 +161,47 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
         return "docbook-xsl-" + getVersion();
     }
 
-    protected abstract void process(ZipFile zipFile)
+    protected abstract void process(ZipFileProcessor zipFile)
             throws MojoExecutionException, MojoFailureException;
-
-    private class ZipFileLogger implements ZipFile.EventLogger {
-
-        public void logZipFileReadFailure(File file, IOException ioe) {
-            getLog().error("Failed to read the zip file.", ioe);
-        }
-
-        public void logZipFileExtractionFailure(File file, ArchiverException ae) {
-            getLog().error("Failed to extract the archive.", ae);
-        }
-    }
 
     /**
      * Returns a list of parameters to be passed to the plugin.
-     * 
+     *
      * @param paramEntities
      * @return A List of {@link Parameter} objects.
      * @throws IOException
      *             If we can't read (or fail to parse) from the parameter entity
      *             file passed in.
      */
-    protected List extractParameters(final File paramEntities)
+    protected List extractParameters(InputStream paramEntities,
+            ZipFileProcessor processor, final String directory)
             throws IOException {
         final List excluded = getExcludedProperties();
         if (parameters != null) {
             return parameters;
         } else {
             parameters = new ArrayList();
-            EntityFileParser.parse(new FileInputStream(paramEntities),
+            final List parameterNames = new ArrayList();
+            EntityFileParser.parse(paramEntities,
                     new EntityFileParser.EntityVisitor() {
                         public void visitSystemEntity(String name,
                                 String systemId) {
-                            Parameter parameter = extractParameter(new File(
-                                    paramEntities.getParentFile(), systemId));
-                            if (parameter != null
-                                    && !excluded.contains(parameter.getName())) {
-                                parameters.add(parameter);
-                            }
+                            parameterNames
+                                    .add(getDocBookXslPrefix()
+                                            + systemId.substring(systemId
+                                                    .indexOf('/')));
                         }
                     });
+            processor.process(new ZipFileProcessor.ZipEntryVisitor() {
+                public void visit(ZipEntry entry, InputStream in)
+                        throws IOException {
+                    if (parameterNames.contains(entry.getName())) {
+                        String name = entry.getName().substring(
+                                entry.getName().lastIndexOf('/') + 1);
+                        parameters.add(extractParameter(name, in));
+                    }
+                }
+            });
             return parameters;
         }
     }
@@ -230,7 +209,7 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     /**
      * Returns a <code>List</code> of property names that will be excluded
      * from the code generation.
-     * 
+     *
      * @return A <code>List</code> of property names, identifying the
      *         properties that must be excluded from code generation.
      */
@@ -245,21 +224,20 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     }
 
     /**
-     * Extracts the Parameter metadat from the parameter metadata file.
-     * 
+     * Extracts the Parameter metadata from the parameter metadata file.
+     *
      * @param paramMetadata
      *            The file containing the metadata.
      * @return The Parameter object holding the metadata.
      * @throws IOException
      * @throws SAXException
      */
-    protected Parameter extractParameter(File paramMetadata) {
-        String name = paramMetadata.getName();
+    protected Parameter extractParameter(String filename, InputStream in) {
         Parameter parameter = new Parameter();
-        parameter.setName(name.substring(0, name.length() - 4));
+        parameter.setName(filename.substring(0, filename.length() - 4));
         try {
             DocumentBuilder builder = createDocumentBuilder();
-            Document document = builder.parse(paramMetadata);
+            Document document = builder.parse(in);
             Node node = (Node) selectDescription.selectSingleNode(document);
             String result = node.getNodeValue();
             result = result.substring(0, result.indexOf('.') + 1);
