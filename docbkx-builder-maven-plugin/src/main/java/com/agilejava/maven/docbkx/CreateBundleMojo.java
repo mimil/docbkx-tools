@@ -1,5 +1,3 @@
-package com.agilejava.maven.docbkx;
-
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,6 +13,8 @@ package com.agilejava.maven.docbkx;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package com.agilejava.maven.docbkx;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +43,7 @@ import org.codehaus.plexus.util.IOUtil;
 
 /**
  * A Mojo for creating bundles from DocBook XSL distributions.
- * 
+ *
  * @author Wilfred Springer
  * @goal bundle
  */
@@ -62,7 +62,7 @@ public class CreateBundleMojo extends AbstractMojo {
     /**
      * Server Id to map on the &lt;id&gt; under &lt;server&gt; section of
      * settings.xml
-     * 
+     *
      * @parameter expression="${repositoryId}"
      * @required
      */
@@ -75,7 +75,7 @@ public class CreateBundleMojo extends AbstractMojo {
 
     /**
      * URL where the artifact will be deployed. <br/> ie ( file://C:\m2-repo )
-     * 
+     *
      * @parameter expression="${url}"
      * @required
      */
@@ -156,8 +156,8 @@ public class CreateBundleMojo extends AbstractMojo {
     /**
      * Generates the jar file containing all required artifacts from the
      * docbook-xsl distribution passed in.
-     * 
-     * 
+     *
+     *
      * @return A <code>File</code> object, pointing to a repackaged
      *         docbook-xsl distribution.
      */

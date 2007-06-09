@@ -1,5 +1,3 @@
-package com.agilejava.maven.docbkx;
-
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -16,6 +14,8 @@ package com.agilejava.maven.docbkx;
  * limitations under the License.
  */
 
+package com.agilejava.maven.docbkx;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,7 +26,7 @@ import org.codehaus.plexus.util.StringInputStream;
 /**
  * A crude parser for parsing an entity file. Required to extract the files
  * describing the parameters from the parameter declarations.
- * 
+ *
  * @author Wilfred Springer
  */
 public class EntityFileParser {
@@ -34,7 +34,7 @@ public class EntityFileParser {
     /**
      * Parses the entity file, invoking operations on the visitor for every
      * entity found.
-     * 
+     *
      * @param in
      *            The InputStream to parse.
      * @param visitor
@@ -65,9 +65,9 @@ public class EntityFileParser {
 
     /**
      * Tests the parser.
-     * 
+     *
      * TODO: Take this out.
-     * 
+     *
      * @param args
      */
     public final static void main(String[] args) {

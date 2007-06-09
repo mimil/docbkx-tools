@@ -1,5 +1,3 @@
-package com.agilejava.maven.docbkx;
-
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -16,20 +14,29 @@ package com.agilejava.maven.docbkx;
  * limitations under the License.
  */
 
+package com.agilejava.maven.docbkx;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
+import java.util.zip.ZipEntry;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.SelectorUtils;
+
+import com.agilejava.maven.docbkx.ZipFileProcessor.ZipEntryVisitor;
 
 /**
  * A Mojo for extracting the relevant bits of the DocBook XSL stylesheets and
  * include them as resources.
- * 
+ *
  * @author Wilfred Springer
  * @phase generate-resources
  * @goal harvest
@@ -38,7 +45,7 @@ public class HarvestingMojo extends AbstractBuilderMojo {
 
     /**
      * The maven project helper class for adding resources.
-     * 
+     *
      * @parameter expression="${component.org.apache.maven.project.MavenProjectHelper}"
      */
     private MavenProjectHelper projectHelper;
@@ -54,38 +61,51 @@ public class HarvestingMojo extends AbstractBuilderMojo {
      */
     private File targetDirectory;
 
-    protected void process(ZipFile zipFile) throws MojoExecutionException {
+    protected void process(ZipFileProcessor processor)
+            throws MojoExecutionException {
         try {
             FileUtils.forceMkdir(targetDirectory);
         } catch (IOException ioe) {
             throw new MojoExecutionException("Failed to create "
                     + targetDirectory.getAbsolutePath());
         }
-        DirectoryScanner scanner = new DirectoryScanner();
-        File sourceDirectory = new File(zipFile.getExtractedFileRoot(),
-                getDocBookXslPrefix());
-        File destinationDirectory = new File(targetDirectory,
-                getStylesheetRoot());
-        scanner.setIncludes(getIncludes());
-        scanner.setBasedir(sourceDirectory);
-        scanner.scan();
-        String[] files = scanner.getIncludedFiles();
+        final String[] includes = getIncludes();
         try {
-            for (int i = 0; i < files.length; i++) {
-                File sourceFile = new File(sourceDirectory, files[i]);
-                File targetFile = new File(destinationDirectory, files[i]);
-                FileUtils.copyFile(sourceFile, targetFile);
-            }
+            processor.process(new ZipEntryVisitor() {
+                public void visit(ZipEntry entry, InputStream in)
+                        throws IOException {
+                    for (int i = 0; i < includes.length; i++) {
+                        // System.out.println("Check " + entry.getName() + "
+                        // against " + includes[i]);
+                        if (SelectorUtils.match(includes[i], entry.getName())) {
+                            String targetFilename = entry.getName().substring(
+                                    entry.getName().indexOf('/') + 1);
+                            File targetFile = new File(targetDirectory,
+                                    targetFilename);
+                            (targetFile.getParentFile()).mkdirs();
+                            OutputStream out = null;
+                            try {
+                                out = new FileOutputStream(targetFile);
+                                IOUtils.copy(in, out);
+                            } finally {
+                                IOUtils.closeQuietly(out);
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            });
         } catch (IOException ioe) {
-            throw new MojoExecutionException("Failed top copy files.", ioe);
+            throw new MojoExecutionException("Failed to copy files.", ioe);
         }
         projectHelper.addResource(project, targetDirectory.getAbsolutePath(),
                 Collections.singletonList("**/**"), Collections.EMPTY_LIST);
     }
 
     private String[] getIncludes() {
-        return new String[] { "VERSION", getType() + "/**/**", "common/**/**",
-                "lib/**/**", "params/**/**" };
+        return new String[] { "*/VERSION", "*/" + getType() + "/**",
+                "*/common/**", "*/lib/**", "*/params/**" };
     }
 
 }

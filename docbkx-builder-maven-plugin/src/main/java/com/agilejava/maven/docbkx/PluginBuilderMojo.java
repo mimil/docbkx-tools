@@ -1,5 +1,3 @@
-package com.agilejava.maven.docbkx;
-
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -16,12 +14,15 @@ package com.agilejava.maven.docbkx;
  * limitations under the License.
  */
 
+package com.agilejava.maven.docbkx;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
+import java.util.zip.ZipEntry;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -30,13 +31,14 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+import com.agilejava.maven.docbkx.ZipFileProcessor.ZipEntryVisitor;
 import com.agilejava.maven.docbkx.spec.Specification;
 
 /**
  * A Maven plugin for generating a DocBook XSL plugin with specific setters and
  * getters for the parameters in the specific distribution of the DocBook XSL
  * stylesheets.
- * 
+ *
  * @author Wilfred Springer
  * @goal generate
  * @phase generate-sources
@@ -51,14 +53,14 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
 
     /**
      * The classname of the Mojo that wil provide the desired functionality.
-     * 
+     *
      * @parameter
      */
     private String className;
 
     /**
      * The package name of the Mojo that will provide the desired functionality.
-     * 
+     *
      * @parameter
      */
     private String packageName;
@@ -66,21 +68,21 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
     /**
      * The classname of the super class from which the generate Mojo will
      * inherit.
-     * 
+     *
      * @parameter expression="com.agilejava.docbkx.maven.AbstractTransformerMojo"
      */
     private String superClassName;
 
     /**
      * The suffix to be used in the generated plugin.
-     * 
+     *
      * @parameter
      */
     private String pluginSuffix;
 
     /**
      * Target directory.
-     * 
+     *
      * @parameter expression="${project.build.directory}/generated-sources"
      */
     private File targetDirectory;
@@ -92,7 +94,7 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
     /**
      * Returns the name of the class that will be used. If {@link #className} is
      * set, then that name will be used instead of the default.
-     * 
+     *
      * @return The name of the class for the Mojo being generated.
      */
     private String getClassName() {
@@ -108,7 +110,7 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
         }
     }
 
-    protected void process(ZipFile zipFile) throws MojoExecutionException,
+    protected void process(ZipFileProcessor processor) throws MojoExecutionException,
             MojoFailureException {
         File sourcesDir = new File(targetDirectory, getPackageName().replace(
                 '.', '/'));
@@ -126,7 +128,7 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
         File targetFile = new File(sourcesDir, getClassName() + ".java");
         Specification specification = null;
         try {
-            specification = createSpecification(zipFile);
+            specification = createSpecification(processor);
             getLog().info(
                     "Number of parameters: "
                             + specification.getParameters().size());
@@ -144,9 +146,9 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
         project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
     }
 
-    private Specification createSpecification(ZipFile zipFile)
+    private Specification createSpecification(ZipFileProcessor processor)
             throws IOException {
-        Specification specification = extractSpecification(zipFile);
+        Specification specification = extractSpecification(processor);
         specification.setType(getType());
         if (getStylesheetLocation() != null) {
             specification.setStylesheetLocation(getStylesheetLocation());
@@ -157,19 +159,24 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
         return specification;
     }
 
-    protected Specification extractSpecification(ZipFile zipFile)
+    protected Specification extractSpecification(final ZipFileProcessor processor)
             throws IOException {
-        File rootDir = zipFile.getExtractedFileRoot();
-        File docBookXslDir = new File(rootDir, getDocBookXslPrefix());
-        File paramEntities = new File(docBookXslDir, getType() + "/param.ent");
-        List parameters = extractParameters(paramEntities);
-        Specification specification = new Specification();
-        specification.setPameters(parameters);
-        specification.setClassName(getClassName());
-        specification.setSuperClassName(superClassName);
-        specification.setPackageName(getPackageName());
-        specification.setDocbookXslVersion(getVersion());
-        specification.setPluginSuffix(pluginSuffix);
+        final String directory = getDocBookXslPrefix() + "/" + getType() + "/";
+        final String file = directory + "param.ent";
+        final Specification specification = new Specification();
+        processor.process(new ZipEntryVisitor() {
+            public void visit(ZipEntry entry, InputStream in) throws IOException {
+                if (entry.getName().endsWith(file)) {
+                    List parameters = extractParameters(in, processor, directory);
+                    specification.setPameters(parameters);
+                    specification.setClassName(getClassName());
+                    specification.setSuperClassName(superClassName);
+                    specification.setPackageName(getPackageName());
+                    specification.setDocbookXslVersion(getVersion());
+                    specification.setPluginSuffix(pluginSuffix);
+                }
+            }
+        });
         return specification;
     }
 
