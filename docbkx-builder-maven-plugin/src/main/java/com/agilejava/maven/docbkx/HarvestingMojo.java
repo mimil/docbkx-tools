@@ -63,11 +63,13 @@ public class HarvestingMojo extends AbstractBuilderMojo {
 
     protected void process(ZipFileProcessor processor)
             throws MojoExecutionException {
+        final File actualDirectory = new File(targetDirectory,
+                "META-INF\\docbkx");
         try {
-            FileUtils.forceMkdir(targetDirectory);
+            FileUtils.forceMkdir(actualDirectory);
         } catch (IOException ioe) {
             throw new MojoExecutionException("Failed to create "
-                    + targetDirectory.getAbsolutePath());
+                    + actualDirectory.getAbsolutePath());
         }
         final String[] includes = getIncludes();
         try {
@@ -78,7 +80,7 @@ public class HarvestingMojo extends AbstractBuilderMojo {
                         if (SelectorUtils.match(includes[i], entry.getName())) {
                             String targetFilename = entry.getName().substring(
                                     entry.getName().indexOf('/') + 1);
-                            File targetFile = new File(targetDirectory,
+                            File targetFile = new File(actualDirectory,
                                     targetFilename);
                             if (!targetFile.exists()) {
                                 (targetFile.getParentFile()).mkdirs();

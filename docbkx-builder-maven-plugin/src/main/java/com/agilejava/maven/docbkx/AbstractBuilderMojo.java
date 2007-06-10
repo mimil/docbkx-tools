@@ -17,13 +17,6 @@
 package com.agilejava.maven.docbkx;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,11 +27,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jaxen.JaxenException;
 import org.jaxen.dom.DOMXPath;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
-import com.agilejava.maven.docbkx.spec.Parameter;
 
 /**
  * The base class for all Mojo's that perform some work based on a DocBook XSL
@@ -61,7 +50,7 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     /**
      * An XPath expression for selecting the description.
      */
-    private DOMXPath selectDescription;
+    protected DOMXPath selectDescription;
 
     /**
      * The directory in the jar file in which the DocBook XSL artifacts will be
@@ -80,13 +69,6 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     private String stylesheetLocation;
 
     /**
-     * The prefix of any artifactId coming out of this plugin.
-     *
-     * @parameter expression="docbkx";
-     */
-    private String artifactIdPrefix;
-
-    /**
      * The groupId of any results coming out of this plugin.
      *
      * @parameter expression="net.sf.docbook";
@@ -102,17 +84,12 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     private File distribution;
 
     /**
-     * The list of parameters in use.
-     */
-    private List parameters;
-
-    /**
      * A comma-separated list of properties that should be exluded from the
      * generated code.
      *
      * @parameter
      */
-    private String excludedProperties;
+    protected String excludedProperties;
 
     /**
      * Constructs a new instance.
@@ -165,119 +142,13 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
             throws MojoExecutionException, MojoFailureException;
 
     /**
-     * Returns a list of parameters to be passed to the plugin.
-     *
-     * @param paramEntities
-     * @return A List of {@link Parameter} objects.
-     * @throws IOException
-     *             If we can't read (or fail to parse) from the parameter entity
-     *             file passed in.
-     */
-    protected List extractParameters(InputStream paramEntities,
-            ZipFileProcessor processor, final String directory)
-            throws IOException {
-        final List excluded = getExcludedProperties();
-        if (parameters != null) {
-            return parameters;
-        } else {
-            parameters = new ArrayList();
-            final List parameterNames = new ArrayList();
-            EntityFileParser.parse(paramEntities,
-                    new EntityFileParser.EntityVisitor() {
-                        public void visitSystemEntity(String name,
-                                String systemId) {
-                            parameterNames
-                                    .add(getDocBookXslPrefix()
-                                            + systemId.substring(systemId
-                                                    .indexOf('/')));
-                        }
-                    });
-            processor.process(new ZipFileProcessor.ZipEntryVisitor() {
-                public void visit(ZipEntry entry, InputStream in)
-                        throws IOException {
-                    if (parameterNames.contains(entry.getName())) {
-                        String name = entry.getName().substring(
-                                entry.getName().lastIndexOf('/') + 1);
-                        name = name.substring(0, name.length() - 4);
-                        parameters.add(extractParameter(name, in));
-                    }
-                }
-            });
-            return parameters;
-        }
-    }
-
-    /**
-     * Returns a <code>List</code> of property names that will be excluded
-     * from the code generation.
-     *
-     * @return A <code>List</code> of property names, identifying the
-     *         properties that must be excluded from code generation.
-     */
-    private List getExcludedProperties() {
-        List excluded;
-        if (excludedProperties != null) {
-            excluded = Arrays.asList(excludedProperties.split(",[ ]*"));
-        } else {
-            excluded = Collections.EMPTY_LIST;
-        }
-        return excluded;
-    }
-
-    /**
-     * Extracts the Parameter metadata from the parameter metadata file.
-     *
-     * @param name
-     *            The name of the (XSLT) parameter.
-     * @param in
-     *            The InputStream providing a description (refentry) of the
-     *            parameter.
-     * @return The Parameter object holding the metadata.
-     * @throws IOException
-     *             If it appears to be impossible to read from the
-     *             <code>InputStream</code>.
-     * @throws SAXException
-     *             If it appears to interpret the data on the
-     *             <code>InputStream</code> as XML.
-     */
-    protected Parameter extractParameter(String name, InputStream in) {
-        Parameter parameter = new Parameter();
-        parameter.setName(name);
-        try {
-            DocumentBuilder builder = createDocumentBuilder();
-            Document document = builder.parse(in);
-            Node node = (Node) selectDescription.selectSingleNode(document);
-            String result = node.getNodeValue();
-            result = result.substring(0, result.indexOf('.') + 1);
-            result = result.trim();
-            result = result.replace('\n', ' ');
-            parameter.setDescription(result);
-        } catch (IOException ioe) {
-            getLog().warn(
-                    "Failed to obtain description for " + parameter.getName(),
-                    ioe);
-        } catch (ParserConfigurationException pce) {
-            throw new IllegalStateException("Failed to create DocumentBuilder.");
-        } catch (SAXException se) {
-            getLog().warn(
-                    "Failed to obtain description for " + parameter.getName(),
-                    se);
-        } catch (JaxenException je) {
-            getLog().warn(
-                    "Failed to obtain description for " + parameter.getName(),
-                    je);
-        }
-        return parameter;
-    }
-
-    /**
      * Constructs a new {@link DocumentBuilder}.
      *
      * @return A new {@link DocumentBuilder} instance.
      * @throws ParserConfigurationException
      *             If we can't construct a parser.
      */
-    private DocumentBuilder createDocumentBuilder()
+    protected DocumentBuilder createDocumentBuilder()
             throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         return factory.newDocumentBuilder();
