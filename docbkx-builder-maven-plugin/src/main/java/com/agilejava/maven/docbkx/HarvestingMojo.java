@@ -75,20 +75,20 @@ public class HarvestingMojo extends AbstractBuilderMojo {
                 public void visit(ZipEntry entry, InputStream in)
                         throws IOException {
                     for (int i = 0; i < includes.length; i++) {
-                        // System.out.println("Check " + entry.getName() + "
-                        // against " + includes[i]);
                         if (SelectorUtils.match(includes[i], entry.getName())) {
                             String targetFilename = entry.getName().substring(
                                     entry.getName().indexOf('/') + 1);
                             File targetFile = new File(targetDirectory,
                                     targetFilename);
-                            (targetFile.getParentFile()).mkdirs();
-                            OutputStream out = null;
-                            try {
-                                out = new FileOutputStream(targetFile);
-                                IOUtils.copy(in, out);
-                            } finally {
-                                IOUtils.closeQuietly(out);
+                            if (!targetFile.exists()) {
+                                (targetFile.getParentFile()).mkdirs();
+                                OutputStream out = null;
+                                try {
+                                    out = new FileOutputStream(targetFile);
+                                    IOUtils.copy(in, out);
+                                } finally {
+                                    IOUtils.closeQuietly(out);
+                                }
                             }
                             break;
                         }

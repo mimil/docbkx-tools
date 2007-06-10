@@ -198,6 +198,7 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
                     if (parameterNames.contains(entry.getName())) {
                         String name = entry.getName().substring(
                                 entry.getName().lastIndexOf('/') + 1);
+                        name = name.substring(0, name.length() - 4);
                         parameters.add(extractParameter(name, in));
                     }
                 }
@@ -226,15 +227,22 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
     /**
      * Extracts the Parameter metadata from the parameter metadata file.
      *
-     * @param paramMetadata
-     *            The file containing the metadata.
+     * @param name
+     *            The name of the (XSLT) parameter.
+     * @param in
+     *            The InputStream providing a description (refentry) of the
+     *            parameter.
      * @return The Parameter object holding the metadata.
      * @throws IOException
+     *             If it appears to be impossible to read from the
+     *             <code>InputStream</code>.
      * @throws SAXException
+     *             If it appears to interpret the data on the
+     *             <code>InputStream</code> as XML.
      */
-    protected Parameter extractParameter(String filename, InputStream in) {
+    protected Parameter extractParameter(String name, InputStream in) {
         Parameter parameter = new Parameter();
-        parameter.setName(filename.substring(0, filename.length() - 4));
+        parameter.setName(name);
         try {
             DocumentBuilder builder = createDocumentBuilder();
             Document document = builder.parse(in);
@@ -262,6 +270,13 @@ public abstract class AbstractBuilderMojo extends AbstractMojo {
         return parameter;
     }
 
+    /**
+     * Constructs a new {@link DocumentBuilder}.
+     *
+     * @return A new {@link DocumentBuilder} instance.
+     * @throws ParserConfigurationException
+     *             If we can't construct a parser.
+     */
     private DocumentBuilder createDocumentBuilder()
             throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
