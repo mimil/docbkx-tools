@@ -78,7 +78,7 @@ import com.icl.saxon.TransformerFactoryImpl;
  * returned by {@link #getTargetDirectory()}, and apply the stylesheets on
  * these documents. This Mojo will be subclassed by Mojo's that generate a
  * particular type of output.
- * 
+ *
  * @author Wilfred Springer
  */
 public abstract class AbstractTransformerMojo extends AbstractMojo {
@@ -105,6 +105,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         CatalogResolver catalogResolver = new CatalogResolver(catalogManager);
         URIResolver uriResolver = null;
         try {
+            getLog().info("Trying to figure out if the URL exists.");
             URL url = getNonDefaultStylesheetURL() == null ? getDefaultStylesheetURL()
                     : getNonDefaultStylesheetURL();
             uriResolver = new StylesheetResolver("urn:docbkx:stylesheet",
@@ -159,7 +160,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the SAXParserFactory used for constructing parsers.
-     * 
+     *
      */
     private SAXParserFactory createParserFactory() {
         SAXParserFactory factory = new SAXParserFactoryImpl();
@@ -169,14 +170,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns a boolean indicting if XInclude should be supported.
-     * 
+     *
      * @return A boolean indicating if XInclude should be supported.
      */
     protected abstract boolean getXIncludeSupported();
 
     /**
      * The stylesheet location override by a class in the mojo hierarchy.
-     * 
+     *
      * @return The location of the stylesheet set by one of the superclasses, or
      *         <code>null</code>.
      */
@@ -189,7 +190,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * the {@link Transformer} right before it is applied to a certain source
      * file. The two parameters provide some context, allowing implementers to
      * respond to specific conditions for specific files.
-     * 
+     *
      * @param transformer The <code>Transformer</code> that must be adjusted.
      * @param sourceFilename The name of the source file that is being
      *        transformed.
@@ -202,7 +203,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Allows subclasses to add their own specific pre-processing logic.
-     * 
+     *
      * @throws MojoExecutionException If the Mojo fails to pre-process the
      *         results.
      */
@@ -214,7 +215,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Alles classes to add their own specific post-processing logic.
-     * 
+     *
      * @throws MojoExecutionException If the Mojo fails to post-process the
      *         results.
      */
@@ -228,7 +229,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * Post-processes the file. (Might be changed in the future to except an XML
      * representation instead of a file, in order to prevent the file from being
      * parsed.)
-     * 
+     *
      * @param result An individual result.
      */
     public void postProcessResult(File result) throws MojoExecutionException {
@@ -238,9 +239,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns a <code>Transformer</code> capable of rendering a particular
      * type of output from DocBook input.
-     * 
+     *
      * @param uriResolver
-     * 
+     *
      * @return A <code>Transformer</code> capable of rendering a particular
      *         type of output from DocBook input.
      * @throws MojoExecutionException If the operation fails to create a
@@ -276,7 +277,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Creates a <code>CatalogManager</code>, used to resolve DTDs and other
      * entities.
-     * 
+     *
      * @return A <code>CatalogManager</code> to be used for resolving DTDs and
      *         other entities.
      */
@@ -314,7 +315,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Creates a <code>DocumentBuilder</code> to be used to parse DocBook XML
      * documents.
-     * 
+     *
      * @return A <code>DocumentBuilder</code> instance.
      * @throws MojoExecutionException If we cannot create an instance of the
      *         <code>DocumentBuilder</code>.
@@ -334,7 +335,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Creates an instance of an XPath expression for picking the title from a
      * document.
-     * 
+     *
      * @return An XPath expression to pick the title from a document.
      * @throws MojoExecutionException If the XPath expression cannot be parsed.
      */
@@ -351,7 +352,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the title of the document.
-     * 
+     *
      * @param document The document from which we want the title.
      * @return The title of the document, or <code>null</code> if we can't
      *         find the title.
@@ -429,14 +430,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the target directory in which all results should be placed.
-     * 
+     *
      * @return The target directory in which all results should be placed.
      */
     protected abstract File getTargetDirectory();
 
     /**
      * Returns the source directory containing the source XML files.
-     * 
+     *
      * @return The source directory containing the source XML files.
      */
     protected abstract File getSourceDirectory();
@@ -452,7 +453,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * adressed by a URL. By default, it will return a stylesheet that will be
      * loaded from the classpath, using the resource name returned by
      * {@link #getStylesheetLocation()}.
-     * 
+     *
      * @return The URL of the stylesheet.
      */
     protected URL getStylesheetURL() {
@@ -471,7 +472,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the URL of the default stylesheet.
-     * 
+     *
      * @return The URL of the stylesheet.
      */
     protected URL getNonDefaultStylesheetURL() {
@@ -486,7 +487,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the URL of the default stylesheet.
-     * 
+     *
      * @return The URL of the stylesheet.
      */
     protected URL getDefaultStylesheetURL() {
@@ -498,14 +499,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns the default stylesheet location within the root of the stylesheet
      * distribution.
-     * 
+     *
      * @return The location of the directory containing the stylesheets.
      */
     protected abstract String getDefaultStylesheetLocation();
 
     /**
      * Returns the actual stylesheet location.
-     * 
+     *
      * @return The actual stylesheet location.
      */
     protected abstract String getStylesheetLocation();
@@ -513,7 +514,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns the extension of the target files, e.g. "html" for HTML files,
      * etc.
-     * 
+     *
      * @return The extension of the target files.
      */
     protected abstract String getTargetFileExtension();
@@ -525,28 +526,28 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the tasks that should be executed before the transformation.
-     * 
+     *
      * @return The tasks that should be executed before the transformation.
      */
     protected abstract Target getPreProcess();
 
     /**
      * Returns the tasks that should be executed after the transformation.
-     * 
+     *
      * @return The tasks that should be executed after the transformation.
      */
     protected abstract Target getPostProcess();
 
     /**
      * Returns a reference to the current project.
-     * 
+     *
      * @return A reference to the current project.
      */
     protected abstract MavenProject getMavenProject();
 
     /**
      * Returns the plugin dependencies.
-     * 
+     *
      * @return The plugin dependencies.
      */
     protected abstract List getArtifacts();

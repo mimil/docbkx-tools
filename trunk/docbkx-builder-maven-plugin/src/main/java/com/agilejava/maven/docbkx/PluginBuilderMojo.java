@@ -21,8 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -30,8 +36,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.jaxen.JaxenException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import com.agilejava.maven.docbkx.ZipFileProcessor.ZipEntryVisitor;
+import com.agilejava.maven.docbkx.spec.Parameter;
 import com.agilejava.maven.docbkx.spec.Specification;
 
 /**
@@ -110,8 +121,8 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
         }
     }
 
-    protected void process(ZipFileProcessor processor) throws MojoExecutionException,
-            MojoFailureException {
+    protected void process(ZipFileProcessor processor)
+            throws MojoExecutionException, MojoFailureException {
         File sourcesDir = new File(targetDirectory, getPackageName().replace(
                 '.', '/'));
         try {
@@ -159,15 +170,17 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
         return specification;
     }
 
-    protected Specification extractSpecification(final ZipFileProcessor processor)
-            throws IOException {
+    protected Specification extractSpecification(
+            final ZipFileProcessor processor) throws IOException {
         final String directory = getDocBookXslPrefix() + "/" + getType() + "/";
         final String file = directory + "param.ent";
         final Specification specification = new Specification();
         processor.process(new ZipEntryVisitor() {
-            public void visit(ZipEntry entry, InputStream in) throws IOException {
+            public void visit(ZipEntry entry, InputStream in)
+                    throws IOException {
                 if (entry.getName().endsWith(file)) {
-                    List parameters = extractParameters(in, processor, directory);
+                    List parameters = extractParameters(in, processor,
+                            directory);
                     specification.setPameters(parameters);
                     specification.setClassName(getClassName());
                     specification.setSuperClassName(superClassName);
@@ -178,6 +191,107 @@ public class PluginBuilderMojo extends AbstractBuilderMojo {
             }
         });
         return specification;
+    }
+
+    /**
+     * Returns a list of parameters to be passed to the plugin.
+     *
+     * @param paramEntities
+     * @return A List of {@link Parameter} objects.
+     * @throws IOException
+     *             If we can't read (or fail to parse) from the parameter entity
+     *             file passed in.
+     */
+    protected List extractParameters(InputStream paramEntities,
+            ZipFileProcessor processor, final String directory)
+            throws IOException {
+        final List excluded = getExcludedProperties();
+        final List parameters = new ArrayList();
+        final List parameterNames = new ArrayList();
+        EntityFileParser.parse(paramEntities,
+                new EntityFileParser.EntityVisitor() {
+                    public void visitSystemEntity(String name, String systemId) {
+                        parameterNames.add(getDocBookXslPrefix()
+                                + systemId.substring(systemId.indexOf('/')));
+                    }
+                });
+        processor.process(new ZipFileProcessor.ZipEntryVisitor() {
+            public void visit(ZipEntry entry, InputStream in)
+                    throws IOException {
+                if (parameterNames.contains(entry.getName())) {
+                    String name = entry.getName().substring(
+                            entry.getName().lastIndexOf('/') + 1);
+                    name = name.substring(0, name.length() - 4);
+                    if (!excluded.contains(name)) {
+                        parameters.add(extractParameter(name, in));
+                    }
+                }
+            }
+        });
+        return parameters;
+    }
+
+    /**
+     * Returns a <code>List</code> of property names that will be excluded
+     * from the code generation.
+     *
+     * @return A <code>List</code> of property names, identifying the
+     *         properties that must be excluded from code generation.
+     */
+    private List getExcludedProperties() {
+        List excluded;
+        if (excludedProperties != null) {
+            excluded = Arrays.asList(excludedProperties.split(",[ ]*"));
+        } else {
+            excluded = Collections.EMPTY_LIST;
+        }
+        return excluded;
+    }
+
+    /**
+     * Extracts the Parameter metadata from the parameter metadata file.
+     *
+     * @param name
+     *            The name of the (XSLT) parameter.
+     * @param in
+     *            The InputStream providing a description (refentry) of the
+     *            parameter.
+     * @return The Parameter object holding the metadata.
+     * @throws IOException
+     *             If it appears to be impossible to read from the
+     *             <code>InputStream</code>.
+     * @throws SAXException
+     *             If it appears to interpret the data on the
+     *             <code>InputStream</code> as XML.
+     */
+    protected Parameter extractParameter(String name, InputStream in) {
+        Parameter parameter = new Parameter();
+        parameter.setName(name);
+        try {
+            DocumentBuilder builder = createDocumentBuilder();
+            Document document = builder.parse(in);
+            Node node = (Node) selectDescription.selectSingleNode(document);
+            String result = node.getNodeValue();
+            result = result.substring(0, result.indexOf('.') + 1);
+            result = result.trim();
+            result = result.replace('\n', ' ');
+            parameter.setDescription(result);
+        } catch (IOException ioe) {
+            getLog().warn(
+                    "Failed to obtain description for " + parameter.getName(),
+                    ioe);
+        } catch (ParserConfigurationException pce) {
+            throw new IllegalStateException("Failed to create DocumentBuilder.");
+        } catch (SAXException se) {
+            getLog().warn(
+                    "Failed to obtain description for " + parameter.getName(),
+                    se);
+        } catch (JaxenException je) {
+            getLog().warn(
+                    "Failed to obtain description for " + parameter.getName(),
+                    je);
+        }
+        return parameter;
     }
 
 }
