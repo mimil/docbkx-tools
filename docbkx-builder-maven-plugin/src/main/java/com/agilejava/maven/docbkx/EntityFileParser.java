@@ -57,8 +57,19 @@ public class EntityFileParser {
         }
     }
 
+    /**
+     * A simple interface to be implemented by objects traversing the contents
+     * of an entity file.
+     *
+     */
     public interface EntityVisitor {
 
+        /**
+         * Invoked whenever the parser encounters a system entity.
+         *
+         * @param name The name of the entity.
+         * @param systemId The system id of the entity.
+         */
         void visitSystemEntity(String name, String systemId);
 
     }
