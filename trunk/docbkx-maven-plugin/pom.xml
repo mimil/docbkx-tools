@@ -12,7 +12,7 @@
   <description>
     A Maven plugin for generating HTML from DocBook.
   </description>
-  <dependencies> 
+  <dependencies>
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
@@ -97,8 +97,7 @@
           <execution>
             <id>generate-man</id>
             <goals>
-              <goal>generate</goal>
-              <goal>harvest</goal>
+              <goal>build</goal>
             </goals>
             <configuration>
               <type>manpages</type>
@@ -107,8 +106,7 @@
           <execution>
             <id>generate-html</id>
             <goals>
-              <goal>generate</goal>
-              <goal>harvest</goal>
+              <goal>build</goal>
             </goals>
             <configuration>
               <type>html</type>
@@ -119,8 +117,7 @@
           <execution>
             <id>generate-pdf</id>
             <goals>
-              <goal>generate</goal>
-              <goal>harvest</goal>
+              <goal>build</goal>
             </goals>
             <configuration>
               <type>fo</type>
@@ -131,7 +128,7 @@
           </execution>
         </executions>
         <configuration>
-          <distribution>${basedir}/lib/docbook-xsl-${docbook.xsl.version}.zip</distribution>
+          <version>${docbook.xsl.version}</version>
           <packageName>com.agilejava.docbkx.maven</packageName>
         </configuration>
       </plugin>
@@ -165,6 +162,6 @@
     </plugins>
   </reporting>
   <properties>
-    <docbook.xsl.version>1.70.1</docbook.xsl.version>
+    <docbook.xsl.version>1.72.0</docbook.xsl.version>
   </properties>
 </project>
