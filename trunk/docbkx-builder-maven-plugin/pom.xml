@@ -53,11 +53,6 @@
       <artifactId>commons-io</artifactId>
       <version>1.1</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-archiver</artifactId>
-      <version>1.0-alpha-5</version>
-    </dependency>
   </dependencies>
   <reporting>
     <plugins>

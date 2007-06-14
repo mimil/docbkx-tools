@@ -114,7 +114,7 @@ public class Specification {
         return parameters;
     }
 
-    public void setPameters(List parameters) {
+    public void setParameters(List parameters) {
         this.parameters = parameters;
     }
 
