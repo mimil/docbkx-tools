@@ -13,7 +13,6 @@
   Docbkx Plugin.</description>
 
   <profiles>
-
     <profile>
       <id>docbkx.release</id>
       <activation>
