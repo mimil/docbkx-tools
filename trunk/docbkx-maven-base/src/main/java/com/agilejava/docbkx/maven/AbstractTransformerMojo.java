@@ -105,7 +105,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         CatalogResolver catalogResolver = new CatalogResolver(catalogManager);
         URIResolver uriResolver = null;
         try {
-            getLog().info("Trying to figure out if the URL exists.");
             URL url = getNonDefaultStylesheetURL() == null ? getDefaultStylesheetURL()
                     : getNonDefaultStylesheetURL();
             uriResolver = new StylesheetResolver("urn:docbkx:stylesheet",
