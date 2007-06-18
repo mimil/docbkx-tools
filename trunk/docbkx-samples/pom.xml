@@ -288,6 +288,20 @@
         any reference to &amp;version; will be translated to the
         version number defined in your POM.
     -->
+    <!--
+	As of version 2.0.5 of the plugin it got even better. Version
+	2.0.5 allows you to refer to properties *directly*,
+	introducing the mapping to entities.
+    -->
+    <!--
+	The procedure is simple. The plugin defines a dedicated
+	processing instruction for inserting Maven properties. The
+	processing instruction relies on the JSP Expression Language
+	(probably familiar to many of you). So, you would for example
+	be able to inject this <?eval ${project.version}?> to include
+	the version number of your pom.xml file anywhere in your
+	DocBook content.
+    -->
     <profile>
       <id>docbkx.entities</id>
       <build>
