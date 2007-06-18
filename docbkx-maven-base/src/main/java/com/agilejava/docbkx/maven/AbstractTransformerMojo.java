@@ -21,10 +21,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.jsp.el.ELException;
+import javax.servlet.jsp.el.VariableResolver;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -137,8 +140,25 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 Result result = new StreamResult(targetFile);
                 XMLReader reader = factory.newSAXParser().getXMLReader();
                 reader.setEntityResolver(resolver);
+                PreprocessingFilter filter = new PreprocessingFilter(reader);
+                ProcessingInstructionHandler resolvingHandler = new ExpressionHandler(
+                        new VariableResolver() {
+
+                            public Object resolveVariable(String name)
+                                    throws ELException {
+                                if ("project".equals(name)) {
+                                    return getMavenProject();
+                                } else {
+                                    return null;
+                                }
+                            }
+
+                        }, getLog());
+                filter.setHandlers(Arrays
+                        .asList(new Object[] { resolvingHandler }));
+                filter.setEntityResolver(resolver);
                 getLog().info("Processing " + filename);
-                SAXSource xmlSource = new SAXSource(reader, new InputSource(
+                SAXSource xmlSource = new SAXSource(filter, new InputSource(
                         sourceFile.getAbsolutePath()));
                 adjustTransformer(transformer, filename, targetFile);
                 transformer.transform(xmlSource, result);
@@ -190,10 +210,12 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * file. The two parameters provide some context, allowing implementers to
      * respond to specific conditions for specific files.
      *
-     * @param transformer The <code>Transformer</code> that must be adjusted.
-     * @param sourceFilename The name of the source file that is being
-     *        transformed.
-     * @param targetFile The target File.
+     * @param transformer
+     *            The <code>Transformer</code> that must be adjusted.
+     * @param sourceFilename
+     *            The name of the source file that is being transformed.
+     * @param targetFile
+     *            The target File.
      */
     public void adjustTransformer(Transformer transformer,
             String sourceFilename, File targetFile) {
@@ -203,8 +225,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Allows subclasses to add their own specific pre-processing logic.
      *
-     * @throws MojoExecutionException If the Mojo fails to pre-process the
-     *         results.
+     * @throws MojoExecutionException
+     *             If the Mojo fails to pre-process the results.
      */
     public void preProcess() throws MojoExecutionException {
         if (getPreProcess() != null) {
@@ -215,8 +237,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Alles classes to add their own specific post-processing logic.
      *
-     * @throws MojoExecutionException If the Mojo fails to post-process the
-     *         results.
+     * @throws MojoExecutionException
+     *             If the Mojo fails to post-process the results.
      */
     public void postProcess() throws MojoExecutionException {
         if (getPostProcess() != null) {
@@ -229,7 +251,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * representation instead of a file, in order to prevent the file from being
      * parsed.)
      *
-     * @param result An individual result.
+     * @param result
+     *            An individual result.
      */
     public void postProcessResult(File result) throws MojoExecutionException {
 
@@ -243,8 +266,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      *
      * @return A <code>Transformer</code> capable of rendering a particular
      *         type of output from DocBook input.
-     * @throws MojoExecutionException If the operation fails to create a
-     *         <code>Transformer</code>.
+     * @throws MojoExecutionException
+     *             If the operation fails to create a <code>Transformer</code>.
      */
     protected Transformer createTransformer(URIResolver uriResolver)
             throws MojoExecutionException {
@@ -316,8 +339,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * documents.
      *
      * @return A <code>DocumentBuilder</code> instance.
-     * @throws MojoExecutionException If we cannot create an instance of the
-     *         <code>DocumentBuilder</code>.
+     * @throws MojoExecutionException
+     *             If we cannot create an instance of the
+     *             <code>DocumentBuilder</code>.
      */
     protected DocumentBuilder createDocumentBuilder()
             throws MojoExecutionException {
@@ -336,7 +360,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * document.
      *
      * @return An XPath expression to pick the title from a document.
-     * @throws MojoExecutionException If the XPath expression cannot be parsed.
+     * @throws MojoExecutionException
+     *             If the XPath expression cannot be parsed.
      */
     protected XPath createTitleXPath() throws MojoExecutionException {
         try {
@@ -352,7 +377,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns the title of the document.
      *
-     * @param document The document from which we want the title.
+     * @param document
+     *            The document from which we want the title.
      * @return The title of the document, or <code>null</code> if we can't
      *         find the title.
      */
