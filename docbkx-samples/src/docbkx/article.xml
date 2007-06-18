@@ -4,7 +4,10 @@
 ]>
 <article>
   
-  <title>Example Document &type;</title>
+  <articleinfo>
+    <title>Example Document &type;</title>
+    <releaseinfo><?eval Version ${project.version}?></releaseinfo>
+  </articleinfo>
 
   <section>
     <title>First Section</title> 
