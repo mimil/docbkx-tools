@@ -329,7 +329,7 @@ public class GeneratorMojo extends AbstractMojo {
      */
     private String[] getIncludes() {
         return new String[] { "*/VERSION", "*/" + type + "/**", "*/common/**",
-                "*/lib/**", "*/params/**", "*/highlighting/**" };
+                "*/lib/**", "*/highlighting/**" };
     }
 
     /**
