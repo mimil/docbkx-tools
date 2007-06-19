@@ -11,12 +11,17 @@
 
   <section>
     <title>First Section</title> 
-    
+
     <para>This is just an example document. It does not contain any
     relevant information at all. The only message you should take away
     from this document is that you should start writing
     DocBook.</para>
 
+    <para>
+      Note that it is possible to evaluate expressions inline, using
+      the <sgmltag>eval</sgmltag> processing instruction: <?eval
+      ${example.title}?> and <?eval ${2 * 34 / 3}?>.
+    </para> 
   </section>
 
   <section>

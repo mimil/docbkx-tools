@@ -66,8 +66,11 @@ public class ExpressionHandler implements ProcessingInstructionHandler {
     /**
      * Constructs a new instance.
      *
-     * @param resolver The object used for resolving variables. (Not <code>null</code>.)
-     * @param log The object used for logging. (Not <code>null</code>.)
+     * @param resolver
+     *            The object used for resolving variables. (Not
+     *            <code>null</code>.)
+     * @param log
+     *            The object used for logging. (Not <code>null</code>.)
      */
     public ExpressionHandler(VariableResolver resolver, Log log) {
         this.resolver = resolver;

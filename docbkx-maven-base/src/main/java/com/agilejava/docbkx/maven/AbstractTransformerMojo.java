@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.VariableResolver;
@@ -144,12 +145,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 ProcessingInstructionHandler resolvingHandler = new ExpressionHandler(
                         new VariableResolver() {
 
+                            private Map tree = ExpressionUtils.createTree(getMavenProject().getProperties());
+
                             public Object resolveVariable(String name)
                                     throws ELException {
                                 if ("project".equals(name)) {
                                     return getMavenProject();
                                 } else {
-                                    return null;
+                                    return tree.get(name);
                                 }
                             }
 
