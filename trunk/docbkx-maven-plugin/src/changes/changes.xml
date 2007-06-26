@@ -4,11 +4,22 @@
     <title>Changes</title>
   </properties>
   <body>
+  
+    <release version="2.0.5"
+             description="DocBook stylesheets upgrade + expression language">
+      <action dev="wis" type="update">
+        Upgraded the styleseets to version 1.72.0.
+      </action>
+      <action dev="wis" type="add">
+        Added experimental support for using expression language in
+        processing instructions. 
+      </action>
+    </release>
 
     <release version="2.0.4"
              description="DocBook stylesheets upgrade">
       <action dev="wis" type="update">
-        Upgraded the stylesheets to 1.70.1.
+        Upgraded the stylesheets to version 1.70.1.
       </action>
     </release>
 
