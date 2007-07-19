@@ -24,8 +24,8 @@
   <description>A number of tools for handling DocBook XML transformations.</description>
   <inceptionYear>2006</inceptionYear>
   <scm>
-    <connection>https://docbkx-tools.googlecode.com/svn/trunk/</connection>
-    <developerConnection>https://docbkx-tools.googlecode.com/svn/trunk/</developerConnection>
+    <connection>svn:https://docbkx-tools.googlecode.com/svn/trunk/</connection>
+    <developerConnection>svn:https://docbkx-tools.googlecode.com/svn/trunk/</developerConnection>
   </scm>
   <licenses>
     <license>
