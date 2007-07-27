@@ -142,15 +142,13 @@
       </properties>
     </profile>
 
-    <!--
-        Adding other output formats is easy. Simply specify it as
+    <!-- Adding other output formats is easy. Simply specify it as
         additional goals. In the example below, we are not only
-        rendering HTML but also PDF and UNIX man pages. (Note however
-        that it does not make a lot of sense to render man pages from
-        an appendix. You still need to add your own common sense to
-        figure out which output formats make sense with your
-        documents.
-    -->
+        rendering HTML but also PDF, UNIX man pages and Eclipse help
+        files. (Note however that it does not make a lot of sense to
+        render man pages from an appendix. You still need to add your
+        own common sense to figure out which output formats make sense
+        with your documents.  -->
     <profile>
       <id>docbkx.multipleFormats</id>
       <build>
@@ -164,6 +162,7 @@
                   <goal>generate-html</goal>
                   <goal>generate-pdf</goal>
                   <goal>generate-manpages</goal>
+                  <goal>generate-eclipse</goal>
                 </goals>
                 <phase>generate-sources</phase>
               </execution>
