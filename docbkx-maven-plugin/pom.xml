@@ -114,6 +114,18 @@
             </configuration>
           </execution>
           <execution>
+            <id>generate-eclipse</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <type>eclipse</type>
+              <stylesheetPath>eclipse/eclipse.xsl</stylesheetPath>
+              <superClassName>com.agilejava.docbkx.maven.AbstractEclipseMojo</superClassName>
+              <excludedProperties>root.filename,base.dir,manifest.in.base.dir</excludedProperties>
+            </configuration>
+          </execution>
+          <execution>
             <id>generate-pdf</id>
             <goals>
               <goal>build</goal>

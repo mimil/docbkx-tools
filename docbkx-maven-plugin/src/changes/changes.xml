@@ -4,6 +4,13 @@
     <title>Changes</title>
   </properties>
   <body>
+
+    <release version="2.0.6"
+             description="Eclipse help support">
+      <action dev="wis" type="add">
+        Added rudimentary support for generating Eclipse help.
+      </action>
+    </release>
   
     <release version="2.0.5"
              description="DocBook stylesheets upgrade + expression language">
