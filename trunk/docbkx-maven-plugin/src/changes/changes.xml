@@ -6,7 +6,8 @@
   <body>
 
     <release version="2.0.6"
-             description="Eclipse help support">
+             description="Eclipse help support"
+             date="27-7-2007">
       <action dev="wis" type="add">
         Added rudimentary support for generating Eclipse help.
       </action>
