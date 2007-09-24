@@ -70,14 +70,19 @@
   </modules>
   <distributionManagement>
     <repository>
-      <id>agilejava-repository</id>
-      <name>Agilejava Repository</name>
-      <url>ftp://agilejava.com/www/maven</url>
+      <id>docbkx-tools-sourceforge</id>
+      <name>Docbkx Tools Repository</name>
+      <url>scpexe://shell.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/repository</url>
     </repository>
+    <snapshotRepository>
+      <id>docbkx-tools-sourceforge</id>
+      <name>Docbkx Tools Snapshot Repository</name>
+      <url>scpexe://shell.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/snapshots</url>
+    </snapshotRepository>
     <site>
-      <id>local</id>
-      <name>Local Staging</name>
-      <url>file:///${java.io.tmpdir}/docbkx</url>
+      <id>docbkx-tools-sourceforge</id>
+      <name>Docbkx Tools Site</name>
+      <url>scpexe://shell.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/</url>
     </site>
   </distributionManagement>
   <dependencyManagement>
