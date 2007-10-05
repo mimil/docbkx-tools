@@ -31,70 +31,74 @@ import org.xml.sax.SAXException;
 /**
  * A {@link ProcessingInstructionHandler} that evaluates expressions passed as
  * data as JSP expression language expressions.
- *
- *
+ * 
+ * 
  * @author Wilfred Springer
- *
+ * 
  */
 public class ExpressionHandler implements ProcessingInstructionHandler {
 
-    /**
-     * The name of the processing instruction.
-     */
-    private final String PI_NAME = "eval";
+	/**
+	 * The name of the processing instruction.
+	 */
+	private final String PI_NAME = "eval";
 
-    /**
-     * The object responsible for resolving variables.
-     */
-    private VariableResolver resolver;
+	/**
+	 * The object responsible for resolving variables.
+	 */
+	private VariableResolver resolver;
 
-    /**
-     * The object used for logging.
-     */
-    private Log log;
+	/**
+	 * The object used for logging.
+	 */
+	private Log log;
 
-    /**
-     * A simplified function mapper that basically does not support any
-     * functions at all.
-     */
-    private FunctionMapper mapper = new FunctionMapper() {
-        public Method resolveFunction(String prefix, String localName) {
-            return null;
-        }
-    };
+	/**
+	 * A simplified function mapper that basically does not support any
+	 * functions at all.
+	 */
+	private FunctionMapper mapper = new FunctionMapper() {
+		public Method resolveFunction(String prefix, String localName) {
+			return null;
+		}
+	};
 
-    /**
-     * Constructs a new instance.
-     *
-     * @param resolver
-     *            The object used for resolving variables. (Not
-     *            <code>null</code>.)
-     * @param log
-     *            The object used for logging. (Not <code>null</code>.)
-     */
-    public ExpressionHandler(VariableResolver resolver, Log log) {
-        this.resolver = resolver;
-        this.log = log;
-    }
+	/**
+	 * Constructs a new instance.
+	 * 
+	 * @param resolver
+	 *            The object used for resolving variables. (Not
+	 *            <code>null</code>.)
+	 * @param log
+	 *            The object used for logging. (Not <code>null</code>.)
+	 */
+	public ExpressionHandler(VariableResolver resolver, Log log) {
+		this.resolver = resolver;
+		this.log = log;
+	}
 
-    // JavaDoc inherited
-    public void handle(String data, ContentHandler handler) {
-        ExpressionEvaluator evaluator = new ExpressionEvaluatorImpl();
-        Object value;
-        try {
-            value = evaluator.evaluate(data, Object.class, resolver, mapper);
-            char[] result = value.toString().toCharArray();
-            handler.characters(result, 0, result.length);
-        } catch (ELException ele) {
-            log.error("Failed to handle EL expression.", ele);
-        } catch (SAXException saxe) {
-            log.error("Failed to generate content.", saxe);
-        }
-    }
+	// JavaDoc inherited
+	public void handle(String data, ContentHandler handler) {
+		ExpressionEvaluator evaluator = new ExpressionEvaluatorImpl();
+		Object value;
+		try {
+			value = evaluator.evaluate(data, Object.class, resolver, mapper);
+			if (value != null) {
+				char[] result = value.toString().toCharArray();
+				handler.characters(result, 0, result.length);
+			} else {
+				log.debug("Failed to resolve " + data);
+			}
+		} catch (ELException ele) {
+			log.error("Failed to handle EL expression.", ele);
+		} catch (SAXException saxe) {
+			log.error("Failed to generate content.", saxe);
+		}
+	}
 
-    // JavaDoc inherited
-    public boolean matches(String target) {
-        return PI_NAME.matches(target);
-    }
+	// JavaDoc inherited
+	public boolean matches(String target) {
+		return PI_NAME.matches(target);
+	}
 
 }

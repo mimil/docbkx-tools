@@ -52,6 +52,7 @@
               </entities>
               <sourceDirectory>target/docbkx</sourceDirectory>
               <preProcess>
+		<ant target="generate-poms" inheritAll="true"/>
                 <ant target="generate-manual" inheritAll="true" />
               </preProcess>
           <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
@@ -99,6 +100,7 @@
       </build>
       <properties>
         <example.title>Minimal configuration</example.title>
+	<example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -139,6 +141,7 @@
       </build>
       <properties>
         <example.title>Attached to a phase</example.title>
+	<example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -180,6 +183,7 @@
       </build>
       <properties>
         <example.title>Multiple output formats</example.title>
+	<example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -219,6 +223,7 @@
       </build>
       <properties>
         <example.title>Additional customization</example.title>
+	<example.input>article.xml</example.input>
       </properties>
     </profile>
     
@@ -257,6 +262,8 @@
       </build>
       <properties>
         <example.title>Explicit source file selection</example.title>
+	<example.input>just-xml.xml</example.input>
+	<example.input>just-docbkx.xml</example.input>
       </properties>
     </profile>
 
@@ -508,6 +515,35 @@
       <properties>
         <example.title>Advanced Customization</example.title>
       </properties>
+    </profile>
+
+    <profile>
+      <id>docbkx.highlighter</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+              <dependency>
+                <groupId>net.sf.xslthl</groupId>
+                <artifactId>xslthl</artifactId>
+                <version>1.3</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <highlightSource>1</highlightSource>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
   </profiles>

@@ -230,7 +230,7 @@
     <para>
       This section provides some code snippets.
     </para>
-    <programlisting><![CDATA[
+    <programlisting language="java"><![CDATA[
 package com.sun.reconfig;
 
 import java.io.*;
