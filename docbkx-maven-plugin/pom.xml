@@ -74,6 +74,7 @@
               <patternset>
                 <include name="docbook-xsl-${docbook.xsl.version}/extensions/saxon65.jar" />
                 <include name="docbook-xsl-${docbook.xsl.version}/images/**/*.*" />
+                <include name="docbook-xsl-${docbook.xsl.version}/highlighting/**/*.*"/>
               </patternset>
             </unzip>
             <unjar src="target/tmp/docbook-xsl-${docbook.xsl.version}/extensions/saxon65.jar" dest="target/generated-resources">
@@ -84,6 +85,7 @@
             <copy todir="target/generated-resources/META-INF">
               <fileset dir="target/tmp/docbook-xsl-${docbook.xsl.version}">
                 <include name="images/**/*.*" />
+                <include name="highlighting/**/*.*"/>
               </fileset>
             </copy>
           </tasks>

@@ -28,7 +28,7 @@ import javax.xml.transform.Transformer;
  * @author Wilfred Springer
  * 
  */
-public abstract class AbstractHtmlMojo extends AbstractTransformerMojo {
+public abstract class AbstractHtmlMojo extends AbstractMojoBase {
 
     /**
      * Indicates if the output should either be a single page, or if it should
