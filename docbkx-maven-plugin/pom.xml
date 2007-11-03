@@ -82,6 +82,12 @@
                 <exclude name="META-INF" />
               </patternset>
             </unjar>
+            <unjar src="lib/xslthl-1.3.jar"
+                   dest="target/generated-resources">
+              <patternset>
+                <exclude name="META-INF" />
+              </patternset>
+            </unjar>
             <copy todir="target/generated-resources/META-INF">
               <fileset dir="target/tmp/docbook-xsl-${docbook.xsl.version}">
                 <include name="images/**/*.*" />

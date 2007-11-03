@@ -52,7 +52,6 @@
               </entities>
               <sourceDirectory>target/docbkx</sourceDirectory>
               <preProcess>
-		<ant target="generate-poms" inheritAll="true"/>
                 <ant target="generate-manual" inheritAll="true" />
               </preProcess>
           <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
@@ -517,6 +516,21 @@
       </properties>
     </profile>
 
+    <!-- 
+         The later versions of the DocBook stylesheets support syntax
+         highlighting. In order to use it, add a language attribute to
+         the DocBook element containing your sources, and set it to
+         the language of the sources within that element. In your
+         pom.xml configuration, set highlightSource to true, and
+         you're done.
+    -->
+    
+    <!--
+        Note that previous versions of the plugin required you to add
+        the xslthl.jar to your dependencies. That's no longer
+        required. All of the required classes are now included in the
+        plugin's jar file itself.
+    -->
     <profile>
       <id>docbkx.highlighter</id>
       <build>
@@ -531,12 +545,6 @@
                 <version>4.4</version>
                 <scope>runtime</scope>
               </dependency>
-              <dependency>
-                <groupId>net.sf.xslthl</groupId>
-                <artifactId>xslthl</artifactId>
-                <version>1.3</version>
-                <scope>runtime</scope>
-              </dependency>
             </dependencies>
             <configuration>
               <highlightSource>1</highlightSource>
@@ -544,7 +552,10 @@
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <example.title>Syntax Highlighting</example.title>
+      </properties>
     </profile>
-
+    
   </profiles>
 </project>
