@@ -42,7 +42,7 @@ import com.agilejava.docbkx.maven.AbstractTransformerMojo;
  * @author Wilfred Springer
  * 
  */
-public abstract class AbstractPdfMojo extends AbstractTransformerMojo {
+public abstract class AbstractPdfMojo extends AbstractMojoBase {
 
     public void postProcessResult(File result) throws MojoExecutionException {
         super.postProcessResult(result);
