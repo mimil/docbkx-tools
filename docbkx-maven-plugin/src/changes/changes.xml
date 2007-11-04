@@ -5,6 +5,14 @@
   </properties>
   <body>
 
+    <release version="2.0.7"
+             description="Syntax highlighting support"
+             date="">
+      <action dev="wis" type="addd">
+        Added support for syntax highlighting.
+      </action>
+    </release>
+
     <release version="2.0.6"
              description="Eclipse help support"
              date="27-7-2007">

@@ -32,8 +32,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
 import org.xml.sax.InputSource;
 
-import com.agilejava.docbkx.maven.AbstractTransformerMojo;
-
 /**
  * A replacement base class, to be inherited by the FO building plugin. This
  * base class will generate PDF from the FO output by overriding
