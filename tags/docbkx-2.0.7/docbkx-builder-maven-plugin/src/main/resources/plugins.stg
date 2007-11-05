@@ -1,0 +1,203 @@
+group plugins;
+
+plugin(spec) ::= <<
+package $spec.packageName$;
+
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.Transformer;
+import org.apache.maven.plugin.MojoExecutionException;
+import java.io.File;
+import java.util.List;
+import org.apache.maven.project.MavenProject;
+import org.apache.tools.ant.Target;
+import org.xml.sax.XMLReader;
+import org.xml.sax.SAXException;
+
+
+/**
+ * A Maven plugin for generating $spec.type$ output from DocBook documents, using version 
+ * $spec.docbookXslVersion$ of the DocBook XSL stylesheets.
+ * 
+ * @see http://docbook.sourceforge.net/
+ * @goal generate-$spec.pluginSuffix$
+ * @configurator override
+ */
+public class $spec.className$ 
+  extends $spec.superClassName$ 
+{
+
+    /**
+     * The plugin dependencies.
+     *
+     * @parameter expression="\${plugin.artifacts}"
+     * @required
+     * @readonly
+     */
+    List artifacts;
+
+    /**
+     * Ant tasks to be executed before the transformation. Comparable
+     * to the tasks property in the maven-antrun-plugin.
+     * 
+     * @parameter
+     */
+    private Target preProcess;
+	
+    /**
+     * Ant tasks to be executed after the transformation. Comparable
+     * to the tasks property in the maven-antrun-plugin.
+     * 
+     * @parameter
+     */
+    private Target postProcess;
+
+    /**
+     * @parameter expression="\${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+
+    /**
+     * A list of entities to be substituted in the source
+     * documents. Note that you can <em>only</em> specify entities if
+     * your source DocBook document contains a DTD
+     * declaration. Otherwise it will not have any effect at all.
+     *
+     * @parameter
+     */
+    private List entities;
+
+    /**
+     * The pattern of the files to be included.
+     *
+     * @parameter default-value="*.xml"
+     */
+    private String includes;
+    
+    /**
+     * A boolean, indicating if XInclude should be supported.
+     *
+     * @parameter default="false"
+     */
+     private boolean xincludeSupported;
+
+    /**
+     * The location of the stylesheet customization.
+     *
+     * @parameter
+     */
+    private String $spec.type$Customization;
+
+    /**
+     * The extension of the target file name.
+     *
+     * @parameter default-value="$spec.targetFileExtension$"
+     */
+    private String targetFileExtension;
+  
+
+    /**
+     * The target directory to which all output will be written.
+     * 
+     * @parameter expression="\${basedir}/target/docbkx/$spec.pluginSuffix$"
+     */
+    private File targetDirectory;
+
+    /**
+     * The directory containing the source DocBook files.
+     *
+     * @parameter expression="\${basedir}/src/docbkx"
+     */
+    private File sourceDirectory;
+ 
+    $spec.parameters:variable(); separator="\n\n"$
+
+    protected Transformer createTransformer(URIResolver resolver) throws MojoExecutionException {
+        getLog().debug("Creating the transformer.");
+        Transformer transformer = super.createTransformer(resolver);
+        $spec.parameters:parameterPassing(); separator="\n"$
+        return transformer;
+    }
+
+    public File getSourceDirectory() {
+        return sourceDirectory;
+    }
+    
+    public File getTargetDirectory() {
+        return targetDirectory;
+    }
+
+	public String getDefaultStylesheetLocation() {
+        return "$spec.stylesheetLocation$";
+	}
+	
+	public String getType() {
+	    return "$spec.type$";
+	}
+
+    public String getStylesheetLocation() {
+    	getLog().debug("Customization: " + $spec.type$Customization);
+        if ($spec.type$Customization != null) {
+            return $spec.type$Customization;
+        } else if (getNonDefaultStylesheetLocation() == null) {
+            return getDefaultStylesheetLocation();
+        } else {
+            return getNonDefaultStylesheetLocation();
+        }
+    }
+
+    public String getTargetFileExtension() {
+        return targetFileExtension;
+    }
+
+    public String[] getIncludes() {
+        String[] results = includes.split(",");
+        for (int i = 0; i < results.length; i++) {
+            results[i] = results[i].trim();
+        }
+        return results;
+    }
+    
+    public List getEntities() {
+        return entities;
+    }
+    
+    public Target getPreProcess() {
+        return preProcess;
+    }
+    
+    public Target getPostProcess() {
+        return postProcess;
+    }
+    
+    public MavenProject getMavenProject() {
+        return project;
+    }
+ 
+    public List getArtifacts() {
+        return artifacts;
+    }
+    
+    protected boolean getXIncludeSupported() {
+        return xincludeSupported;
+    }
+    
+}
+>>
+
+variable() ::= <<
+/**
+ * $it.description$
+ * (Original XSL attribuut: <code>$it.name$</code>.)
+ *
+ * @parameter
+ */  
+private String $it.javaIdentifier$;
+>>
+
+parameterPassing() ::= <<
+if ($it.javaIdentifier$ != null) {
+    transformer.setParameter("$it.name$", $it.javaIdentifier$);
+}                     
+>>

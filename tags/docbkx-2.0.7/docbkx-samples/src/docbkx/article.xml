@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
+]>
+<article>
+  
+  <articleinfo>
+    <title>Example Document &type;</title>
+    <releaseinfo><?eval Version ${project.version}?></releaseinfo>
+  </articleinfo>
+
+  <section>
+    <title>First Section</title> 
+
+    <para>This is just an example document. It does not contain any
+    relevant information at all. The only message you should take away
+    from this document is that you should start writing
+    DocBook.</para>
+
+    <para>
+      Note that it is possible to evaluate expressions inline, using
+      the <sgmltag>eval</sgmltag> processing instruction: <?eval
+      ${example.title}?> and <?eval ${2 * 34 / 3}?>.
+    </para> 
+  </section>
+
+  <section>
+    <title>Second Section</title> 
+    
+    <para>This is just an example document. It does not contain any
+    relevant information at all. The only message you should take away
+    from this document is that you should start writing
+    DocBook.</para>
+
+    <section>
+      <title>Nested Section</title>
+      <para>
+        The quick brown fox jumped over the lazy tree.  The quick
+        brown fox jumped over the lazy tree.  The quick brown fox
+        jumped over the lazy tree.  The quick brown fox jumped over
+        the lazy tree.  The quick brown fox jumped over the lazy tree.
+        The quick brown fox jumped over the lazy tree.  The quick
+        brown fox jumped over the lazy tree.  The quick brown fox
+        jumped over the lazy tree.  The quick brown fox jumped over
+        the lazy tree.  The quick brown fox jumped over the lazy tree.
+        The quick brown fox jumped over the lazy tree.  The quick
+        brown fox jumped over the lazy tree.  The quick brown fox
+        jumped over the lazy tree.  The quick brown fox jumped over
+        the lazy tree.  The quick brown fox jumped over the lazy tree.
+        The quick brown fox jumped over the lazy tree.
+      </para>
+    </section>
+
+  </section>
+  
+  
+</article>
