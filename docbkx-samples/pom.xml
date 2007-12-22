@@ -10,7 +10,6 @@
   <name>Docbkx Maven Samples</name>
   <description>A number of examples, showing how to use the Maven
   Docbkx Plugin.</description>
-
   <profiles>
     <profile>
       <id>docbkx.release</id>
@@ -22,6 +21,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${version}</version>
             <executions>
               <execution>
                 <goals>
@@ -51,10 +51,11 @@
                 </entity>
               </entities>
               <sourceDirectory>target/docbkx</sourceDirectory>
+              <targetDirectory>target/site/</targetDirectory>
               <preProcess>
                 <ant target="generate-manual" inheritAll="true" />
               </preProcess>
-          <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
+              <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
               <headerRule>0</headerRule>
               <footerRule>0</footerRule>
               <draftMode>0</draftMode>
