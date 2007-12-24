@@ -19,11 +19,63 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>attached</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>${basedir}</dir>
+                  <includes>
+                    <include>pom.xml</include>
+                  </includes>
+                  <outputDir>target</outputDir>
+                  <stylesheet>src/xslt/pom-to-poms.xsl</stylesheet>
+                  <parameters>
+                    <parameter>
+                      <name>pluginVersion</name>
+                      <value>${project.version}</value>
+                    </parameter>
+                  </parameters>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>xalan</groupId>
+                <artifactId>xalan</artifactId>
+                <version>2.7.0</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
             <version>${version}</version>
             <executions>
               <execution>
+                <id>site</id>
                 <goals>
                   <goal>generate-html</goal>
                 </goals>
@@ -53,7 +105,10 @@
               <sourceDirectory>target/docbkx</sourceDirectory>
               <targetDirectory>target/site/</targetDirectory>
               <preProcess>
-                <ant target="generate-manual" inheritAll="true" />
+                <mkdir dir="${basedir}/target/docbkx"/>
+                <xslt style="${basedir}/src/xslt/pom-to-docbkx.xsl"
+                      in="pom.xml"
+                      out="target/docbkx/manual.xml"/>
               </preProcess>
               <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
               <headerRule>0</headerRule>
@@ -507,7 +562,7 @@
               </dependency>
             </dependencies>
             <configuration>
-              <foCustomization>src/test/resources/docbook-fo.xsl</foCustomization>
+              <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
             </configuration>
           </plugin>
         </plugins>
