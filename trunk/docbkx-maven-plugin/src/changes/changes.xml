@@ -5,6 +5,16 @@
   </properties>
   <body>
 
+    <release version="2.0.8"
+             description="Better PDF support and stylesheet update">
+      <action dev="wis" type="update">
+        Replaced FOP 0.20.5 for FOP 0.94.
+      </action>
+      <action dev="wis" type="update">
+        Moved on to version 1.73.2 of the DocBook XSL stylesheets.
+      </action>
+    </release>
+
     <release version="2.0.7"
              description="Syntax highlighting support"
              date="5-10-2007">

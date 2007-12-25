@@ -152,9 +152,6 @@
   <reporting>
     <plugins>
       <plugin>
-        <!--
-        <groupId>org.codehaus.mojo</groupId>
-        -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.0-beta-2</version>
@@ -177,6 +174,6 @@
     </plugins>
   </reporting>
   <properties>
-    <docbook.xsl.version>1.72.0</docbook.xsl.version>
+    <docbook.xsl.version>1.73.2</docbook.xsl.version>
   </properties>
 </project>
