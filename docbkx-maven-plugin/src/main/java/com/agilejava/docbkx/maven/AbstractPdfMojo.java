@@ -20,17 +20,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.avalon.framework.logger.Logger;
-import org.apache.fop.apps.Driver;
+import org.apache.commons.io.IOUtils;
 import org.apache.fop.apps.FOPException;
-import org.apache.fop.messaging.MessageHandler;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.MimeConstants;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
-import org.xml.sax.InputSource;
 
 /**
  * A replacement base class, to be inherited by the FO building plugin. This
@@ -50,15 +59,25 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
             in = openFileForInput(result);
             out = openFileForOutput(getOutputFile(result));
             Logger logger = new AvalonMavenBridgeLogger(getLog(), true, true);
-            MessageHandler.setScreenLogger(logger);
-            Driver driver = new Driver(new InputSource(in), out);
-            driver.setLogger(logger);
-            driver.setRenderer(Driver.RENDER_PDF);
-            driver.run();
+            Fop fop = FopFactory.newInstance().newFop(MimeConstants.MIME_PDF,
+                    out);
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+            Source src = new StreamSource(in);
+            Result res = new SAXResult(fop.getDefaultHandler());
+            transformer.transform(src, res);
         } catch (FOPException fope) {
-            throw new MojoExecutionException("Failed to convert to PDF", fope);
-        } catch (IOException ioe) {
-            throw new MojoExecutionException("Failed to write to output file.");
+            throw new MojoExecutionException("Failed to create FopFactory.",
+                    fope);
+        } catch (TransformerConfigurationException tce) {
+            throw new MojoExecutionException("Failed to create Taransformer.",
+                    tce);
+        } catch (TransformerException te) {
+            throw new MojoExecutionException("Failed to transform document.",
+                    te);
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
         }
     }
 
