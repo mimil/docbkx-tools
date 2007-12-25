@@ -226,7 +226,7 @@ public class GeneratorMojo extends AbstractMojo {
 	public GeneratorMojo() {
 		try {
 			selectDescription = new DOMXPath(
-					"//refsect1[position()=1]/para[position()=1]/text()");
+					"//refsection[position()=1]/para[position()=1]/text()");
 		} catch (JaxenException e) {
 			throw new IllegalStateException("Failed to parse XPath expression.");
 			// This would render the object to be unusable.
@@ -456,7 +456,11 @@ public class GeneratorMojo extends AbstractMojo {
 			DocumentBuilder builder = createDocumentBuilder();
 			Document document = builder.parse(url);
 			Node node = (Node) selectDescription.selectSingleNode(document);
-			String result = node.getNodeValue();
+			if (node == null) {
+			    getLog().warn("Failed to parse description for " + name);
+			    return parameter;
+			}
+            String result = node.getNodeValue();
 			result = result.substring(0, result.indexOf('.') + 1);
 			result = result.trim();
 			result = result.replace('\n', ' ');
