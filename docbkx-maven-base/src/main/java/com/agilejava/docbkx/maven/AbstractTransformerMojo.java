@@ -44,6 +44,7 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -61,7 +62,6 @@ import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.tools.CatalogResolver;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.jaxen.JaxenException;
 import org.jaxen.XPath;
@@ -82,7 +82,7 @@ import com.icl.saxon.TransformerFactoryImpl;
  * returned by {@link #getTargetDirectory()}, and apply the stylesheets on
  * these documents. This Mojo will be subclassed by Mojo's that generate a
  * particular type of output.
- *
+ * 
  * @author Wilfred Springer
  */
 public abstract class AbstractTransformerMojo extends AbstractMojo {
@@ -98,7 +98,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
             return; // No sources, so there is nothing to render.
         }
         if (!targetDirectory.exists()) {
-            FileUtils.mkdir(targetDirectory.getAbsolutePath());
+            org.codehaus.plexus.util.FileUtils.mkdir(targetDirectory
+                    .getAbsolutePath());
         }
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(sourceDirectory);
@@ -138,34 +139,42 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                         + "." + getTargetFileExtension();
                 File targetFile = new File(targetDirectory, targetFilename);
                 File sourceFile = new File(sourceDirectory, filename);
-                Result result = new StreamResult(targetFile);
-                XMLReader reader = factory.newSAXParser().getXMLReader();
-                reader.setEntityResolver(resolver);
-                PreprocessingFilter filter = new PreprocessingFilter(reader);
-                ProcessingInstructionHandler resolvingHandler = new ExpressionHandler(
-                        new VariableResolver() {
+                if (!targetFile.exists()
+                        || (targetFile.exists() && FileUtils.isFileNewer(
+                                sourceFile, targetFile))) {
+                    Result result = new StreamResult(targetFile);
+                    XMLReader reader = factory.newSAXParser().getXMLReader();
+                    reader.setEntityResolver(resolver);
+                    PreprocessingFilter filter = new PreprocessingFilter(reader);
+                    ProcessingInstructionHandler resolvingHandler = new ExpressionHandler(
+                            new VariableResolver() {
 
-                            private Map tree = ExpressionUtils.createTree(getMavenProject().getProperties());
+                                private Map tree = ExpressionUtils
+                                        .createTree(getMavenProject()
+                                                .getProperties());
 
-                            public Object resolveVariable(String name)
-                                    throws ELException {
-                                if ("project".equals(name)) {
-                                    return getMavenProject();
-                                } else {
-                                    return tree.get(name);
+                                public Object resolveVariable(String name)
+                                        throws ELException {
+                                    if ("project".equals(name)) {
+                                        return getMavenProject();
+                                    } else {
+                                        return tree.get(name);
+                                    }
                                 }
-                            }
 
-                        }, getLog());
-                filter.setHandlers(Arrays
-                        .asList(new Object[] { resolvingHandler }));
-                filter.setEntityResolver(resolver);
-                getLog().info("Processing " + filename);
-                SAXSource xmlSource = new SAXSource(filter, new InputSource(
-                        sourceFile.getAbsolutePath()));
-                adjustTransformer(transformer, filename, targetFile);
-                transformer.transform(xmlSource, result);
-                postProcessResult(targetFile);
+                            }, getLog());
+                    filter.setHandlers(Arrays
+                            .asList(new Object[] { resolvingHandler }));
+                    filter.setEntityResolver(resolver);
+                    getLog().info("Processing " + filename);
+                    SAXSource xmlSource = new SAXSource(filter,
+                            new InputSource(sourceFile.getAbsolutePath()));
+                    adjustTransformer(transformer, filename, targetFile);
+                    transformer.transform(xmlSource, result);
+                    postProcessResult(targetFile);
+                } else {
+                    getLog().debug(targetFile + " is up to date.");
+                }
             } catch (SAXException saxe) {
                 throw new MojoExecutionException("Failed to parse "
                         + included[i] + ".", saxe);
@@ -182,7 +191,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the SAXParserFactory used for constructing parsers.
-     *
+     * 
      */
     private SAXParserFactory createParserFactory() {
         SAXParserFactory factory = new SAXParserFactoryImpl();
@@ -192,14 +201,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns a boolean indicting if XInclude should be supported.
-     *
+     * 
      * @return A boolean indicating if XInclude should be supported.
      */
     protected abstract boolean getXIncludeSupported();
 
     /**
      * The stylesheet location override by a class in the mojo hierarchy.
-     *
+     * 
      * @return The location of the stylesheet set by one of the superclasses, or
      *         <code>null</code>.
      */
@@ -212,7 +221,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * the {@link Transformer} right before it is applied to a certain source
      * file. The two parameters provide some context, allowing implementers to
      * respond to specific conditions for specific files.
-     *
+     * 
      * @param transformer
      *            The <code>Transformer</code> that must be adjusted.
      * @param sourceFilename
@@ -227,7 +236,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Allows subclasses to add their own specific pre-processing logic.
-     *
+     * 
      * @throws MojoExecutionException
      *             If the Mojo fails to pre-process the results.
      */
@@ -239,7 +248,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Alles classes to add their own specific post-processing logic.
-     *
+     * 
      * @throws MojoExecutionException
      *             If the Mojo fails to post-process the results.
      */
@@ -253,7 +262,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * Post-processes the file. (Might be changed in the future to except an XML
      * representation instead of a file, in order to prevent the file from being
      * parsed.)
-     *
+     * 
      * @param result
      *            An individual result.
      */
@@ -264,9 +273,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns a <code>Transformer</code> capable of rendering a particular
      * type of output from DocBook input.
-     *
+     * 
      * @param uriResolver
-     *
+     * 
      * @return A <code>Transformer</code> capable of rendering a particular
      *         type of output from DocBook input.
      * @throws MojoExecutionException
@@ -302,7 +311,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Creates a <code>CatalogManager</code>, used to resolve DTDs and other
      * entities.
-     *
+     * 
      * @return A <code>CatalogManager</code> to be used for resolving DTDs and
      *         other entities.
      */
@@ -340,7 +349,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Creates a <code>DocumentBuilder</code> to be used to parse DocBook XML
      * documents.
-     *
+     * 
      * @return A <code>DocumentBuilder</code> instance.
      * @throws MojoExecutionException
      *             If we cannot create an instance of the
@@ -361,7 +370,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Creates an instance of an XPath expression for picking the title from a
      * document.
-     *
+     * 
      * @return An XPath expression to pick the title from a document.
      * @throws MojoExecutionException
      *             If the XPath expression cannot be parsed.
@@ -379,7 +388,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the title of the document.
-     *
+     * 
      * @param document
      *            The document from which we want the title.
      * @return The title of the document, or <code>null</code> if we can't
@@ -458,14 +467,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the target directory in which all results should be placed.
-     *
+     * 
      * @return The target directory in which all results should be placed.
      */
     protected abstract File getTargetDirectory();
 
     /**
      * Returns the source directory containing the source XML files.
-     *
+     * 
      * @return The source directory containing the source XML files.
      */
     protected abstract File getSourceDirectory();
@@ -481,7 +490,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * adressed by a URL. By default, it will return a stylesheet that will be
      * loaded from the classpath, using the resource name returned by
      * {@link #getStylesheetLocation()}.
-     *
+     * 
      * @return The URL of the stylesheet.
      */
     protected URL getStylesheetURL() {
@@ -500,7 +509,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the URL of the default stylesheet.
-     *
+     * 
      * @return The URL of the stylesheet.
      */
     protected URL getNonDefaultStylesheetURL() {
@@ -515,7 +524,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the URL of the default stylesheet.
-     *
+     * 
      * @return The URL of the stylesheet.
      */
     protected URL getDefaultStylesheetURL() {
@@ -527,14 +536,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns the default stylesheet location within the root of the stylesheet
      * distribution.
-     *
+     * 
      * @return The location of the directory containing the stylesheets.
      */
     protected abstract String getDefaultStylesheetLocation();
 
     /**
      * Returns the actual stylesheet location.
-     *
+     * 
      * @return The actual stylesheet location.
      */
     protected abstract String getStylesheetLocation();
@@ -542,7 +551,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Returns the extension of the target files, e.g. "html" for HTML files,
      * etc.
-     *
+     * 
      * @return The extension of the target files.
      */
     protected abstract String getTargetFileExtension();
@@ -554,28 +563,28 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
     /**
      * Returns the tasks that should be executed before the transformation.
-     *
+     * 
      * @return The tasks that should be executed before the transformation.
      */
     protected abstract Target getPreProcess();
 
     /**
      * Returns the tasks that should be executed after the transformation.
-     *
+     * 
      * @return The tasks that should be executed after the transformation.
      */
     protected abstract Target getPostProcess();
 
     /**
      * Returns a reference to the current project.
-     *
+     * 
      * @return A reference to the current project.
      */
     protected abstract MavenProject getMavenProject();
 
     /**
      * Returns the plugin dependencies.
-     *
+     * 
      * @return The plugin dependencies.
      */
     protected abstract List getArtifacts();

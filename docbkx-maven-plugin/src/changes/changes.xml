@@ -13,6 +13,10 @@
       <action dev="wis" type="update">
         Moved on to version 1.73.2 of the DocBook XSL stylesheets.
       </action>
+      <action dev="wis" type="add">
+        Made sure that documents are not re-build if the sources did
+        not change.
+      </action>
     </release>
 
     <release version="2.0.7"
