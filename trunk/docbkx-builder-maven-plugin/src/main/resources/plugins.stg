@@ -113,11 +113,9 @@ public class $spec.className$
  
     $spec.parameters:variable(); separator="\n\n"$
 
-    protected Transformer createTransformer(URIResolver resolver) throws MojoExecutionException {
-        getLog().debug("Creating the transformer.");
-        Transformer transformer = super.createTransformer(resolver);
+    protected void configure(Transformer transformer) {
+        getLog().debug("Configure the transformer.");
         $spec.parameters:parameterPassing(); separator="\n"$
-        return transformer;
     }
 
     public File getSourceDirectory() {

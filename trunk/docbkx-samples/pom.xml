@@ -613,5 +613,86 @@
       </properties>
     </profile>
     
+    <!--
+        PDF has built-in support for a number of fonts. It's not
+        unlikely that you want to replace those fonts with something
+        else. You can always refer to other fonts installed on your
+        system, but then there is a chance that your audience does not
+        have those fonts installed causing your document to be
+        completely unreadable. So, it's probably safer to embed those
+        fonts in the PDF files generated. This is supported as of
+        version 2.0.8 of the Docbkx Maven Plugin.
+    -->
+    <!--
+        The snippet included below shows how you include another
+        font. The first thing that you should know is that PDF
+        generation is based on Apache FOP. Apache FOP requires access
+        to a 'metrics' file, containing some font metrics. Apache FOP
+        ships a couple of tools for generating those font metrics, so
+        you *could* generate those metrics file yourself, and include
+        them in your sources. The Docbkx Tools project has a Maven
+        plugin wrapping these tools, making it a little easier to
+        generate those font files.
+    -->
+    <!--
+        Once you have these metrics files, embedding the font in your
+        PDF document is a breeze. The only thing that you need to do
+        is add a font tag containing all relevant metadata. Simply
+        include a reference to the .ttf file and the metrics file, and
+        add some additional metadata. Once you have done that, you can
+        refer to this font in the plugin parameters or in
+        customization stylesheets you created yourself. In this case,
+        we are overriding the default body font.
+    -->
+    <profile>
+      <id>docbkx.alternative.fonts</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate-pdf</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <bodyFontFamily>Kaffeesatz</bodyFontFamily>
+              <fonts>
+                <font>
+                  <name>Kaffeesatz</name>
+                  <style>normal</style>
+                  <weight>normal</weight>
+                  <embedFile>${basedir}/src/fonts/YanoneKaffeesatz-Regular.ttf</embedFile>
+                  <metricsFile>${basedir}/target/fonts/YanoneKaffeesatz-Regular-metrics.xml</metricsFile>
+                </font>
+              </fonts>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-fop-support</artifactId>
+            <executions>
+              <execution>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <ansi>true</ansi>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Alternative Fonts</example.title>
+      </properties>
+    </profile>
+
   </profiles>
 </project>

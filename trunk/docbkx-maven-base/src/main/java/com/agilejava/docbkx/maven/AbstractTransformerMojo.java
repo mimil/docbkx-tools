@@ -118,8 +118,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         } catch (IOException ioe) {
             throw new MojoExecutionException("Failed to read stylesheet.", ioe);
         }
-        Transformer transformer = createTransformer(uriResolver);
-        transformer.setURIResolver(uriResolver);
+        TransformerBuilder builder = createTransformerBuilder(uriResolver);
         EntityResolver resolver = catalogResolver;
         InjectingEntityResolver injectingResolver = null;
         if (getEntities() != null) {
@@ -169,6 +168,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                     getLog().info("Processing " + filename);
                     SAXSource xmlSource = new SAXSource(filter,
                             new InputSource(sourceFile.getAbsolutePath()));
+                    Transformer transformer = builder.build();
                     adjustTransformer(transformer, filename, targetFile);
                     transformer.transform(xmlSource, result);
                     postProcessResult(targetFile);
@@ -271,44 +271,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     }
 
     /**
-     * Returns a <code>Transformer</code> capable of rendering a particular
-     * type of output from DocBook input.
-     * 
-     * @param uriResolver
-     * 
-     * @return A <code>Transformer</code> capable of rendering a particular
-     *         type of output from DocBook input.
-     * @throws MojoExecutionException
-     *             If the operation fails to create a <code>Transformer</code>.
-     */
-    protected Transformer createTransformer(URIResolver uriResolver)
-            throws MojoExecutionException {
-        URL url = getStylesheetURL();
-        try {
-            TransformerFactory transformerFactory = new TransformerFactoryImpl();
-            transformerFactory.setURIResolver(uriResolver);
-            Source source = new StreamSource(url.openStream(), url
-                    .toExternalForm());
-            Transformer transformer = transformerFactory.newTransformer(source);
-            Controller controller = (Controller) transformer;
-            try {
-                controller.makeMessageEmitter();
-                controller.getMessageEmitter().setWriter(new NullWriter());
-            } catch (TransformerException te) {
-                getLog().error("Failed to redirect xsl:message output.", te);
-            }
-            return transformer;
-        } catch (IOException ioe) {
-            throw new MojoExecutionException("Failed to read stylesheet from "
-                    + url.toExternalForm(), ioe);
-        } catch (TransformerConfigurationException tce) {
-            throw new MojoExecutionException(
-                    "Failed to build Transformer from " + url.toExternalForm(),
-                    tce);
-        }
-    }
-
-    /**
      * Creates a <code>CatalogManager</code>, used to resolve DTDs and other
      * entities.
      * 
@@ -384,6 +346,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         } catch (JaxenException je) {
             throw new MojoExecutionException("Failed to parse XPath.", je);
         }
+    }
+
+    /**
+     * Constructs the default {@link TransformerBuilder}.
+     */
+    protected TransformerBuilder createTransformerBuilder(URIResolver resolver) {
+        return new CachingTransformerBuilder(new DefaultTransformerBuilder(
+                resolver));
     }
 
     /**
@@ -465,6 +435,78 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         }
     }
 
+    /**
+     * The default policy for constructing Transformers.
+     */
+    private class DefaultTransformerBuilder implements TransformerBuilder {
+
+        /**
+         * The standard {@link URIResolver}.
+         */
+        private URIResolver resolver;
+
+        public DefaultTransformerBuilder(URIResolver resolver) {
+            this.resolver = resolver;
+        }
+
+        public Transformer build() throws TransformerBuilderException {
+            Transformer transformer = createTransformer(resolver);
+            transformer.setURIResolver(resolver);
+            return transformer;
+        }
+
+        /**
+         * Returns a <code>Transformer</code> capable of rendering a
+         * particular type of output from DocBook input.
+         * 
+         * @param uriResolver
+         * 
+         * @return A <code>Transformer</code> capable of rendering a
+         *         particular type of output from DocBook input.
+         * @throws MojoExecutionException
+         *             If the operation fails to create a
+         *             <code>Transformer</code>.
+         */
+        protected Transformer createTransformer(URIResolver uriResolver)
+                throws TransformerBuilderException {
+            URL url = getStylesheetURL();
+            try {
+                TransformerFactory transformerFactory = new TransformerFactoryImpl();
+                transformerFactory.setURIResolver(uriResolver);
+                Source source = new StreamSource(url.openStream(), url
+                        .toExternalForm());
+                Transformer transformer = transformerFactory
+                        .newTransformer(source);
+                Controller controller = (Controller) transformer;
+                try {
+                    controller.makeMessageEmitter();
+                    controller.getMessageEmitter().setWriter(new NullWriter());
+                } catch (TransformerException te) {
+                    getLog()
+                            .error("Failed to redirect xsl:message output.", te);
+                }
+                configure(transformer);
+                return transformer;
+            } catch (IOException ioe) {
+                throw new TransformerBuilderException(
+                        "Failed to read stylesheet from "
+                                + url.toExternalForm(), ioe);
+            } catch (TransformerConfigurationException tce) {
+                throw new TransformerBuilderException(
+                        "Failed to build Transformer from "
+                                + url.toExternalForm(), tce);
+            }
+        }
+
+    }
+
+    /**
+     * Configure the Transformer by passing in some parameters.
+     * 
+     * @param transformer The Transformer that needs to be configured.
+     */
+    protected abstract void configure(Transformer transformer);
+    
     /**
      * Returns the target directory in which all results should be placed.
      * 
