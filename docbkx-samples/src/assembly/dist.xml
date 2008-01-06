@@ -15,6 +15,7 @@
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>src/docbkx/**</include>
+        <include>src/fonts/**</include>
       </includes>
     </fileSet>
     <fileSet>

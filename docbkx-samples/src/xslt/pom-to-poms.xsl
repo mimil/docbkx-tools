@@ -35,6 +35,7 @@
         <groupId>com.agilejava.docbkx</groupId>
         <artifactId><xsl:value-of select="$artifactId"/></artifactId>
         <version>n.a.</version>
+        <packaging>pom</packaging>
         <name>
           <xsl:text>Example </xsl:text>
           <xsl:value-of select="position()"/>
@@ -52,12 +53,13 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="pom:artifactId[text()='docbkx-maven-plugin']"
+  <xsl:template match="pom:artifactId[text()='docbkx-maven-plugin' or text()='docbkx-fop-support']"
                 mode="copy">
     <xsl:copy-of select="."/>
     <version><xsl:value-of select="$pluginVersion"/></version>
   </xsl:template>
   
   <xsl:template match="text()[not(normalize-space())]" mode="copy"/>
+
 
 </xsl:stylesheet>
