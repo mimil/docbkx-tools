@@ -7,14 +7,17 @@
 
     <release version="2.0.8"
              description="Better PDF support and stylesheet update">
+      <action dev="wis" type="add">
+        Added support for alternative fonts in PDF output.
+      </action>
       <action dev="wis" type="update">
-        Replaced FOP 0.20.5 for FOP 0.94.
+        Replaced FOP 0.20.5 with FOP 0.94.
       </action>
       <action dev="wis" type="update">
         Moved on to version 1.73.2 of the DocBook XSL stylesheets.
       </action>
       <action dev="wis" type="add">
-        Made sure that documents are not re-build if the sources did
+        Made sure that documents are not re-built when the sources did
         not change.
       </action>
     </release>
