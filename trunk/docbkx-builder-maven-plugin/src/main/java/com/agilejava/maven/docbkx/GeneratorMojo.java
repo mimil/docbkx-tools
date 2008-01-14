@@ -79,533 +79,546 @@ import com.icl.saxon.TransformerFactoryImpl;
  */
 public class GeneratorMojo extends AbstractMojo {
 
-	/**
-	 * The name of the stylesheet used as the basis of the {@link Transformer}
-	 * returned by {@link #createParamListTransformer()}.
-	 */
-	private static String TRANSFORMER_LOCATION = "extract-params.xsl";
+    /**
+     * The name of the stylesheet used as the basis of the {@link Transformer}
+     * returned by {@link #createParamListTransformer()}.
+     */
+    private static String TRANSFORMER_LOCATION = "extract-params.xsl";
 
-	/**
-	 * The classname of the Mojo that wil provide the desired functionality.
-	 * 
-	 * @parameter
-	 */
-	private String className;
+    /**
+     * The classname of the Mojo that wil provide the desired functionality.
+     * 
+     * @parameter
+     */
+    private String className;
 
-	/**
-	 * The package name of the Mojo that will provide the desired functionality.
-	 * 
-	 * @parameter
-	 */
-	private String packageName;
+    /**
+     * The package name of the Mojo that will provide the desired functionality.
+     * 
+     * @parameter
+     */
+    private String packageName;
 
-	/**
-	 * The classname of the super class from which the generate Mojo will
-	 * inherit.
-	 * 
-	 * @parameter expression="com.agilejava.docbkx.maven.AbstractTransformerMojo"
-	 */
-	private String superClassName;
+    /**
+     * The classname of the super class from which the generate Mojo will
+     * inherit.
+     * 
+     * @parameter expression="com.agilejava.docbkx.maven.AbstractTransformerMojo"
+     */
+    private String superClassName;
 
-	/**
-	 * The suffix to be used in the generated plugin.
-	 * 
-	 * @parameter
-	 */
-	private String pluginSuffix;
+    /**
+     * The suffix to be used in the generated plugin.
+     * 
+     * @parameter
+     */
+    private String pluginSuffix;
 
-	/**
-	 * Target directory.
-	 * 
-	 * @parameter expression="${project.build.directory}/generated-sources"
-	 */
-	private File targetDirectory;
+    /**
+     * Target directory.
+     * 
+     * @parameter expression="${project.build.directory}/generated-sources"
+     */
+    private File targetDirectory;
 
-	/**
-	 * The maven project helper class for adding resources.
-	 * 
-	 * @parameter expression="${component.org.apache.maven.project.MavenProjectHelper}"
-	 */
-	private MavenProjectHelper projectHelper;
+    /**
+     * The maven project helper class for adding resources.
+     * 
+     * @parameter expression="${component.org.apache.maven.project.MavenProjectHelper}"
+     */
+    private MavenProjectHelper projectHelper;
 
-	/**
-	 * The directory where all new resources need to be stored.
-	 * 
-	 * @parameter expression="${basedir}/target/generated-resources"
-	 */
-	private File targetResourcesDirectory;
+    /**
+     * The directory where all new resources need to be stored.
+     * 
+     * @parameter expression="${basedir}/target/generated-resources"
+     */
+    private File targetResourcesDirectory;
 
-	/**
-	 * A reference to the project.
-	 * 
-	 * @parameter expression="${project}"
-	 * @required
-	 */
-	private MavenProject project;
+    /**
+     * A reference to the project.
+     * 
+     * @parameter expression="${project}"
+     * @required
+     */
+    private MavenProject project;
 
-	/**
-	 * The type of output to be generated. (Currently matches the name of the
-	 * directory in the DocBook XSL distribution holding the relevant
-	 * stylesheets.)
-	 * 
-	 * @parameter default-value="html"
-	 * @required
-	 */
-	private String type;
+    /**
+     * The type of output to be generated. (Currently matches the name of the
+     * directory in the DocBook XSL distribution holding the relevant
+     * stylesheets.)
+     * 
+     * @parameter default-value="html"
+     * @required
+     */
+    private String type;
 
-	/**
-	 * An XPath expression for selecting the description.
-	 */
-	protected DOMXPath selectDescription;
+    /**
+     * An XPath expression for selecting the description.
+     */
+    protected DOMXPath selectDescription;
 
-	/**
-	 * The directory in the jar file in which the DocBook XSL artifacts will be
-	 * stored.
-	 * 
-	 * @parameter default-value="META-INF/docbkx"
-	 */
-	private String stylesheetTargetRoot;
+    /**
+     * An XPath expression for selecting the datatype.
+     */
+    private DOMXPath selectType;
 
-	/**
-	 * The location of the stylesheet in the destination jar file. Normally this
-	 * would be derived from the {@link #stylesheetTargetRoot} and
-	 * {@link #stylesheetPath}. By default:
-	 * <code>${stylesheetTargetRoot}/${stylesheetPath}</code>.
-	 * 
-	 * @parameter
-	 */
-	private String stylesheetTargetLocation;
+    /**
+     * The directory in the jar file in which the DocBook XSL artifacts will be
+     * stored.
+     * 
+     * @parameter default-value="META-INF/docbkx"
+     */
+    private String stylesheetTargetRoot;
 
-	/**
-	 * The default location of the stylesheet within the distribution. By
-	 * default: <code>${type}/docbook.xsl</code>.
-	 * 
-	 * @parameter
-	 */
-	private String stylesheetPath;
+    /**
+     * The location of the stylesheet in the destination jar file. Normally this
+     * would be derived from the {@link #stylesheetTargetRoot} and
+     * {@link #stylesheetPath}. By default:
+     * <code>${stylesheetTargetRoot}/${stylesheetPath}</code>.
+     * 
+     * @parameter
+     */
+    private String stylesheetTargetLocation;
 
-	/**
-	 * The groupId of any results coming out of this plugin.
-	 * 
-	 * @parameter expression="net.sf.docbook";
-	 */
-	private String groupId;
+    /**
+     * The default location of the stylesheet within the distribution. By
+     * default: <code>${type}/docbook.xsl</code>.
+     * 
+     * @parameter
+     */
+    private String stylesheetPath;
 
-	/**
-	 * The version of the DocBook XSL stylesheets.
-	 * 
-	 * @parameter
-	 * @required
-	 */
-	private String version;
+    /**
+     * The groupId of any results coming out of this plugin.
+     * 
+     * @parameter expression="net.sf.docbook";
+     */
+    private String groupId;
 
-	/**
-	 * The DocBook-XSL distribution. By default
-	 * <code>${basedir}/lib/docbook-xsl-${version}.zip</code>.
-	 * 
-	 * @parameter
-	 */
-	private File distribution;
+    /**
+     * The version of the DocBook XSL stylesheets.
+     * 
+     * @parameter
+     * @required
+     */
+    private String version;
 
-	/**
-	 * The root directory within the source zip file containing the DocBook XSL
-	 * stylesheet distribution. Default: <code>docbook-xsl-${version}/</code>.
-	 * 
-	 * @parameter
-	 */
-	private String sourceRootDirectory;
+    /**
+     * The DocBook-XSL distribution. By default
+     * <code>${basedir}/lib/docbook-xsl-${version}.zip</code>.
+     * 
+     * @parameter
+     */
+    private File distribution;
 
-	/**
-	 * A comma-separated list of properties that should be exluded from the
-	 * generated code.
-	 * 
-	 * @parameter
-	 */
-	protected String excludedProperties;
+    /**
+     * The root directory within the source zip file containing the DocBook XSL
+     * stylesheet distribution. Default: <code>docbook-xsl-${version}/</code>.
+     * 
+     * @parameter
+     */
+    private String sourceRootDirectory;
 
-	public GeneratorMojo() {
-		try {
-			selectDescription = new DOMXPath(
-					"//refsection[position()=1]/para[position()=1]/text()");
-		} catch (JaxenException e) {
-			throw new IllegalStateException("Failed to parse XPath expression.");
-			// This would render the object to be unusable.
-		}
-	}
+    /**
+     * A comma-separated list of properties that should be exluded from the
+     * generated code.
+     * 
+     * @parameter
+     */
+    protected String excludedProperties;
 
-	// JavaDoc inherited
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		completeConfiguration();
-		generateSourceCode();
-		ZipFileProcessor processor = new ZipFileProcessor(distribution);
-		copyResources(processor);
-	}
+    public GeneratorMojo() {
+        try {
+            selectDescription = new DOMXPath(
+                    "//refsection[position()=1]/para[position()=1]/text()");
+            selectType = new DOMXPath(
+                    "//refmiscinfo[@class='other' and @otherclass='datatype']/text()");
+        } catch (JaxenException e) {
+            throw new IllegalStateException("Failed to parse XPath expression.");
+            // This would render the object to be unusable.
+        }
+    }
 
-	/**
-	 * Completes configuration.
-	 */
-	private void completeConfiguration() {
-		if (distribution == null) {
-			// ${basedir}/lib/docbook-xsl-${version}.zip
-			distribution = new File(project.getBasedir(), "lib/docbook-xsl-"
-					+ version + ".zip");
-		}
-		if (sourceRootDirectory == null) {
-			// docbook-xsl-${version}/
-			sourceRootDirectory = "docbook-xsl-" + version + "/";
-		}
-		if (stylesheetPath == null) {
-			// ${type}/docbook.xsl
-			stylesheetPath = type + "/docbook.xsl";
-		}
-		if (stylesheetTargetLocation == null) {
-			// ${stylesheetTargetRoot}/${stylesheetPath}
-			stylesheetTargetLocation = stylesheetTargetRoot + "/"
-					+ stylesheetPath;
-		}
-	}
+    // JavaDoc inherited
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        completeConfiguration();
+        generateSourceCode();
+        ZipFileProcessor processor = new ZipFileProcessor(distribution);
+        copyResources(processor);
+    }
 
-	/**
-	 * Constructs a new {@link DocumentBuilder}.
-	 * 
-	 * @return A new {@link DocumentBuilder} instance.
-	 * @throws ParserConfigurationException
-	 *             If we can't construct a parser.
-	 */
-	private DocumentBuilder createDocumentBuilder()
-			throws ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		return factory.newDocumentBuilder();
-	}
+    /**
+     * Completes configuration.
+     */
+    private void completeConfiguration() {
+        if (distribution == null) {
+            // ${basedir}/lib/docbook-xsl-${version}.zip
+            distribution = new File(project.getBasedir(), "lib/docbook-xsl-"
+                    + version + ".zip");
+        }
+        if (sourceRootDirectory == null) {
+            // docbook-xsl-${version}/
+            sourceRootDirectory = "docbook-xsl-" + version + "/";
+        }
+        if (stylesheetPath == null) {
+            // ${type}/docbook.xsl
+            stylesheetPath = type + "/docbook.xsl";
+        }
+        if (stylesheetTargetLocation == null) {
+            // ${stylesheetTargetRoot}/${stylesheetPath}
+            stylesheetTargetLocation = stylesheetTargetRoot + "/"
+                    + stylesheetPath;
+        }
+    }
 
-	private void copyResources(ZipFileProcessor processor)
-			throws MojoExecutionException {
-		final File actualDirectory = new File(new File(
-				targetResourcesDirectory, "META-INF"), "docbkx");
-		try {
-			FileUtils.forceMkdir(actualDirectory);
-		} catch (IOException ioe) {
-			throw new MojoExecutionException("Failed to create "
-					+ actualDirectory.getAbsolutePath());
-		}
-		final String[] includes = getIncludes();
-		try {
-			processor.process(new ZipEntryVisitor() {
-				public void visit(ZipEntry entry, InputStream in)
-						throws IOException {
-					for (int i = 0; i < includes.length; i++) {
-						if (SelectorUtils.match(includes[i], entry.getName())) {
-							String targetFilename = entry.getName().substring(
-									entry.getName().indexOf('/') + 1);
-							File targetFile = new File(actualDirectory,
-									targetFilename);
-							if (!targetFile.exists()) {
-								(targetFile.getParentFile()).mkdirs();
-								OutputStream out = null;
-								try {
-									out = new FileOutputStream(targetFile);
-									IOUtils.copy(in, out);
-								} finally {
-									IOUtils.closeQuietly(out);
-								}
-							}
-							break;
-						}
-					}
+    /**
+     * Constructs a new {@link DocumentBuilder}.
+     * 
+     * @return A new {@link DocumentBuilder} instance.
+     * @throws ParserConfigurationException
+     *             If we can't construct a parser.
+     */
+    private DocumentBuilder createDocumentBuilder()
+            throws ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        return factory.newDocumentBuilder();
+    }
 
-				}
-			});
-		} catch (IOException ioe) {
-			throw new MojoExecutionException("Failed to copy files.", ioe);
-		}
-		projectHelper.addResource(project, targetResourcesDirectory
-				.getAbsolutePath(), Collections.singletonList("**/**"),
-				Collections.EMPTY_LIST);
-	}
+    private void copyResources(ZipFileProcessor processor)
+            throws MojoExecutionException {
+        final File actualDirectory = new File(new File(
+                targetResourcesDirectory, "META-INF"), "docbkx");
+        try {
+            FileUtils.forceMkdir(actualDirectory);
+        } catch (IOException ioe) {
+            throw new MojoExecutionException("Failed to create "
+                    + actualDirectory.getAbsolutePath());
+        }
+        final String[] includes = getIncludes();
+        try {
+            processor.process(new ZipEntryVisitor() {
+                public void visit(ZipEntry entry, InputStream in)
+                        throws IOException {
+                    for (int i = 0; i < includes.length; i++) {
+                        if (SelectorUtils.match(includes[i], entry.getName())) {
+                            String targetFilename = entry.getName().substring(
+                                    entry.getName().indexOf('/') + 1);
+                            File targetFile = new File(actualDirectory,
+                                    targetFilename);
+                            if (!targetFile.exists()) {
+                                (targetFile.getParentFile()).mkdirs();
+                                OutputStream out = null;
+                                try {
+                                    out = new FileOutputStream(targetFile);
+                                    IOUtils.copy(in, out);
+                                } finally {
+                                    IOUtils.closeQuietly(out);
+                                }
+                            }
+                            break;
+                        }
+                    }
 
-	/**
-	 * Returns the patterns of the resources to be included while copying
-	 * contents from a DocBook XSL distribution.
-	 */
-	private String[] getIncludes() {
-		return new String[] { "*/VERSION", "*/" + type + "/**", "*/common/**",
-				"*/lib/**", "*/highlighting/**" };
-	}
+                }
+            });
+        } catch (IOException ioe) {
+            throw new MojoExecutionException("Failed to copy files.", ioe);
+        }
+        projectHelper.addResource(project, targetResourcesDirectory
+                .getAbsolutePath(), Collections.singletonList("**/**"),
+                Collections.EMPTY_LIST);
+    }
 
-	/**
-	 * Generate the source code of the plugin supporting the {@link #type}.
-	 * 
-	 * @throws MojoExecutionException
-	 *             If we fail to generate the source code.
-	 */
-	private void generateSourceCode() throws MojoExecutionException {
-		File sourcesDir = new File(targetDirectory, getPackageName().replace(
-				'.', '/'));
-		try {
-			FileUtils.forceMkdir(sourcesDir);
-		} catch (IOException ioe) {
-			throw new MojoExecutionException(
-					"Can't create directory for sources.", ioe);
-		}
-		ClassLoader loader = this.getClass().getClassLoader();
-		InputStream in = loader.getResourceAsStream("plugins.stg");
-		Reader reader = new InputStreamReader(in);
-		StringTemplateGroup group = new StringTemplateGroup(reader);
-		StringTemplate template = group.getInstanceOf("plugin");
-		File targetFile = new File(sourcesDir, getClassName() + ".java");
-		Specification specification = null;
-		try {
-			specification = createSpecification();
-			getLog().info(
-					"Number of parameters: "
-							+ specification.getParameters().size());
-			template.setAttribute("spec", specification);
-			FileUtils.writeStringToFile(targetFile, template.toString(), null);
-		} catch (IOException ioe) {
-			if (specification == null) {
-				throw new MojoExecutionException("Failed to read parameters.",
-						ioe);
-			} else {
-				throw new MojoExecutionException("Failed to create "
-						+ targetFile + ".", ioe);
-			}
-		}
-		project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
-	}
+    /**
+     * Returns the patterns of the resources to be included while copying
+     * contents from a DocBook XSL distribution.
+     */
+    private String[] getIncludes() {
+        return new String[] { "*/VERSION", "*/" + type + "/**", "*/common/**",
+                "*/lib/**", "*/highlighting/**" };
+    }
 
-	/**
-	 * Creates the {@link Specification} used for generating the plugin code.
-	 * 
-	 * @return The {@link Specification} uesd for generating the plugin source
-	 *         code.
-	 * @throws MojoExecutionException
-	 *             If the {@link Specification} cannot be created.
-	 */
-	private Specification createSpecification() throws MojoExecutionException {
-		String stylesheetLocation = stylesheetTargetLocation == null ? stylesheetTargetRoot
-				+ "/" + type + "/docbook.xsl"
-				: stylesheetTargetLocation;
-		Specification specification = new Specification();
-		specification.setType(type);
-		specification.setStylesheetLocation(stylesheetLocation);
-		specification.setClassName(getClassName());
-		specification.setSuperClassName(superClassName);
-		specification.setPackageName(getPackageName());
-		specification.setDocbookXslVersion(version);
-		specification.setPluginSuffix(pluginSuffix);
-		specification.setParameters(extractParameters());
-		return specification;
-	}
+    /**
+     * Generate the source code of the plugin supporting the {@link #type}.
+     * 
+     * @throws MojoExecutionException
+     *             If we fail to generate the source code.
+     */
+    private void generateSourceCode() throws MojoExecutionException {
+        File sourcesDir = new File(targetDirectory, getPackageName().replace(
+                '.', '/'));
+        try {
+            FileUtils.forceMkdir(sourcesDir);
+        } catch (IOException ioe) {
+            throw new MojoExecutionException(
+                    "Can't create directory for sources.", ioe);
+        }
+        ClassLoader loader = this.getClass().getClassLoader();
+        InputStream in = loader.getResourceAsStream("plugins.stg");
+        Reader reader = new InputStreamReader(in);
+        StringTemplateGroup group = new StringTemplateGroup(reader);
+        StringTemplate template = group.getInstanceOf("plugin");
+        File targetFile = new File(sourcesDir, getClassName() + ".java");
+        Specification specification = null;
+        try {
+            specification = createSpecification();
+            getLog().info(
+                    "Number of parameters: "
+                            + specification.getParameters().size());
+            template.setAttribute("spec", specification);
+            FileUtils.writeStringToFile(targetFile, template.toString(), null);
+        } catch (IOException ioe) {
+            if (specification == null) {
+                throw new MojoExecutionException("Failed to read parameters.",
+                        ioe);
+            } else {
+                throw new MojoExecutionException("Failed to create "
+                        + targetFile + ".", ioe);
+            }
+        }
+        project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
+    }
 
-	/**
-	 * Extracts the {@link Parameter} definitions from the stylesheets.
-	 * 
-	 * @return A <code>List</code> of {@link Parameter} elements defining the
-	 *         parameters of the plugin.
-	 * @throws MojoExecutionException
-	 *             If we can't create the list of parameters.
-	 */
-	private List extractParameters() throws MojoExecutionException {
-		String stylesheetURL = createURL(stylesheetPath);
-		Collection parameterNames = getParameterNames(stylesheetURL);
-		List parameters = new ArrayList();
-		Iterator iterator = parameterNames.iterator();
-		Collection excluded = getExcludedProperties();
-		while (iterator.hasNext()) {
-			String name = (String) iterator.next();
-			if (!excluded.contains(name)) {
-				parameters.add(extractParameter(name));
-			}
-		}
-		return parameters;
-	}
+    /**
+     * Creates the {@link Specification} used for generating the plugin code.
+     * 
+     * @return The {@link Specification} uesd for generating the plugin source
+     *         code.
+     * @throws MojoExecutionException
+     *             If the {@link Specification} cannot be created.
+     */
+    private Specification createSpecification() throws MojoExecutionException {
+        String stylesheetLocation = stylesheetTargetLocation == null ? stylesheetTargetRoot
+                + "/" + type + "/docbook.xsl"
+                : stylesheetTargetLocation;
+        Specification specification = new Specification();
+        specification.setType(type);
+        specification.setStylesheetLocation(stylesheetLocation);
+        specification.setClassName(getClassName());
+        specification.setSuperClassName(superClassName);
+        specification.setPackageName(getPackageName());
+        specification.setDocbookXslVersion(version);
+        specification.setPluginSuffix(pluginSuffix);
+        specification.setParameters(extractParameters());
+        return specification;
+    }
 
-	/**
-	 * Returns a <code>List</code> of property names that will be excluded
-	 * from the code generation.
-	 * 
-	 * @return A <code>List</code> of property names, identifying the
-	 *         properties that must be excluded from code generation.
-	 */
-	private List getExcludedProperties() {
-		List excluded;
-		if (excludedProperties != null) {
-			excluded = Arrays.asList(excludedProperties.split(",[ ]*"));
-		} else {
-			excluded = Collections.EMPTY_LIST;
-		}
-		return excluded;
-	}
+    /**
+     * Extracts the {@link Parameter} definitions from the stylesheets.
+     * 
+     * @return A <code>List</code> of {@link Parameter} elements defining the
+     *         parameters of the plugin.
+     * @throws MojoExecutionException
+     *             If we can't create the list of parameters.
+     */
+    private List extractParameters() throws MojoExecutionException {
+        String stylesheetURL = createURL(stylesheetPath);
+        Collection parameterNames = getParameterNames(stylesheetURL);
+        List parameters = new ArrayList();
+        Iterator iterator = parameterNames.iterator();
+        Collection excluded = getExcludedProperties();
+        while (iterator.hasNext()) {
+            String name = (String) iterator.next();
+            if (!excluded.contains(name)) {
+                parameters.add(extractParameter(name));
+            }
+        }
+        return parameters;
+    }
 
-	/**
-	 * Extracts the Parameter metadata from the parameter metadata file.
-	 * 
-	 * @param name
-	 *            The name of the (XSLT) parameter.
-	 * @param in
-	 *            The InputStream providing a description (refentry) of the
-	 *            parameter.
-	 * @return The Parameter object holding the metadata.
-	 */
-	private Parameter extractParameter(String name)
-			throws MojoExecutionException {
-		String url = createURL("params/" + name + ".xml");
-		Parameter parameter = new Parameter();
-		parameter.setName(name);
-		try {
-			DocumentBuilder builder = createDocumentBuilder();
-			Document document = builder.parse(url);
-			Node node = (Node) selectDescription.selectSingleNode(document);
-			if (node == null) {
-			    getLog().warn("Failed to parse description for " + name);
-			    return parameter;
-			}
+    /**
+     * Returns a <code>List</code> of property names that will be excluded
+     * from the code generation.
+     * 
+     * @return A <code>List</code> of property names, identifying the
+     *         properties that must be excluded from code generation.
+     */
+    private List getExcludedProperties() {
+        List excluded;
+        if (excludedProperties != null) {
+            excluded = Arrays.asList(excludedProperties.split(",[ ]*"));
+        } else {
+            excluded = Collections.EMPTY_LIST;
+        }
+        return excluded;
+    }
+
+    /**
+     * Extracts the Parameter metadata from the parameter metadata file.
+     * 
+     * @param name
+     *            The name of the (XSLT) parameter.
+     * @param in
+     *            The InputStream providing a description (refentry) of the
+     *            parameter.
+     * @return The Parameter object holding the metadata.
+     */
+    private Parameter extractParameter(String name)
+            throws MojoExecutionException {
+        String url = createURL("params/" + name + ".xml");
+        Parameter parameter = new Parameter();
+        parameter.setName(name);
+        try {
+            DocumentBuilder builder = createDocumentBuilder();
+            Document document = builder.parse(url);
+            Node node = (Node) selectDescription.selectSingleNode(document);
+            if (node == null) {
+                getLog().warn("Failed to parse description for " + name);
+                return parameter;
+            }
             String result = node.getNodeValue();
-			result = result.substring(0, result.indexOf('.') + 1);
-			result = result.trim();
-			result = result.replace('\n', ' ');
-			parameter.setDescription(result);
-		} catch (FileNotFoundException fnfe) {
-			logMissingDescription(name, fnfe);
-		} catch (IOException ioe) {
-			logMissingDescription(name, ioe);
-		} catch (ParserConfigurationException pce) {
-			logMissingDescription(name, pce);
-		} catch (SAXException se) {
-			logMissingDescription(name, se);
-		} catch (JaxenException je) {
-			logMissingDescription(name, je);
-		}
-		return parameter;
-	}
+            result = result.substring(0, result.indexOf('.') + 1);
+            result = result.trim();
+            result = result.replace('\n', ' ');
+            parameter.setDescription(result);
+            node = (Node) selectType.selectSingleNode(document);
+            if (node != null) {
+                parameter.setType(node.getNodeValue());
+            } else {
+                getLog().warn("Missing type info for " + name);
+            }
+        } catch (FileNotFoundException fnfe) {
+            logMissingDescription(name, fnfe);
+        } catch (IOException ioe) {
+            logMissingDescription(name, ioe);
+        } catch (ParserConfigurationException pce) {
+            logMissingDescription(name, pce);
+        } catch (SAXException se) {
+            logMissingDescription(name, se);
+        } catch (JaxenException je) {
+            logMissingDescription(name, je);
+        }
+        return parameter;
+    }
 
-	/**
-	 * Logs a missing description of a parameter.
-	 * 
-	 * @param name
-	 *            The name of the parameter.
-	 * @param cause
-	 *            The exception causing the problem.
-	 */
-	private void logMissingDescription(String name, Throwable cause) {
-		getLog().warn("Failed to obtain description for " + name);
-		getLog().debug(cause);
-	}
+    /**
+     * Logs a missing description of a parameter.
+     * 
+     * @param name
+     *            The name of the parameter.
+     * @param cause
+     *            The exception causing the problem.
+     */
+    private void logMissingDescription(String name, Throwable cause) {
+        getLog().warn("Failed to obtain description for " + name);
+        getLog().debug(cause);
+    }
 
-	/**
-	 * Returns a String version of the URL pointing the specific file in the
-	 * distribution. (Note that the filename passed in is expected to leave out
-	 * the version specific directory name. It will be included by this
-	 * operation.)
-	 * 
-	 * @param filename
-	 *            The filename for which we need a URL.
-	 * @return A URL pointing to the specific filename.
-	 * @throws MojoExecutionException
-	 *             If we can't create a URL from the filename passed in.
-	 */
-	private String createURL(String filename) throws MojoExecutionException {
-		try {
-			StringBuilder builder = new StringBuilder();
-			builder.append("jar:");
-			builder.append(distribution.toURL().toExternalForm());
-			builder.append("!/");
-			builder.append(sourceRootDirectory);
-			builder.append(filename);
-			return builder.toString();
-		} catch (MalformedURLException mue) {
-			throw new MojoExecutionException("Failed to construct URL for "
-					+ filename + ".", mue);
-		}
-	}
+    /**
+     * Returns a String version of the URL pointing the specific file in the
+     * distribution. (Note that the filename passed in is expected to leave out
+     * the version specific directory name. It will be included by this
+     * operation.)
+     * 
+     * @param filename
+     *            The filename for which we need a URL.
+     * @return A URL pointing to the specific filename.
+     * @throws MojoExecutionException
+     *             If we can't create a URL from the filename passed in.
+     */
+    private String createURL(String filename) throws MojoExecutionException {
+        try {
+            StringBuilder builder = new StringBuilder();
+            builder.append("jar:");
+            builder.append(distribution.toURL().toExternalForm());
+            builder.append("!/");
+            builder.append(sourceRootDirectory);
+            builder.append(filename);
+            return builder.toString();
+        } catch (MalformedURLException mue) {
+            throw new MojoExecutionException("Failed to construct URL for "
+                    + filename + ".", mue);
+        }
+    }
 
-	/**
-	 * Returns a {@link Collection} of all parameter names defined in the
-	 * stylesheet or in one of the stylesheets imported or included in the
-	 * stylesheet.
-	 * 
-	 * @param url
-	 *            The location of the stylesheet to analyze.
-	 * @return A {@link Collection} of all parameter names found in the
-	 *         stylesheet pinpointed by the <code>url</code> argument.
-	 * 
-	 * @throws MojoExecutionException
-	 *             If the operation fails to detect parameter names.
-	 */
-	private Collection getParameterNames(String url)
-			throws MojoExecutionException {
-		ByteArrayOutputStream out = null;
-		try {
-			Transformer transformer = createParamListTransformer();
-			Source source = new StreamSource(url);
-			out = new ByteArrayOutputStream();
-			Result result = new StreamResult(out);
-			transformer.transform(source, result);
-			out.flush();
-			String[] paramNames = new String(out.toByteArray()).split("\n");
-			return new HashSet(Arrays.asList(paramNames));
-		} catch (IOException ioe) {
-			// Impossible, but let's satisfy PMD and FindBugs
-			getLog().warn("Failed to flush ByteArrayOutputStream.");
-		} catch (TransformerConfigurationException tce) {
-			throw new MojoExecutionException(
-					"Failed to create Transformer for retrieving parameter names",
-					tce);
-		} catch (TransformerException te) {
-			throw new MojoExecutionException(
-					"Failed to apply Transformer for retrieving parameter names.",
-					te);
-		} finally {
-			IOUtils.closeQuietly(out);
-		}
-		return Collections.EMPTY_SET;
-	}
+    /**
+     * Returns a {@link Collection} of all parameter names defined in the
+     * stylesheet or in one of the stylesheets imported or included in the
+     * stylesheet.
+     * 
+     * @param url
+     *            The location of the stylesheet to analyze.
+     * @return A {@link Collection} of all parameter names found in the
+     *         stylesheet pinpointed by the <code>url</code> argument.
+     * 
+     * @throws MojoExecutionException
+     *             If the operation fails to detect parameter names.
+     */
+    private Collection getParameterNames(String url)
+            throws MojoExecutionException {
+        ByteArrayOutputStream out = null;
+        try {
+            Transformer transformer = createParamListTransformer();
+            Source source = new StreamSource(url);
+            out = new ByteArrayOutputStream();
+            Result result = new StreamResult(out);
+            transformer.transform(source, result);
+            out.flush();
+            String[] paramNames = new String(out.toByteArray()).split("\n");
+            return new HashSet(Arrays.asList(paramNames));
+        } catch (IOException ioe) {
+            // Impossible, but let's satisfy PMD and FindBugs
+            getLog().warn("Failed to flush ByteArrayOutputStream.");
+        } catch (TransformerConfigurationException tce) {
+            throw new MojoExecutionException(
+                    "Failed to create Transformer for retrieving parameter names",
+                    tce);
+        } catch (TransformerException te) {
+            throw new MojoExecutionException(
+                    "Failed to apply Transformer for retrieving parameter names.",
+                    te);
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
+        return Collections.EMPTY_SET;
+    }
 
-	/**
-	 * Creates a {@link Transformer} with the ability to transitively detect the
-	 * names of all parameters defined on global level for a certain XSLT
-	 * stylesheet.
-	 * 
-	 * @return The {@link Transformer} that takes a stylesheet as input, and
-	 *         outputs a text stream containing the parameter names.
-	 * @throws TransformerConfigurationException
-	 *             If we can't create the <code>Transformer</code>.
-	 */
-	private Transformer createParamListTransformer()
-			throws TransformerConfigurationException {
-		TransformerFactory factory = new TransformerFactoryImpl();
-		URL stylesheet = Thread.currentThread().getContextClassLoader()
-				.getResource(TRANSFORMER_LOCATION);
-		Source source = new StreamSource(stylesheet.toExternalForm());
-		return factory.newTransformer(source);
-	}
+    /**
+     * Creates a {@link Transformer} with the ability to transitively detect the
+     * names of all parameters defined on global level for a certain XSLT
+     * stylesheet.
+     * 
+     * @return The {@link Transformer} that takes a stylesheet as input, and
+     *         outputs a text stream containing the parameter names.
+     * @throws TransformerConfigurationException
+     *             If we can't create the <code>Transformer</code>.
+     */
+    private Transformer createParamListTransformer()
+            throws TransformerConfigurationException {
+        TransformerFactory factory = new TransformerFactoryImpl();
+        URL stylesheet = Thread.currentThread().getContextClassLoader()
+                .getResource(TRANSFORMER_LOCATION);
+        Source source = new StreamSource(stylesheet.toExternalForm());
+        return factory.newTransformer(source);
+    }
 
-	/**
-	 * Returns the package name to be used for the generated plugin.
-	 * 
-	 * @return The package name to be used for the generated plugin.
-	 */
-	private String getPackageName() {
-		return packageName != null ? packageName : groupId;
-	}
+    /**
+     * Returns the package name to be used for the generated plugin.
+     * 
+     * @return The package name to be used for the generated plugin.
+     */
+    private String getPackageName() {
+        return packageName != null ? packageName : groupId;
+    }
 
-	/**
-	 * Returns the name of the class that will be used. If {@link #className} is
-	 * set, then that name will be used instead of the default.
-	 * 
-	 * @return The name of the class for the Mojo being generated.
-	 */
-	private String getClassName() {
-		if (className == null) {
-			StringBuffer builder = new StringBuffer();
-			builder.append("Docbkx");
-			builder.append(Character.toUpperCase(type.charAt(0)));
-			builder.append(type.substring(1));
-			builder.append("Mojo");
-			return builder.toString();
-		} else {
-			return className;
-		}
-	}
+    /**
+     * Returns the name of the class that will be used. If {@link #className} is
+     * set, then that name will be used instead of the default.
+     * 
+     * @return The name of the class for the Mojo being generated.
+     */
+    private String getClassName() {
+        if (className == null) {
+            StringBuffer builder = new StringBuffer();
+            builder.append("Docbkx");
+            builder.append(Character.toUpperCase(type.charAt(0)));
+            builder.append(type.substring(1));
+            builder.append("Mojo");
+            return builder.toString();
+        } else {
+            return className;
+        }
+    }
 
 }

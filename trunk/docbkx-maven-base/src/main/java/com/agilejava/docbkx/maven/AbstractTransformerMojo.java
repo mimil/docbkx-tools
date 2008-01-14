@@ -16,12 +16,18 @@ package com.agilejava.docbkx.maven;
  * limitations under the License.
  */
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +50,15 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import nu.xom.Builder;
+import nu.xom.ParsingException;
+import nu.xom.Serializer;
+import nu.xom.ValidityException;
+import nu.xom.xinclude.XIncludeException;
+import nu.xom.xinclude.XIncluder;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -154,24 +168,62 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
                                 public Object resolveVariable(String name)
                                         throws ELException {
-                                    if ("project".equals(name)) {
+                                    if ("date".equals(name)) {
+                                        return DateFormat.getDateInstance(
+                                                DateFormat.LONG).format(
+                                                new Date());
+                                    } else if ("project".equals(name)) {
                                         return getMavenProject();
                                     } else {
                                         return tree.get(name);
                                     }
                                 }
 
-                            }, getLog());
-                    filter.setHandlers(Arrays
-                            .asList(new Object[] { resolvingHandler }));
-                    filter.setEntityResolver(resolver);
-                    getLog().info("Processing " + filename);
-                    SAXSource xmlSource = new SAXSource(filter,
-                            new InputSource(sourceFile.getAbsolutePath()));
-                    Transformer transformer = builder.build();
-                    adjustTransformer(transformer, filename, targetFile);
-                    transformer.transform(xmlSource, result);
-                    postProcessResult(targetFile);
+                        }, getLog());
+                filter.setHandlers(Arrays
+                        .asList(new Object[] { resolvingHandler }));
+                filter.setEntityResolver(resolver);
+                getLog().info("Processing " + filename);
+                
+                SAXSource xmlSource = null;
+                // if both properties are set, XOM is used for a better XInclude support.
+                if(getXIncludeSupported() && getGeneratedSourceDirectory() != null)
+                {
+                  final Builder xomBuilder = new Builder();
+                  try
+                  {
+                    final nu.xom.Document doc = xomBuilder.build(sourceFile);
+                    XIncluder.resolveInPlace(doc);
+                    //TODO also dump PIs computed and Entities included
+                    final File dump = dumpResolvedXML(filename, doc);
+                    xmlSource = new SAXSource(filter, new InputSource(dump.getAbsolutePath()));
+                  }
+                  catch (ValidityException e)
+                  {
+                    throw new MojoExecutionException("Failed to validate source", e);
+                  }
+                  catch (ParsingException e)
+                  {
+                    throw new MojoExecutionException("Failed to parse source", e);
+                  }
+                  catch (IOException e)
+                  {
+                    throw new MojoExecutionException("Failed to read source", e);
+                  }
+                  catch (XIncludeException e)
+                  {
+                    throw new MojoExecutionException("Failed to process XInclude", e);
+                  }
+                }
+                else // else fallback on Xerces XInclude support.
+                {
+                  InputSource inputSource = new InputSource(sourceFile.getAbsolutePath());
+                  xmlSource = new SAXSource(filter, inputSource);
+                }
+                Transformer transformer = builder.build();
+                adjustTransformer(transformer, sourceFile.getAbsolutePath(), targetFile);         
+                transformer.transform(xmlSource, result);
+                postProcessResult(targetFile);
                 } else {
                     getLog().debug(targetFile + " is up to date.");
                 }
@@ -188,10 +240,70 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         }
         postProcess();
     }
+    
+    /**
+     * Saves the Docbook XML file with all XInclude resolved.
+     * 
+     * @param initialFilename Filename of the root docbook source file.
+     * @param doc XOM Document resolved.
+     * @return The new file generated.
+     * @throws MojoExecutionException
+     */
+    protected File dumpResolvedXML(String initialFilename, nu.xom.Document doc) throws MojoExecutionException
+    {
+      final File file = new File(initialFilename);
+      final String parent = file.getParent();
+      File resolvedXML = null;
+      if(parent != null)
+      {
+        resolvedXML = new File(getGeneratedSourceDirectory(),parent);
+        resolvedXML.mkdirs();
+        resolvedXML = new File(resolvedXML, "(gen)"+file.getName());
+      }
+      else
+      {
+        resolvedXML = new File(getGeneratedSourceDirectory(), "(gen)"+initialFilename); 
+      }
+      
+      FileOutputStream fos = null;
+      try
+      {
+        fos = new FileOutputStream(resolvedXML);
+      }
+      catch (FileNotFoundException e)
+      {
+        throw new MojoExecutionException("Failed to open dump file", e);
+      }
+      if(fos != null)
+      {
+        getLog().info("Dumping to "+resolvedXML.getAbsolutePath());
+        final BufferedOutputStream bos = new BufferedOutputStream(fos);
+        final Serializer serializer = new Serializer(bos);
+      
+        try
+        {
+          serializer.write(doc);
+          bos.flush();
+          bos.close();
+          fos.close();
+          return resolvedXML;
+        }
+        catch (IOException e)
+        {
+          throw new MojoExecutionException("Failed to write to dump file", e);
+        }
+        finally
+        {
+          IOUtils.closeQuietly(bos);
+          IOUtils.closeQuietly(fos);
+        }
+      }
+      throw new MojoExecutionException("Failed to open dump file");
+    }
 
     /**
      * Returns the SAXParserFactory used for constructing parsers.
-     * 
+     *
      */
     private SAXParserFactory createParserFactory() {
         SAXParserFactory factory = new SAXParserFactoryImpl();
@@ -200,11 +312,21 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     }
 
     /**
+     * Returns a boolean indicating if XInclude should be supported.
+     *
      * Returns a boolean indicting if XInclude should be supported.
      * 
      * @return A boolean indicating if XInclude should be supported.
      */
     protected abstract boolean getXIncludeSupported();
+    
+    /**
+     * Returns the directory to use to save the resolved docbook XML before it
+     * is given to the Transformer.
+     * 
+     * @return
+     */
+    protected abstract File getGeneratedSourceDirectory();
 
     /**
      * The stylesheet location override by a class in the mojo hierarchy.
@@ -271,9 +393,48 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     }
 
     /**
+     * Returns a <code>Transformer</code> capable of rendering a particular
+     * type of output from DocBook input.
+     *
+     * @param uriResolver
+     *
+     * @return A <code>Transformer</code> capable of rendering a particular
+     *         type of output from DocBook input.
+     * @throws MojoExecutionException
+     *             If the operation fails to create a <code>Transformer</code>.
+     */
+    protected Transformer createTransformer(URIResolver uriResolver)
+            throws MojoExecutionException {
+        URL url = getStylesheetURL();
+        
+        try {
+            TransformerFactory transformerFactory = new TransformerFactoryImpl();
+            transformerFactory.setURIResolver(uriResolver);
+            Source source = new StreamSource(url.openStream(), url
+                    .toExternalForm());
+            Transformer transformer = transformerFactory.newTransformer(source);
+            Controller controller = (Controller) transformer;
+            try {
+                controller.makeMessageEmitter();
+                controller.getMessageEmitter().setWriter(new NullWriter());
+            } catch (TransformerException te) {
+                getLog().error("Failed to redirect xsl:message output.", te);
+            }
+            return transformer;
+        } catch (IOException ioe) {
+            throw new MojoExecutionException("Failed to read stylesheet from "
+                    + url.toExternalForm(), ioe);
+        } catch (TransformerConfigurationException tce) {
+            throw new MojoExecutionException(
+                    "Failed to build Transformer from " + url.toExternalForm(),
+                    tce);
+        }
+    }
+
+    /**
      * Creates a <code>CatalogManager</code>, used to resolve DTDs and other
      * entities.
-     * 
+     *
      * @return A <code>CatalogManager</code> to be used for resolving DTDs and
      *         other entities.
      */
@@ -503,10 +664,11 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     /**
      * Configure the Transformer by passing in some parameters.
      * 
-     * @param transformer The Transformer that needs to be configured.
+     * @param transformer
+     *            The Transformer that needs to be configured.
      */
     protected abstract void configure(Transformer transformer);
-    
+
     /**
      * Returns the target directory in which all results should be placed.
      * 

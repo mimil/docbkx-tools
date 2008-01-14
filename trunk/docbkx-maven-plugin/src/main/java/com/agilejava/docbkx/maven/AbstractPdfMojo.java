@@ -16,6 +16,7 @@ package com.agilejava.docbkx.maven;
  * limitations under the License.
  */
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.net.MalformedURLException;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -42,6 +44,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.io.IOUtils;
 import org.apache.fop.apps.FOPException;
+import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
@@ -58,8 +61,10 @@ import org.xml.sax.SAXException;
  * 
  */
 public abstract class AbstractPdfMojo extends AbstractMojoBase {
-
-    /**
+  
+  private String baseUrl;
+  
+      /**
      * The fonts that should be taken into account. (Without this parameter, the
      * PDF document will only be able to reference the default fonts.)
      * 
@@ -67,36 +72,56 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
      */
     private Font[] fonts;
 
-    public void postProcessResult(File result) throws MojoExecutionException {
-        super.postProcessResult(result);
-        Configuration configuration = loadFOPConfig();
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = openFileForInput(result);
-            out = openFileForOutput(getOutputFile(result));
-            FopFactory fopFactory = FopFactory.newInstance();
-            fopFactory.setUserConfig(configuration);
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer();
-            Source src = new StreamSource(in);
-            Result res = new SAXResult(fop.getDefaultHandler());
-            transformer.transform(src, res);
-        } catch (FOPException fope) {
-            throw new MojoExecutionException("Failed to create FopFactory.",
-                    fope);
-        } catch (TransformerConfigurationException tce) {
-            throw new MojoExecutionException("Failed to create Taransformer.",
-                    tce);
-        } catch (TransformerException te) {
-            throw new MojoExecutionException("Failed to transform document.",
-                    te);
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
-        }
+  public void postProcessResult(File result) throws MojoExecutionException {
+    super.postProcessResult(result);
+    
+    final FopFactory fopFactory = FopFactory.newInstance();
+    final FOUserAgent userAgent = fopFactory.newFOUserAgent();
+    userAgent.setBaseURL(baseUrl);
+    // FOUserAgent can be used to set PDF metadata
+
+	  Configuration configuration = loadFOPConfig();
+    InputStream in = null;
+    OutputStream out = null;
+    
+    try
+    {
+      in = openFileForInput(result);
+      out = openFileForOutput(getOutputFile(result));
+      fopFactory.setUserConfig(configuration);
+      Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+            
+      // Setup JAXP using identity transformer
+      TransformerFactory factory = TransformerFactory.newInstance();
+      Transformer transformer = factory.newTransformer(); // identity transformer
+      
+      // Setup input stream
+      Source src = new StreamSource(in);
+
+      // Resulting SAX events (the generated FO) must be piped through to FOP
+      Result res = new SAXResult(fop.getDefaultHandler());
+      
+      // Start XSLT transformation and FOP processing
+      transformer.transform(src, res);
     }
+    catch (FOPException e)
+    {
+      throw new MojoExecutionException("Failed to convert to PDF", e);
+    }
+    catch (TransformerConfigurationException e)
+    {
+      throw new MojoExecutionException("Failed to load JAXP configuration", e);
+    }
+    catch (TransformerException e)
+    {
+      throw new MojoExecutionException("Failed to transform to PDF", e);
+    }
+    finally
+    {
+      IOUtils.closeQuietly(out);
+      IOUtils.closeQuietly(in);
+    }
+  }
 
     private InputStream openFileForInput(File file)
             throws MojoExecutionException {
@@ -116,13 +141,13 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
     private OutputStream openFileForOutput(File file)
             throws MojoExecutionException {
         try {
-            return new FileOutputStream(file);
+          return new BufferedOutputStream(new FileOutputStream(file));
         } catch (FileNotFoundException fnfe) {
             throw new MojoExecutionException("Failed to open " + file
                     + " for output.");
         }
     }
-
+    
     private Configuration loadFOPConfig() throws MojoExecutionException {
         ClassLoader loader = this.getClass().getClassLoader();
         InputStream in = loader.getResourceAsStream("fonts.stg");
@@ -148,4 +173,19 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
         }
     }
 
+    public void adjustTransformer(Transformer transformer,
+        String sourceFilename, File targetFile)
+    {
+      super.adjustTransformer(transformer, sourceFilename, targetFile);
+      
+        try
+        {
+          final String str = (new File(sourceFilename)).getParentFile().toURL().toExternalForm();
+          baseUrl = str.replace("file:/", "file:///");
+        }
+        catch (MalformedURLException e)
+        {
+          getLog().warn("Failed to get FO basedir", e);
+        }
+    }
 }
