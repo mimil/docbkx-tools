@@ -31,19 +31,18 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>fop</artifactId>
+      <version>0.94</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
       <artifactId>xalan</artifactId>
       <version>2.7.0</version>
     </dependency>
-    <!--
     <dependency>
-      <groupId>avalon-framework</groupId>
-      <artifactId>avalon-framework</artifactId>
-      <version>4.1.5</version>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.0</version>
     </dependency>
-    -->
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
@@ -180,6 +179,6 @@
     </plugins>
   </reporting>
   <properties>
-    <docbook.xsl.version>1.73.2</docbook.xsl.version>
+    <docbook.xsl.version>ns-1.73.2</docbook.xsl.version>
   </properties>
 </project>

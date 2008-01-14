@@ -110,6 +110,13 @@ public class $spec.className$
      * @parameter expression="\${basedir}/src/docbkx"
      */
     private File sourceDirectory;
+    
+    /**
+     * The directory containing the resolved DocBook source before given to the transformer.
+     *
+     * @parameter
+     */
+    private File generatedSourceDirectory;
  
     $spec.parameters:variable(); separator="\n\n"$
 
@@ -124,6 +131,10 @@ public class $spec.className$
     
     public File getTargetDirectory() {
         return targetDirectory;
+    }
+    
+    public File getGeneratedSourceDirectory() {
+        return generatedSourceDirectory;
     }
 
 	public String getDefaultStylesheetLocation() {
