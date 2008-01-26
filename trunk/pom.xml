@@ -20,11 +20,20 @@
   </licenses>
   <developers>
     <developer>
-      <id>wis</id>
+      <id>wilfredspringer</id>
       <name>Wilfred Springer</name>
       <email>wilfred@agilejava.com</email>
     </developer>
   </developers>
+  <mailingLists>
+    <mailingList>
+      <name>Users</name>
+      <subscribe>docbkx-tools-users-subscribe@googlegroups.com</subscribe>
+      <unsubscribe>docbkx-tools-users-unsubscribe@googlegroups.com</unsubscribe>
+      <post>docbkx-tools-users@googlegroups.com</post>
+      <archive>http://groups.google.com/group/docbkx-tools-users</archive>
+    </mailingList>
+  </mailingLists>
   <build>
     <extensions>
       <extension>
