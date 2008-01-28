@@ -26,6 +26,13 @@
   </developers>
   <mailingLists>
     <mailingList>
+      <name>Developers</name>
+      <subscribe>docbkx-tools-developers-subscribe@googlegroups.com</subscribe>
+      <unsubscribe>docbkx-tools-developers-unsubscribe@googlegroups.com</unsubscribe>
+      <post>docbkx-tools-developers@googlegroups.com</post>
+      <archive>http://groups.google.com/group/docbkx-tools-developers</archive>
+    </mailingList>
+    <mailingList>
       <name>Users</name>
       <subscribe>docbkx-tools-users-subscribe@googlegroups.com</subscribe>
       <unsubscribe>docbkx-tools-users-unsubscribe@googlegroups.com</unsubscribe>
