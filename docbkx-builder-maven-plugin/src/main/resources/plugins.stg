@@ -1,5 +1,15 @@
 group plugins;
 
+typeMap ::= [
+  "boolean":"String",
+  default:"String"
+]
+
+conversionMap ::= [
+  "boolean":"convertBooleanToXsltParam",
+  default:"convertStringToXsltParam"
+]
+
 plugin(spec) ::= <<
 package $spec.packageName$;
 
@@ -202,11 +212,12 @@ variable() ::= <<
  *
  * @parameter
  */  
-private String $it.javaIdentifier$;
+private $typeMap.(it.type)$ $it.javaIdentifier$;
 >>
 
 parameterPassing() ::= <<
 if ($it.javaIdentifier$ != null) {
-    transformer.setParameter("$it.name$", $it.javaIdentifier$);
+    transformer.setParameter("$it.name$", 
+        $conversionMap.(it.type)$($it.javaIdentifier$));
 }                     
 >>

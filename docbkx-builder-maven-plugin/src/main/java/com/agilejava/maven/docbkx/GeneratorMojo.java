@@ -474,7 +474,7 @@ public class GeneratorMojo extends AbstractMojo {
             parameter.setDescription(result);
             node = (Node) selectType.selectSingleNode(document);
             if (node != null) {
-                parameter.setType(node.getNodeValue());
+                parameter.setTypeFromRefType(node.getNodeValue());
             } else {
                 getLog().warn("Missing type info for " + name);
             }

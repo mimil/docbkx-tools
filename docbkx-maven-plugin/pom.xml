@@ -109,6 +109,7 @@
             </goals>
             <configuration>
               <type>manpages</type>
+              <excludedProperties>${excluded.properties}</excludedProperties>
             </configuration>
           </execution>
           <execution>
@@ -119,7 +120,7 @@
             <configuration>
               <type>html</type>
               <superClassName>com.agilejava.docbkx.maven.AbstractHtmlMojo</superClassName>
-              <excludedProperties>root.filename,base.dir</excludedProperties>
+              <excludedProperties>${excluded.properties},root.filename,base.dir</excludedProperties>
             </configuration>
           </execution>
           <execution>
@@ -131,7 +132,7 @@
               <type>eclipse</type>
               <stylesheetPath>eclipse/eclipse.xsl</stylesheetPath>
               <superClassName>com.agilejava.docbkx.maven.AbstractEclipseMojo</superClassName>
-              <excludedProperties>root.filename,base.dir,manifest.in.base.dir</excludedProperties>
+              <excludedProperties>${excluded.properties},root.filename,base.dir,manifest.in.base.dir</excludedProperties>
             </configuration>
           </execution>
           <execution>
@@ -144,6 +145,7 @@
               <superClassName>com.agilejava.docbkx.maven.AbstractPdfMojo</superClassName>
               <className>DocbkxPdfMojo</className>
               <pluginSuffix>pdf</pluginSuffix>
+              <excludedProperties>${excluded.properties}</excludedProperties>
             </configuration>
           </execution>
         </executions>
@@ -160,7 +162,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.0-beta-2</version>
-        <!-- <version>2.0-beta-1</version> -->
         <reportSets>
           <reportSet>
             <reports>
@@ -180,5 +181,6 @@
   </reporting>
   <properties>
     <docbook.xsl.version>ns-1.73.2</docbook.xsl.version>
+    <excluded.properties>VERSION,PreviousReleaseRevision,PreviousRelease,sf-relid,VersionFileURL,Revision,Tag,DistroTitle,DistroName</excluded.properties>
   </properties>
 </project>

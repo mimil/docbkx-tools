@@ -23,17 +23,21 @@ public class Parameter {
     private String value;
 
     private String description;
-    
-    private String type;
 
-    public void setType(String type) {
-        this.type = type;
+    private String type = "string";
+
+    public void setTypeFromRefType(String type) {
+        if ("attribute set".equals(type)) {
+            this.type = "attributeSet";
+        } else {
+            this.type = type;
+        }
     }
-    
+
     public String getType() {
         return type;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -55,7 +59,13 @@ public class Parameter {
     }
 
     public String getDescription() {
-        return description;
+        if ("boolean".equals(type)) {
+            String result = description.replaceAll("non-zero (true)", "true");
+            result = result.replaceAll("non-zero", "true");
+            return result;
+        } else {
+            return description;
+        }
     }
 
     public String getJavaIdentifier() {
@@ -77,5 +87,5 @@ public class Parameter {
         }
         return builder.toString();
     }
-
+    
 }
