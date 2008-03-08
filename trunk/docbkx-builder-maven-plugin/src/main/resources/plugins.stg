@@ -77,6 +77,19 @@ public class $spec.className$
      * @parameter
      */
     private List entities;
+    
+    /**
+     * A list of additional XSL parameters to give to the XSLT engine.
+     * These parameters overrides regular docbook ones as they are last
+     * configured.<br/>
+     * For regular docbook parameters perfer the use of this plugin facilities
+     * offering nammed paramters.<br/>
+     * These parameters feet well for custom properties you may have defined
+     * within your customization layer.
+     *
+     * @parameter
+     */
+    private List customizationParameters;
 
     /**
      * The pattern of the files to be included.
@@ -180,6 +193,11 @@ public class $spec.className$
     
     public List getEntities() {
         return entities;
+    }
+    
+    public List getCustomizationParameters()
+    {
+    	return customizationParameters;
     }
     
     public Target getPreProcess() {
