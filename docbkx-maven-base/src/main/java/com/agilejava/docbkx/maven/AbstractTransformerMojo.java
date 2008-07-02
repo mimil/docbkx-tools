@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.VariableResolver;
@@ -304,8 +305,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 	/**
 	 * Returns a boolean indicating if XInclude should be supported.
 	 * 
-	 * Returns a boolean indicting if XInclude should be supported.
-	 * 
 	 * @return A boolean indicating if XInclude should be supported.
 	 */
 	protected abstract boolean getXIncludeSupported();
@@ -346,20 +345,30 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 		// To be implemented by subclasses.
 	}
 
-	/**
-	 * Allows subclasses to add their own specific pre-processing logic.
-	 * 
-	 * @throws MojoExecutionException
-	 *             If the Mojo fails to pre-process the results.
-	 */
-	public void preProcess() throws MojoExecutionException {
-		if (getPreProcess() != null) {
-			executeTasks(getPreProcess(), getMavenProject());
+    /**
+     * Allows subclasses to add their own specific pre-processing logic.
+     *
+     * @throws MojoExecutionException If the Mojo fails to pre-process the results.
+     */
+    public void preProcess() throws MojoExecutionException {
+        // save system properties
+        originalSystemProperties = (Properties) System.getProperties().clone();
+        // set the new properties
+        if (getSystemProperties() != null) {
+            final Enumeration props = getSystemProperties().keys();
+            while(props.hasMoreElements()) {
+                final String key = (String)props.nextElement();
+                System.setProperty(key, getSystemProperties().getProperty(key));
+            }
+        }
+
+        if (getPreProcess() != null) {
+            executeTasks(getPreProcess(), getMavenProject());
 		}
 	}
 
 	/**
-	 * Alles classes to add their own specific post-processing logic.
+	 * Allows classes to add their own specific post-processing logic.
 	 * 
 	 * @throws MojoExecutionException
 	 *             If the Mojo fails to post-process the results.
@@ -368,7 +377,12 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 		if (getPostProcess() != null) {
 			executeTasks(getPostProcess(), getMavenProject());
 		}
-	}
+
+        // restore system properties
+        if (originalSystemProperties != null) {
+            System.setProperties(originalSystemProperties);
+        }
+    }
 
 	/**
 	 * Post-processes the file. (Might be changed in the future to except an XML
@@ -733,8 +747,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      * A list of additional XSL parameters to give to the XSLT engine.
      * These parameters overrides regular docbook ones as they are last
      * configured.<br/>
-     * For regular docbook parameters perfer the use of this plugin facilities
-     * offering nammed paramters.<br/>
+     * For regular docbook parameters prefer the use of this plugin facilities
+     * offering named paramters.<br/>
      * These parameters feet well for custom properties you may have defined
      * within your customization layer.
      * 
@@ -742,8 +756,21 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 	 */
 	protected abstract List getCustomizationParameters();
 
-	/**
-	 * Returns the tasks that should be executed before the transformation.
+    /**
+     * A copy of JVM system properties before plugin process.
+     */
+    private Properties originalSystemProperties;
+
+    /**
+     * Returns the additional System Properties. JVM System Properties are copied back if no problem have occurred
+     * during the plugin process.
+     *
+     * @return The current forked System Properties.
+     */
+    protected abstract Properties getSystemProperties();
+
+    /**
+     * Returns the tasks that should be executed before the transformation.
 	 * 
 	 * @return The tasks that should be executed before the transformation.
 	 */
