@@ -6,12 +6,20 @@
   <body>
   
   	<release version="2.0.9">
-  		<action dev="mimil" type="add">
-  		  Added support for setting additional XSL paramters which are not
-  		  part of the regular docbook parameters using 
-  		  &lt;customizationParameters&gt;.
-  		</action>
-  	</release>
+  	  <action dev="mimil" type="add">
+  	    Added support for setting additional XSL parameters which are not
+  	    part of the regular docbook parameters using
+  	    &lt;customizationParameters&gt;.
+  	  </action>
+      <action dev="mimil" type="add">
+        Added support for setting system properties using &lt;systemProperties&gt;
+        which contains &lt;name&gt; &lt;value&gt; elements pair inside &lt;property&gt; elements.
+      </action>
+      <action dev="mimil" type="update">
+        XSLT Highlighting can now be configured with &lt;xslthlConfig&gt; property or
+        using &lt;systemProperties&gt;.
+      </action>
+    </release>
 
     <release version="2.0.8"
              description="Better PDF support and stylesheet update">
