@@ -16,15 +16,10 @@ package com.agilejava.docbkx.maven;
  * limitations under the License.
  */
 
-import java.io.IOException;
-
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
-
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import javax.xml.transform.stream.StreamSource;
 
 /**
  * A simple {@link URIResolver} decorator that will bail out of the normal way
@@ -36,24 +31,31 @@ import org.xml.sax.SAXException;
  */
 public class StylesheetResolver implements URIResolver {
 
-    private String urn;
+	private String urn;
 
-    private Source stylesheet;
+	private Source stylesheet;
 
-    private URIResolver wrapped;
+	private URIResolver wrapped;
 
-    public StylesheetResolver(String urn, Source stylesheet, URIResolver wrapped) {
-        this.urn = urn;
-        this.stylesheet = stylesheet;
-        this.wrapped = wrapped;
-    }
+	public StylesheetResolver(String urn, Source stylesheet, URIResolver wrapped) {
+		this.urn = urn;
+		this.stylesheet = stylesheet;
+		this.wrapped = wrapped;
+	}
 
-    public Source resolve(String href, String base) throws TransformerException {
-        if (urn.equals(href)) {
-            return stylesheet;
-        } else {
-            return wrapped.resolve(href, base);
-        }
-    }
+	public Source resolve(String href, String base) throws TransformerException {
+		if (urn.equals(href)) {
+			// return main stylesheet location
+			return stylesheet;
+		} else if (href != null && href.startsWith(urn)) {
+			// return the resource using the main stylesheet location directory as base
+			int dirIndex = stylesheet.getSystemId().lastIndexOf("/");
+			String dirPath = stylesheet.getSystemId().substring(0, dirIndex);
+			String newLocation = dirPath.concat(href.replace(urn, ""));
+			return new StreamSource(newLocation);
+		} else {
+			return wrapped.resolve(href, base);
+		}
+	}
 
 }
