@@ -19,6 +19,11 @@
         XSLT Highlighting can now be configured with &lt;xslthlConfig&gt; property or
         using &lt;systemProperties&gt;.
       </action>
+      <action dev="mimil" type="update">
+        Enhancement of urn:docbkx:stylesheet which points to the docbook release stylesheet
+        to allow urn:docbkx:stylesheet/xxxx to point to other files of the docbook release.
+        Example: &lt; import href="urn:docbkx:stylesheet/pagesetup.xsl" /&gt;.
+      </action>
     </release>
 
     <release version="2.0.8"
