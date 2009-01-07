@@ -11,6 +11,7 @@
     <connection>scm:svn:https://docbkx-tools.googlecode.com/svn/trunk/</connection>
     <developerConnection>scm:svn:https://docbkx-tools.googlecode.com/svn/trunk/</developerConnection>
   </scm>
+  <url>http://docbkx-tools.sourceforge.net/</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -60,12 +61,9 @@
     </extensions>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.0-beta-4</version>
-        <configuration>
-          <templateDirectory>http://agilejava.com/maven/</templateDirectory>
-          <template>maven-site.vm</template>
-        </configuration>
+        <version>2.0-beta-7</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -98,7 +96,7 @@
     <site>
       <id>docbkx-tools-sourceforge</id>
       <name>Docbkx Tools Site</name>
-      <url>sftp://web.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/</url>
+      <url>scp://shell.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/</url>
     </site>
   </distributionManagement>
   <dependencyManagement>
