@@ -56,13 +56,6 @@
   <reporting>
     <plugins>
       <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <templateDirectory>http://agilejava.com/maven/</templateDirectory>
-          <template>maven-site.vm</template>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
       </plugin>
