@@ -155,7 +155,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 				if (!targetFile.exists()
 						|| (targetFile.exists() && FileUtils.isFileNewer(
 								sourceFile, targetFile))) {
-					Result result = new StreamResult(targetFile);
+                    Result result = new StreamResult(targetFile.getAbsolutePath());
 					XMLReader reader = factory.newSAXParser().getXMLReader();
 					reader.setEntityResolver(resolver);
 					PreprocessingFilter filter = new PreprocessingFilter(reader);
@@ -190,6 +190,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 					// XInclude support.
 					if (getXIncludeSupported()
 							&& getGeneratedSourceDirectory() != null) {
+            getLog().debug("Advanced XInclude mode entered");
 						final Builder xomBuilder = new Builder();
 						try {
 							final nu.xom.Document doc = xomBuilder
@@ -214,6 +215,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 						}
 					} else // else fallback on Xerces XInclude support.
 					{
+            getLog().debug("Xerces XInclude mode entered");
 						InputSource inputSource = new InputSource(sourceFile
 								.getAbsolutePath());
 						xmlSource = new SAXSource(filter, inputSource);
@@ -223,6 +225,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 							sourceFile.getAbsolutePath(), targetFile);
 					transformer.transform(xmlSource, result);
 					postProcessResult(targetFile);
+          getLog().debug(targetFile + " has been generated.");
 				} else {
 					getLog().debug(targetFile + " is up to date.");
 				}
