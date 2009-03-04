@@ -140,6 +140,18 @@
             </configuration>
           </execution>
           <execution>
+            <id>generate-javahelp</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <type>javahelp</type>
+              <stylesheetPath>javahelp/javahelp.xsl</stylesheetPath>
+              <superClassName>com.agilejava.docbkx.maven.AbstractJavahelpMojo</superClassName>
+              <excludedProperties>${excluded.properties},root.filename,base.dir</excludedProperties>
+            </configuration>
+          </execution>
+          <execution>
             <id>generate-pdf</id>
             <goals>
               <goal>build</goal>
