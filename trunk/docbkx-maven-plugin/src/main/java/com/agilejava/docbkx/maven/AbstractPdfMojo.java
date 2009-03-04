@@ -80,7 +80,7 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
     userAgent.setBaseURL(baseUrl);
     // FOUserAgent can be used to set PDF metadata
 
-	  Configuration configuration = loadFOPConfig();
+	Configuration configuration = loadFOPConfig();
     InputStream in = null;
     OutputStream out = null;
     
@@ -89,7 +89,7 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
       in = openFileForInput(result);
       out = openFileForOutput(getOutputFile(result));
       fopFactory.setUserConfig(configuration);
-      Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+      Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, userAgent, out);
             
       // Setup JAXP using identity transformer
       TransformerFactory factory = TransformerFactory.newInstance();
