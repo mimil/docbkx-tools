@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.agilejava.docbkx</groupId>
@@ -9,7 +10,8 @@
   <packaging>pom</packaging>
   <name>Docbkx Maven Samples</name>
   <description>A number of examples, showing how to use the Maven
-  Docbkx Plugin.</description>
+    Docbkx Plugin.
+  </description>
   <profiles>
     <profile>
       <id>docbkx.release</id>
@@ -105,8 +107,8 @@
               <sourceDirectory>target/docbkx</sourceDirectory>
               <targetDirectory>target/site/</targetDirectory>
               <preProcess>
-                <mkdir dir="${basedir}/target/docbkx" />
-                <xslt style="${basedir}/src/xslt/pom-to-docbkx.xsl" in="pom.xml" out="target/docbkx/manual.xml" />
+                <mkdir dir="${basedir}/target/docbkx"/>
+                <xslt style="${basedir}/src/xslt/pom-to-docbkx.xsl" in="pom.xml" out="target/docbkx/manual.xml"/>
               </preProcess>
               <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
               <headerRule>0</headerRule>
@@ -118,7 +120,7 @@
         </plugins>
       </build>
     </profile>
-    
+
     <!--
         This is by far the simplest example that you can possibly
         imagine. At a bare minimum, you need to specify a dependency
@@ -153,7 +155,7 @@
       </build>
       <properties>
         <example.title>Minimal configuration</example.title>
-	<example.input>article.xml</example.input>
+        <example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -194,7 +196,7 @@
       </build>
       <properties>
         <example.title>Attached to a phase</example.title>
-	<example.input>article.xml</example.input>
+        <example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -236,7 +238,7 @@
       </build>
       <properties>
         <example.title>Multiple output formats</example.title>
-	<example.input>article.xml</example.input>
+        <example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -285,7 +287,7 @@
       </build>
       <properties>
         <example.title>Additional customization</example.title>
-	<example.input>article.xml</example.input>
+        <example.input>article.xml</example.input>
       </properties>
     </profile>
 
@@ -324,8 +326,8 @@
       </build>
       <properties>
         <example.title>Explicit source file selection</example.title>
-	<example.input>just-xml.xml</example.input>
-	<example.input>just-docbkx.xml</example.input>
+        <example.input>just-xml.xml</example.input>
+        <example.input>just-docbkx.xml</example.input>
       </properties>
     </profile>
 
@@ -530,7 +532,7 @@
         by changing property values, as outlined above. However, there
         may be situations in which you need more flexbility. The
         plugin provides this flexibility by allowing you to pass a
-        reference to your own stylesheet. 
+        reference to your own stylesheet.
     -->
     <!--
         The mechanism is similar to what you would do normally when
@@ -538,13 +540,13 @@
         customization stylesheet that starts by importing the
         standard docbook.xsl stylesheet. The trick is how to locate
         the 'standard' docbook.xsl stylesheet. After all, the plugin
-        would normally hide it from you entirely, right? 
+        would normally hide it from you entirely, right?
     -->
     <!--
         The trick is to use a 'symbolic' reference instead of a real
         location in your import. By using this import: <xsl:import href="urn:docbkx:stylesheet" />, you basically tell the plugin
         to import the standard stylesheet for your specific output
-        format. 
+        format.
     -->
     <!--
         Once you have your own customization stylesheet (probably
@@ -579,7 +581,7 @@
       </properties>
     </profile>
 
-    <!-- 
+    <!--
          The later versions of the DocBook stylesheets support syntax
          highlighting. In order to use it, add a language attribute to
          the DocBook element containing your sources, and set it to
@@ -587,7 +589,7 @@
          pom.xml configuration, set highlightSource to true, and
          you're done.
     -->
-    
+
     <!--
         Note that previous versions of the plugin required you to add
         the xslthl.jar to your dependencies. That's no longer
@@ -619,7 +621,7 @@
         <example.title>Syntax Highlighting</example.title>
       </properties>
     </profile>
-    
+
     <!--
         PDF has built-in support for a number of fonts. It's not
         unlikely that you want to replace those fonts with something
@@ -701,5 +703,53 @@
       </properties>
     </profile>
 
+    <!--
+        The JavaHelp format (combined with its java based framework) will allow
+        you to create professional online help systems from your documentations.
+    -->
+    <!--
+        Docbkx Maven Plugin will help you in generating the JavaHelp main content
+        but will not create all the glue needed to have a JavaHelp up and running
+        within your application.
+    -->
+    <!--
+        Concerning the configuration of the goal 'generate-javahelp' they are the
+        same as the 'generate-html' (chunked mode) ones except these additional ones:
+        javahelp.encoding
+    -->
+    <profile>
+      <id>docbkx.javahelp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-javahelp</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>JavaHelp example</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
   </profiles>
 </project>
