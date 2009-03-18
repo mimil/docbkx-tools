@@ -75,6 +75,7 @@ import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.tools.CatalogResolver;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.StringUtils;
 import org.jaxen.JaxenException;
@@ -162,10 +163,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 					ProcessingInstructionHandler resolvingHandler = new ExpressionHandler(
 							new VariableResolver() {
 
-								private Map tree = ExpressionUtils
-										.createTree(getMavenProject()
-												.getProperties());
-
 								public Object resolveVariable(String name)
 										throws ELException {
 									if ("date".equals(name)) {
@@ -175,7 +172,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 									} else if ("project".equals(name)) {
 										return getMavenProject();
 									} else {
-										return tree.get(name);
+										return getMavenProject().getProperties().get(name);
 									}
 								}
 
