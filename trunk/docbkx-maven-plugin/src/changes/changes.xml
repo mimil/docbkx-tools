@@ -6,6 +6,21 @@
   <body>
   
   	<release version="2.0.9">
+      <action dev="mimil" type="update">
+  	    Correction of generation failure when spaces in path.
+  	  </action>
+      <action dev="mimil" type="update">
+  	    Moved to FOP 0.95.
+  	  </action>
+      <action dev="mimil" type="update">
+  	    Removed use of ExpressionUtils class to avoid property clashes.
+  	  </action>
+      <action dev="mimil" type="update">
+  	    Added support of http url in xxxCustomization parameters.
+  	  </action>
+      <action dev="mimil" type="add">
+  	    Added generate-javahelp goal.
+  	  </action>
   	  <action dev="mimil" type="add">
   	    Added support for setting additional XSL parameters which are not
   	    part of the regular docbook parameters using
