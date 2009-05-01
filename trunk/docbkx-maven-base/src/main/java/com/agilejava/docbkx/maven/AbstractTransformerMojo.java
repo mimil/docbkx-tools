@@ -260,6 +260,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 			resolvedXML.mkdirs();
 			resolvedXML = new File(resolvedXML, "(gen)" + file.getName());
 		} else {
+      getGeneratedSourceDirectory().mkdirs();
 			resolvedXML = new File(getGeneratedSourceDirectory(), "(gen)"
 					+ initialFilename);
 		}
