@@ -50,3 +50,24 @@ reference is resolved by the plugin.
 </xsl:stylesheet>
 +-------------------------+
 
+  A good practice to create a maintainable customization layer is to apply
+the docbook framework layout (files and directories) to your files, it
+will help you to remember exactly which files you have extended. For this
+matter we allow the previously explained 'symbolic' reference to point to
+other original docbook files.
+It is as easy as appending '/'+file.xsl to urn:docbkx:stylesheet as you could
+see in the above example:
+
++-------------------------+
+<xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
+
+  <xsl:import href="urn:docbkx:stylesheet/inline.xsl"/>
+
+  <xsl:template match="d:guibutton|d:guiicon|d:guilabel|d:guimenu">
+    <xsl:call-template name="inline.boldmonoseq"/>
+  </xsl:template>
+
+</xsl:stylesheet>
++-------------------------+
