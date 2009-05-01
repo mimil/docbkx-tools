@@ -63,6 +63,7 @@
     <module>docbkx-maven-base</module>
     <module>docbkx-samples</module>
     <module>docbkx-fop-support</module>
+    <module>docbkx-quickstart-archetype</module>
   </modules>
   <distributionManagement>
     <repository>
