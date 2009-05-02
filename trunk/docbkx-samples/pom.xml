@@ -36,6 +36,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0-beta-2</version>
             <executions>
               <execution>
                 <phase>generate-sources</phase>
@@ -164,7 +165,7 @@
         Plugin is hardly any different than all of the other existing
         Maven 2 plugins. Simply add an execution element to specify
         the goal and the phase. The example below specifies that the
-        documents in src/docbkx should be turned into HTML in the
+        documents in src/docbkx should be turned into HTML and XHTML in the
         pre-site phase.
     -->
     <profile>
@@ -178,6 +179,7 @@
               <execution>
                 <goals>
                   <goal>generate-html</goal>
+                  <goal>generate-xhtml</goal>
                 </goals>
                 <phase>pre-site</phase>
               </execution>
@@ -712,7 +714,7 @@
         within your application.
     -->
     <!--
-        Concerning the configuration of the goal 'generate-javahelp' they are the
+        Concerning the configuration properties of the goal 'generate-javahelp' they are the
         same as the 'generate-html' (chunked mode) ones except these additional ones:
         javahelp.encoding
     -->
