@@ -39,7 +39,7 @@
           <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
           <xincludeSupported>true</xincludeSupported>
 
-          <!--foCustomization>path/to/custom/stylesheet.xsl</foCustomization-->
+          <foCustomization>src/docbkx-stylesheet/fo/docbkx.xsl</foCustomization>
 
           <customizationParameters>
             <!-- additional XSLT parameters-->
