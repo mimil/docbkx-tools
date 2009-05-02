@@ -13,16 +13,8 @@ conversionMap ::= [
 plugin(spec) ::= <<
 package $spec.packageName$;
 
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.Transformer;
-import org.apache.maven.plugin.MojoExecutionException;
 import java.io.File;
-import java.util.List;
-import java.util.Properties;
-import org.apache.maven.project.MavenProject;
-import org.apache.tools.ant.Target;
-import org.xml.sax.XMLReader;
-import org.xml.sax.SAXException;
 
 
 /**
@@ -36,82 +28,6 @@ import org.xml.sax.SAXException;
 public class $spec.className$ 
   extends $spec.superClassName$ 
 {
-
-    /**
-     * The plugin dependencies.
-     *
-     * @parameter expression="\${plugin.artifacts}"
-     * @required
-     * @readonly
-     */
-    List artifacts;
-
-    /**
-     * Ant tasks to be executed before the transformation. Comparable
-     * to the tasks property in the maven-antrun-plugin.
-     * 
-     * @parameter
-     */
-    private Target preProcess;
-	
-    /**
-     * Ant tasks to be executed after the transformation. Comparable
-     * to the tasks property in the maven-antrun-plugin.
-     * 
-     * @parameter
-     */
-    private Target postProcess;
-
-    /**
-     * @parameter expression="\${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
-    /**
-     * A list of entities to be substituted in the source
-     * documents. Note that you can <em>only</em> specify entities if
-     * your source DocBook document contains a DTD
-     * declaration. Otherwise it will not have any effect at all.
-     *
-     * @parameter
-     */
-    private List entities;
-    
-    /**
-     * A list of additional XSL parameters to give to the XSLT engine.
-     * These parameters overrides regular docbook ones as they are last
-     * configured.<br/>
-     * For regular docbook parameters perfer the use of this plugin facilities
-     * offering nammed paramters.<br/>
-     * These parameters feet well for custom properties you may have defined
-     * within your customization layer.
-     *
-     * @parameter
-     */
-    private List customizationParameters;
-
-    /**
-     * List of additional System properties.
-     *
-     * @parameter
-     */
-    private Properties systemProperties;
-
-    /**
-     * The pattern of the files to be included.
-     *
-     * @parameter default-value="*.xml"
-     */
-    private String includes;
-    
-    /**
-     * A boolean, indicating if XInclude should be supported.
-     *
-     * @parameter default="false"
-     */
-     private boolean xincludeSupported;
 
     /**
      * The location of the stylesheet customization.
@@ -141,13 +57,6 @@ public class $spec.className$
      * @parameter expression="\${basedir}/src/docbkx"
      */
     private File sourceDirectory;
-    
-    /**
-     * The directory containing the resolved DocBook source before given to the transformer.
-     *
-     * @parameter
-     */
-    private File generatedSourceDirectory;
  
     $spec.parameters:variable(); separator="\n\n"$
 
@@ -159,13 +68,9 @@ public class $spec.className$
     public File getSourceDirectory() {
         return sourceDirectory;
     }
-    
+
     public File getTargetDirectory() {
         return targetDirectory;
-    }
-    
-    public File getGeneratedSourceDirectory() {
-        return generatedSourceDirectory;
     }
 
 	public String getDefaultStylesheetLocation() {
@@ -189,48 +94,6 @@ public class $spec.className$
 
     public String getTargetFileExtension() {
         return targetFileExtension;
-    }
-
-    public String[] getIncludes() {
-        String[] results = includes.split(",");
-        for (int i = 0; i < results.length; i++) {
-            results[i] = results[i].trim();
-        }
-        return results;
-    }
-    
-    public List getEntities() {
-        return entities;
-    }
-    
-    public List getCustomizationParameters()
-    {
-    	return customizationParameters;
-    }
-
-    public Properties getSystemProperties()
-    {
-        return systemProperties;
-    }
-    
-    public Target getPreProcess() {
-        return preProcess;
-    }
-    
-    public Target getPostProcess() {
-        return postProcess;
-    }
-    
-    public MavenProject getMavenProject() {
-        return project;
-    }
- 
-    public List getArtifacts() {
-        return artifacts;
-    }
-    
-    protected boolean getXIncludeSupported() {
-        return xincludeSupported;
     }
     
 }
