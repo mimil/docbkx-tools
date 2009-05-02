@@ -128,6 +128,17 @@
             </configuration>
           </execution>
           <execution>
+            <id>generate-xhtml</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <type>xhtml</type>
+              <superClassName>com.agilejava.docbkx.maven.AbstractHtmlMojo</superClassName>
+              <excludedProperties>${excluded.properties},root.filename,base.dir</excludedProperties>
+            </configuration>
+          </execution>
+          <execution>
             <id>generate-eclipse</id>
             <goals>
               <goal>build</goal>
