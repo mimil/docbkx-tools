@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.lang.reflect.Field;
 
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.VariableResolver;
@@ -824,5 +825,49 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 			return "1";
 		}
 	}
+
+  /**
+   * Sets the value of a property of this object using introspection.
+   *
+   * @param propertyname The field name
+   * @param value The value
+   */
+  protected void setProperty(String propertyname, String value) {
+    try {
+      final Field f = this.getClass().getDeclaredField(propertyname);
+      if (f.getType().equals(Boolean.class)) {
+        f.set(this, convertBooleanToXsltParam(value));
+      } else {
+        f.set(this, value);
+      }
+    } catch (NoSuchFieldException e) {
+      getLog().warn("Property not found in " + this.getClass().getName(), e);
+    } catch (IllegalAccessException e) {
+      getLog().warn("Unable to set " + propertyname + " value", e);
+    }
+  }
+
+  /**
+   * Returns the value of a property of this object using introspection.
+   *
+   * @param propertyname The filed name
+   * @return The value
+   */
+  protected String getProperty(String propertyname) {
+    try {
+      final Field f = this.getClass().getDeclaredField(propertyname);
+      Object o = f.get(this);
+      if (o == null) {
+        return null;
+      } else {
+        return o.toString();
+      }
+    } catch (NoSuchFieldException e) {
+      getLog().warn("Property not found in " + this.getClass().getName(), e);
+    } catch (IllegalAccessException e) {
+      getLog().warn("Unable to get " + propertyname + " value", e);
+    }
+    return null;
+  }
 
 }
