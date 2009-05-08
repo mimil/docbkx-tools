@@ -5,7 +5,7 @@
 <!ENTITY king-thinking SYSTEM "images/martin-luther-king.jpg" NDATA JPEG>
 
 ]>
-<book>
+<book id="book1">
 
   <bookinfo>
     <title>Sample</title>
@@ -14,7 +14,7 @@
     <releaseinfo>v1.0</releaseinfo>
   </bookinfo>
   
-  <chapter>
+  <chapter id="chapter1">
     <title>Quick Brown Foxes</title>
     <para>
       The quick brown fox jumps over de lazy tree.  The quick brown

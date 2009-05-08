@@ -2,14 +2,14 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
 ]>
-<article>
+<article id="article1">
   
   <articleinfo>
     <title>Example Document &type;</title>
     <releaseinfo><?eval Version ${project.version}?></releaseinfo>
   </articleinfo>
 
-  <section>
+  <section id="section1">
     <title>First Section</title> 
 
     <para>This is just an example document. It does not contain any
