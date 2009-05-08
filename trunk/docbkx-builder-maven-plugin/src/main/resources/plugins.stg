@@ -243,7 +243,7 @@ variable() ::= <<
  *
  * @parameter
  */  
-private $typeMap.(it.type)$ $it.javaIdentifier$;
+protected $typeMap.(it.type)$ $it.javaIdentifier$;
 >>
 
 parameterPassing() ::= <<

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>com.agilejava.docbkx</groupId>
     <artifactId>docbkx</artifactId>
@@ -33,9 +34,9 @@
       <artifactId>fop</artifactId>
     </dependency>
     <dependency>
-       <groupId>org.apache.avalon.framework</groupId>
-       <artifactId>avalon-framework-impl</artifactId>
-       <version>4.3.1</version>
+      <groupId>org.apache.avalon.framework</groupId>
+      <artifactId>avalon-framework-impl</artifactId>
+      <version>4.3.1</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
@@ -59,49 +60,26 @@
       <groupId>com.agilejava.docbkx</groupId>
       <artifactId>docbkx-maven-base</artifactId>
     </dependency>
+    <dependency>
+      <groupId>net.sf.xslthl</groupId>
+      <artifactId>xslthl</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.docbook</groupId>
+      <artifactId>docbook-xsl</artifactId>
+      <version>1.75.0</version>
+      <type>zip</type>
+      <classifier>ns-resources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.docbook</groupId>
+      <artifactId>docbook-xsl-saxon</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <tasks>
-            <mkdir dir="target/tmp" />
-            <unzip src="lib/docbook-xsl-${docbook.xsl.version}.zip" dest="target/tmp">
-              <patternset>
-                <include name="docbook-xsl-${docbook.xsl.version}/extensions/saxon65.jar" />
-                <include name="docbook-xsl-${docbook.xsl.version}/images/**/*.*" />
-                <include name="docbook-xsl-${docbook.xsl.version}/highlighting/**/*.*" />
-              </patternset>
-            </unzip>
-            <unjar src="target/tmp/docbook-xsl-${docbook.xsl.version}/extensions/saxon65.jar" dest="target/generated-resources">
-              <patternset>
-                <exclude name="META-INF" />
-              </patternset>
-            </unjar>
-            <unjar src="lib/xslthl-1.3.jar" dest="target/generated-resources">
-              <patternset>
-                <exclude name="META-INF" />
-              </patternset>
-            </unjar>
-            <copy todir="target/generated-resources/META-INF">
-              <fileset dir="target/tmp/docbook-xsl-${docbook.xsl.version}">
-                <include name="images/**/*.*" />
-                <include name="highlighting/**/*.*" />
-              </fileset>
-            </copy>
-          </tasks>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>com.agilejava.docbkx</groupId>
         <artifactId>docbkx-builder-maven-plugin</artifactId>
@@ -147,7 +125,8 @@
               <type>eclipse</type>
               <stylesheetPath>eclipse/eclipse.xsl</stylesheetPath>
               <superClassName>com.agilejava.docbkx.maven.AbstractEclipseMojo</superClassName>
-              <excludedProperties>${excluded.properties},root.filename,base.dir,manifest.in.base.dir</excludedProperties>
+              <excludedProperties>${excluded.properties},root.filename,base.dir,manifest.in.base.dir
+              </excludedProperties>
             </configuration>
           </execution>
           <execution>
@@ -177,7 +156,7 @@
           </execution>
         </executions>
         <configuration>
-          <version>${docbook.xsl.version}</version>
+
           <packageName>com.agilejava.docbkx.maven</packageName>
         </configuration>
       </plugin>
@@ -207,7 +186,8 @@
     </plugins>
   </reporting>
   <properties>
-    <docbook.xsl.version>ns-1.73.2</docbook.xsl.version>
-    <excluded.properties>VERSION,PreviousReleaseRevision,PreviousRelease,sf-relid,VersionFileURL,Revision,Tag,DistroTitle,DistroName</excluded.properties>
+    <excluded.properties>
+      VERSION,PreviousReleaseRevision,PreviousRelease,sf-relid,VersionFileURL,Revision,Tag,DistroTitle,DistroName
+    </excluded.properties>
   </properties>
 </project>

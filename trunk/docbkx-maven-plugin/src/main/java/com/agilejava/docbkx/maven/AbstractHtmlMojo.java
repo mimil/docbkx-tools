@@ -40,7 +40,7 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
 
     protected String getNonDefaultStylesheetLocation() {
         if (chunkedOutput) {
-            return "META-INF/docbkx/"+getType()+"/chunk.xsl";
+            return "docbook/"+getType()+"/chunk.xsl";
         } else {
             return null;
         }

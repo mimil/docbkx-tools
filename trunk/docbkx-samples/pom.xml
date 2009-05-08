@@ -590,13 +590,6 @@
          pom.xml configuration, set highlightSource to true, and
          you're done.
     -->
-
-    <!--
-        Note that previous versions of the plugin required you to add
-        the xslthl.jar to your dependencies. That's no longer
-        required. All of the required classes are now included in the
-        plugin's jar file itself.
-    -->
     <profile>
       <id>docbkx.highlighter</id>
       <build>
@@ -614,6 +607,8 @@
             </dependencies>
             <configuration>
               <highlightSource>1</highlightSource>
+              <!--highlightXslthlConfig>/file/.../xslthl-config.xml</highlightXslthlConfig-->
+              <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
             </configuration>
           </plugin>
         </plugins>
