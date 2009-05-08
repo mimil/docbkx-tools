@@ -27,13 +27,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -57,6 +51,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.SelectorUtils;
 import org.jaxen.JaxenException;
 import org.jaxen.dom.DOMXPath;
@@ -76,6 +71,7 @@ import com.icl.saxon.TransformerFactoryImpl;
  * @author Wilfred Springer
  * @goal build
  * @phase generate-sources
+ * @requiresDependencyResolution compile
  */
 public class GeneratorMojo extends AbstractMojo {
 
@@ -167,7 +163,7 @@ public class GeneratorMojo extends AbstractMojo {
      * The directory in the jar file in which the DocBook XSL artifacts will be
      * stored.
      * 
-     * @parameter default-value="META-INF/docbkx"
+     * @parameter default-value="docbook"
      */
     private String stylesheetTargetRoot;
 
@@ -198,17 +194,14 @@ public class GeneratorMojo extends AbstractMojo {
 
     /**
      * The version of the DocBook XSL stylesheets.
-     * 
-     * @parameter
-     * @required
+     *
      */
     private String version;
 
     /**
      * The DocBook-XSL distribution. By default
      * <code>${basedir}/lib/docbook-xsl-${version}.zip</code>.
-     * 
-     * @parameter
+     *
      */
     private File distribution;
 
@@ -218,7 +211,7 @@ public class GeneratorMojo extends AbstractMojo {
      * 
      * @parameter
      */
-    private String sourceRootDirectory;
+    private String sourceRootDirectory="docbook/";
 
     /**
      * A comma-separated list of properties that should be exluded from the
@@ -244,23 +237,36 @@ public class GeneratorMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         completeConfiguration();
         generateSourceCode();
-        ZipFileProcessor processor = new ZipFileProcessor(distribution);
-        copyResources(processor);
     }
 
     /**
      * Completes configuration.
      */
-    private void completeConfiguration() {
-        if (distribution == null) {
-            // ${basedir}/lib/docbook-xsl-${version}.zip
-            distribution = new File(project.getBasedir(), "lib/docbook-xsl-"
-                    + version + ".zip");
+    private void completeConfiguration() throws MojoExecutionException {
+      if (distribution == null) {
+        boolean found = false;
+        
+        Set artifacts = project.getDependencyArtifacts();
+        if (artifacts != null) {
+          Iterator i = artifacts.iterator();
+          while (i.hasNext()) {
+            Artifact artifact = (Artifact) i.next();
+            if ("net.sf.docbook".equals(artifact.getGroupId()) && "docbook-xsl".equals(artifact.getArtifactId())) {
+              distribution = artifact.getFile();
+              version = artifact.getVersion();
+              found = true;
+              getLog().debug("Docbook artifact used for generation: " + artifact.getGroupId() + ":" +
+                  artifact.getArtifactId() + ":" + artifact.getVersion() + ":" + artifact.getClassifier());
+              break;
+            }
+          }
+
         }
-        if (sourceRootDirectory == null) {
-            // docbook-xsl-${version}/
-            sourceRootDirectory = "docbook-xsl-" + version + "/";
+        if (!found) {
+          throw new MojoExecutionException("Unable to find a valid docbook depencency artifact");
         }
+      }
+
         if (stylesheetPath == null) {
             // ${type}/docbook.xsl
             stylesheetPath = type + "/docbook.xsl";
@@ -283,60 +289,6 @@ public class GeneratorMojo extends AbstractMojo {
             throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         return factory.newDocumentBuilder();
-    }
-
-    private void copyResources(ZipFileProcessor processor)
-            throws MojoExecutionException {
-        final File actualDirectory = new File(new File(
-                targetResourcesDirectory, "META-INF"), "docbkx");
-        try {
-            FileUtils.forceMkdir(actualDirectory);
-        } catch (IOException ioe) {
-            throw new MojoExecutionException("Failed to create "
-                    + actualDirectory.getAbsolutePath());
-        }
-        final String[] includes = getIncludes();
-        try {
-            processor.process(new ZipEntryVisitor() {
-                public void visit(ZipEntry entry, InputStream in)
-                        throws IOException {
-                    for (int i = 0; i < includes.length; i++) {
-                        if (SelectorUtils.match(includes[i], entry.getName())) {
-                            String targetFilename = entry.getName().substring(
-                                    entry.getName().indexOf('/') + 1);
-                            File targetFile = new File(actualDirectory,
-                                    targetFilename);
-                            if (!targetFile.exists()) {
-                                (targetFile.getParentFile()).mkdirs();
-                                OutputStream out = null;
-                                try {
-                                    out = new FileOutputStream(targetFile);
-                                    IOUtils.copy(in, out);
-                                } finally {
-                                    IOUtils.closeQuietly(out);
-                                }
-                            }
-                            break;
-                        }
-                    }
-
-                }
-            });
-        } catch (IOException ioe) {
-            throw new MojoExecutionException("Failed to copy files.", ioe);
-        }
-        projectHelper.addResource(project, targetResourcesDirectory
-                .getAbsolutePath(), Collections.singletonList("**/**"),
-                Collections.EMPTY_LIST);
-    }
-
-    /**
-     * Returns the patterns of the resources to be included while copying
-     * contents from a DocBook XSL distribution.
-     */
-    private String[] getIncludes() {
-        return new String[] { "*/VERSION", "*/" + type + "/**", "*/common/**",
-                "*/lib/**", "*/highlighting/**" };
     }
 
     /**
@@ -449,9 +401,6 @@ public class GeneratorMojo extends AbstractMojo {
      * 
      * @param name
      *            The name of the (XSLT) parameter.
-     * @param in
-     *            The InputStream providing a description (refentry) of the
-     *            parameter.
      * @return The Parameter object holding the metadata.
      */
     private Parameter extractParameter(String name)

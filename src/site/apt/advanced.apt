@@ -56,7 +56,7 @@ will help you to remember exactly which files you have extended. For this
 matter we allow the previously explained 'symbolic' reference to point to
 other original docbook files.
 It is as easy as appending '/'+file.xsl to urn:docbkx:stylesheet as you could
-see in the above example:
+see in the example bellow:
 
 +-------------------------+
 <xsl:stylesheet
