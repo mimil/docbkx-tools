@@ -36,11 +36,13 @@
         </executions>
         <configuration>
           <!-- shared configuration -->
-          <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
+          <generatedSourceDirectory>\${project.build.directory}/docbkx/generated</generatedSourceDirectory>
           <xincludeSupported>true</xincludeSupported>
+          <paperType>A4</paperType>
+          <fop1Extensions>1</fop1Extensions>
 
-          <foCustomization>src/docbkx-stylesheet/fo/docbkx.xsl</foCustomization>
-
+          <foCustomization>src/docbkx-stylesheet/fo/docbook.xsl</foCustomization>
+          
           <customizationParameters>
             <!-- additional XSLT parameters-->
             <parameter>

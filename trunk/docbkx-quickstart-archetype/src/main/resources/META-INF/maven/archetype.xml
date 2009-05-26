@@ -4,5 +4,6 @@
     <resource>src/docbkx/book.xml</resource>
     <resource>src/docbkx/included_section.xml</resource>
     <resource>src/docbkx/media/martin-luther-king.jpg</resource>
+    <resource>src/docbkx-stylesheet/fo/docbook.xsl</resource>
   </resources>
 </archetype>
