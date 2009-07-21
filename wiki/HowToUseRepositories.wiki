@@ -1,7 +1,11 @@
 #summary Explains how to setup maven to use snapshot and stable releases of docbkx-tools
 
-= Stable releases =
+= Zero configuration (recommended) =
+
 Our public repository is synchronized with the maven central repository (http://repo1.maven.org/maven2/com/agilejava/docbkx/) so you should have no extra configuration in your pom.xml (or settings.xml) to declare our repository.
+
+
+= Stable releases =
 
 However if you really need our public repository you can use the following statement:
 
