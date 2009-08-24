@@ -45,6 +45,10 @@
       <archive>http://groups.google.com/group/docbkx-tools-users</archive>
     </mailingList>
   </mailingLists>
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/docbkx-tools/issues/list</url>
+  </issueManagement>
   <build>
     <plugins>
       <plugin>
@@ -79,7 +83,7 @@
     <site>
       <id>docbkx-tools-sourceforge</id>
       <name>Docbkx Tools Site</name>
-      <url>scp://shell.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/</url>
+      <url>sftp://web.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/</url>
     </site>
   </distributionManagement>
   <dependencyManagement>

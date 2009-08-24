@@ -68,7 +68,7 @@
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl</artifactId>
-      <version>1.75.0</version>
+      <version>1.75.2</version>
       <type>zip</type>
       <classifier>ns-resources</classifier>
     </dependency>
@@ -176,13 +176,13 @@
           </reportSet>
         </reportSets>
       </plugin>
-      <plugin>
+      <!--plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
+      </plugin-->
     </plugins>
   </reporting>
   <properties>
