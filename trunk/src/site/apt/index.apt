@@ -1,10 +1,7 @@
 Five Minute Introduction
 
   (Note that the actual manual is located
-  {{{./docbkx-samples/manual.html}here}}. Also note that this
-  plugin has not been made available through the central Maven
-  repository yet; you should instead add http://agilejava.com/maven/
-  to your list of repositories.)
+  {{{./docbkx-samples/manual.html}here}}.
 
   The Docbkx Tools project provides a number of tools for supporting
   DocBook in a Maven environment. This may seem odd to you, since 1)
