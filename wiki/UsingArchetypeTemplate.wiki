@@ -1,0 +1,31 @@
+#summary Describes how to use the docbkx-quickstart-archetype
+
+= Introduction =
+
+A maven archetype is a template system to initialize a new maven project. It allows you to quick start as a default layout and additional files (with meaning for the current project) are created.
+
+*docbkx-quickstart-archetype* creates a default project with:
+ * a pom.xml file already configured
+ * a sample docbook document
+ * a docbook stylesheet customization for fop
+ * a plugin execution to generate a pdf file
+
+= How to use =
+
+If you don't have nay docbkx-tools plugins already installed in your locale maven repository (2.0.10-SNAPSHOT +) you will have to use the following command line to initialize a project:
+
+{{{
+mvn archetype:create 
+  -DgroupId=[your group id]
+  -DartifactId=[your artifact id]
+  -DarchetypeGroupId=com.agilejava.docbkx
+  -DarchetypeArtifactId=docbkx-quickstart-archetype
+  -DarchetypeVersion=2.0.10-SNAPSHOT
+  -DremoteRepositories=http://docbkx-tools.sourceforge.net/snapshots/
+}}}
+
+If everything runs fine you should have your project.
+
+Now enter you project and run `mvn pre-site` to start the preconfigured execution.
+
+_As for now only 2.0.10-SNAPSHOT supports the archetype feature, so you will also need to add our snapshot repository to either the generated pom.xml or within you $home/setting.xml - Have a look at HowToUseRepositories for more information about this_
