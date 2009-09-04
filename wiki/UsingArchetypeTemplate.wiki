@@ -28,4 +28,4 @@ If everything runs fine you should have your project.
 
 Now enter you project and run `mvn pre-site` to start the preconfigured execution.
 
-_As for now only 2.0.10-SNAPSHOT supports the archetype feature, so you will also need to add our snapshot repository to either the generated pom.xml or within you $home/setting.xml - Have a look at HowToUseRepositories for more information about this_
+_As for now only 2.0.10-SNAPSHOT supports the archetype feature, so you will also need to add our snapshot repository to either the generated pom.xml or within you $home/settings.xml - Have a look at HowToUseRepositories for more information about this_
