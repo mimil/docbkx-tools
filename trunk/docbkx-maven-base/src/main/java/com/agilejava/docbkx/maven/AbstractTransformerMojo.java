@@ -128,6 +128,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 		try {
 			URL url = getNonDefaultStylesheetURL() == null ? getDefaultStylesheetURL()
 					: getNonDefaultStylesheetURL();
+      getLog().debug("Using stylesheet: "+url.toExternalForm());
 			uriResolver = new StylesheetResolver("urn:docbkx:stylesheet",
 					new StreamSource(url.openStream(), url.toExternalForm()),
 					catalogResolver);
@@ -153,7 +154,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 						filename.length() - 4)
 						+ "." + getTargetFileExtension();
 				File targetFile = new File(targetDirectory, targetFilename);
+        getLog().debug("TargetFile: "+ targetFile.toString());
 				File sourceFile = new File(sourceDirectory, filename);
+        getLog().debug("SourceFile: "+sourceFile.toString());
 				if (!targetFile.exists()
 						|| (targetFile.exists() && FileUtils.isFileNewer(
 								sourceFile, targetFile))) {
@@ -605,14 +608,18 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 						.toExternalForm());
 				Transformer transformer = transformerFactory
 						.newTransformer(source);
-				Controller controller = (Controller) transformer;
-				try {
-					controller.makeMessageEmitter();
-					controller.getMessageEmitter().setWriter(new NullWriter());
-				} catch (TransformerException te) {
-					getLog()
-							.error("Failed to redirect xsl:message output.", te);
-				}
+
+        if (!getLog().isDebugEnabled()) {
+          Controller controller = (Controller) transformer;
+          try {
+            controller.makeMessageEmitter();
+            controller.getMessageEmitter().setWriter(new NullWriter());
+          } catch (TransformerException te) {
+            getLog()
+                .error("Failed to redirect xsl:message output.", te);
+          }
+        }
+
 				if (getCustomizationParameters() != null) {
 					getLog().info("Applying customization parameters");
 					final Iterator iterator = getCustomizationParameters()
