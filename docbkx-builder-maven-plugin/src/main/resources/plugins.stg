@@ -232,6 +232,11 @@ public class $spec.className$
     protected boolean getXIncludeSupported() {
         return xincludeSupported;
     }
+
+    protected boolean isUseStandardOutput()
+    {
+        return $spec.useStandardOutput$;
+    }
     
 }
 >>

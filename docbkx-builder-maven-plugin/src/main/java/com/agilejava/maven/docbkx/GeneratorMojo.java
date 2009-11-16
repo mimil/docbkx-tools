@@ -150,6 +150,13 @@ public class GeneratorMojo extends AbstractMojo {
     private String type;
 
     /**
+     * False if the stylesheet is responsible to create the output file(s) using its own naming scheme.
+     *
+     * @parameter default-value=true
+     */
+    private boolean useStandardOutput = true;
+
+    /**
      * An XPath expression for selecting the description.
      */
     protected DOMXPath selectDescription;
@@ -353,6 +360,7 @@ public class GeneratorMojo extends AbstractMojo {
         specification.setDocbookXslVersion(version);
         specification.setPluginSuffix(pluginSuffix);
         specification.setParameters(extractParameters());
+        specification.setUseStandardOutput(useStandardOutput);
         return specification;
     }
 
