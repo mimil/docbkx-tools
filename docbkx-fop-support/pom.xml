@@ -6,7 +6,7 @@
     <version>2.0.10-SNAPSHOT</version>
   </parent>
   <artifactId>docbkx-fop-support</artifactId>
-  <name>Docbxk FOP Support</name>
+  <name>Docbkx FOP Support</name>
   <packaging>maven-plugin</packaging>
   <description>
     Additional support for Apache FOP.
