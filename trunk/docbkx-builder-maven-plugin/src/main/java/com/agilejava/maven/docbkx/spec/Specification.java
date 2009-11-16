@@ -73,6 +73,13 @@ public class Specification {
     private List parameters;
 
     /**
+     * False if the stylesheet is responsible to create the output file(s) using its own naming scheme.
+     *
+     */
+    private boolean useStandardOutput = true;
+
+
+    /**
      * Constructs a new instance.
      * 
      */
@@ -108,6 +115,7 @@ public class Specification {
         Parameter parameter = new Parameter();
         parameter.setName(name);
         parameter.setDescription(description);
+        parameters.add(parameter);
     }
 
     public List getParameters() {
@@ -166,4 +174,11 @@ public class Specification {
         this.pluginSuffix = pluginSuffix;
     }
 
+    public boolean isUseStandardOutput() {
+        return useStandardOutput;
+    }
+
+    public void setUseStandardOutput(boolean useStandardOutput) {
+        this.useStandardOutput = useStandardOutput;
+    }
 }

@@ -125,10 +125,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 final String inputFilename = included[i];
                 // targetFilename is inputFilename - ".xml" + targetFile extension
                 final String targetFilename = inputFilename.substring(0, inputFilename.length() - 4) + "." + getTargetFileExtension();
-                File sourceFile = new File(sourceDirectory, inputFilename);
+                final File sourceFile = new File(sourceDirectory, inputFilename);
                 getLog().debug("SourceFile: " + sourceFile.toString());
-                File targetFile = new File(targetDirectory, targetFilename);
-                getLog().debug("TargetFile: " + targetFile.toString());
+                final File targetFile = new File(targetDirectory, targetFilename);
+                if(isUseStandardOutput()) {
+                    getLog().debug("TargetFile: " + targetFile.toString());
+                } else {
+                    getLog().debug("TargetDirectory: "+targetDirectory.getAbsolutePath());
+                }
 
                 if (!targetFile.exists()
                         || (targetFile.exists() && FileUtils.isFileNewer(sourceFile, targetFile))) {
@@ -146,12 +150,21 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                     final Transformer transformer = builder.build();
                     adjustTransformer(transformer, sourceFile.getAbsolutePath(), targetFile);
                     final Result result = new StreamResult(targetFile.getAbsolutePath());
-                    transformer.transform(xmlSource, result);
+                    if(isUseStandardOutput()) {
+                        transformer.transform(xmlSource, result);
+                    } else {
+                        transformer.transform(xmlSource, new StreamResult(System.out));
+                    }
 
                     postProcessResult(targetFile);
-                    getLog().debug(targetFile + " has been generated.");
+
+                    if(isUseStandardOutput()) {
+                        getLog().info(targetFile + " has been generated.");
+                    } else {
+                        getLog().info("See "+targetDirectory.getAbsolutePath() + " for generated file(s)");
+                    }
                 } else {
-                    getLog().debug(targetFile + " is up to date.");
+                    getLog().info(targetFile + " is up to date.");
                 }
             } catch (SAXException saxe) {
                 throw new MojoExecutionException("Failed to parse "
@@ -373,6 +386,13 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     protected String getNonDefaultStylesheetLocation() {
         return null;
     }
+
+    /**
+     * Returns false if the stylesheet is responsible to create the output file(s) using its own naming scheme.
+     *
+     * @return If using the standard output.
+     */
+    protected abstract boolean isUseStandardOutput();
 
     /**
      * The operation to override when it is required to make some adjustments to the {@link Transformer} right before it is
