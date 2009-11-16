@@ -92,7 +92,8 @@
             <configuration>
               <type>manpages</type>
               <superClassName>com.agilejava.docbkx.maven.AbstractManpagesMojo</superClassName>
-              <excludedProperties>${excluded.properties},root.filename,base.dir
+              <useStandardOutput>false</useStandardOutput>
+              <excludedProperties>${excluded.properties},root.filename,base.dir,man.output.in.separate.dir,man.output.subdirs.enabled,man.output.base.dir
               </excludedProperties>
             </configuration>
           </execution>

@@ -5,9 +5,9 @@ import java.io.File;
 import javax.xml.transform.Transformer;
 
 /**
- * The base class of a Mojo generating Eclipse documentation.
+ * The base class of a Mojo generating Man documentation.
  *
- * @author Wilfred Springer
+ * @author Cedric Pronzato
  *
  */
 public abstract class AbstractManpagesMojo extends AbstractTransformerMojo {
@@ -27,7 +27,6 @@ public abstract class AbstractManpagesMojo extends AbstractTransformerMojo {
         transformer.setParameter("root.filename", rootFilename);
         transformer.setParameter("base.dir", targetFile.getParent()
                 + File.separator);
-        transformer.setParameter("man.output.manifest.enabled", "1");
         transformer.setParameter("man.output.in.separate.dir", "1");
         transformer.setParameter("man.output.subdirs.enabled", "1");
         transformer.setParameter("man.output.base.dir", targetFile.getParent()
