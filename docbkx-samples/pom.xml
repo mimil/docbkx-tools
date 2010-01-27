@@ -747,5 +747,55 @@
         <example.input>article.xml</example.input>
       </properties>
     </profile>
+
+    <!--
+    This samples shows you how to use profiling stylesheets (in this case the html one).
+    In order to do this you will have to make an empty (at least) stylesheet customization
+    layer and just point to the profiling stylesheet of the official docbook distribution.
+    -->
+    <!--
+    This can be done using something like that:
+    -->
+    <!--
+       <xsl:import href="urn:docbkx:stylesheet/profile-docbook.xsl"/>
+    -->
+    <profile>
+      <id>docbkx.profile</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-html</goal>
+                </goals>
+                <phase>pre-site</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>profile/*.xml</includes>
+              <profileStatus>draft</profileStatus>
+              <htmlCustomization>src/docbkx/profile/profile-docbook-html.xsl</htmlCustomization>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Attached to a phase</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    
   </profiles>
 </project>
