@@ -3,6 +3,8 @@
 || [http://www.springsource.org/ Spring] || http://t3.gstatic.com/images?q=tbn:cym3rIRCvZz8WM:http://www.hyperic.com/blog/wp-content/uploads/s2-logo.png ||
 || [http://www.jspresso.org/ Jspresso] || http://www.jspresso.org/files/logo.png ||
 || [http://springframework.me/ Spring ME] ||  ||
-|| [http://restfulobjects.sourceforge.net/ Restful Objects || http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg ||
-|| [http://hc.apache.org/httpclient-3.x/ Apache HTTP Client || http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png ||
-|| [https://wiki.ow2.org/ Object Web || https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png ||
+|| [http://restfulobjects.sourceforge.net/ Restful Objects] || http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg ||
+|| [http://hc.apache.org/httpclient-3.x/ Apache HTTP Client] || http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png ||
+|| [https://wiki.ow2.org/frascati/Wiki.jsp?page=DeveloperCorner OW2 Consortium] || https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png ||
+|| [http://jguard.xwiki.com/ JGuard] || http://jguard.xwiki.com/xwiki/bin/download/XWiki/JGuardSkin/jGuard_logo.png ||
+|| [http://oval.sourceforge.net/ Oval] || http://oval.sourceforge.net/images/oval-banner.png ||
