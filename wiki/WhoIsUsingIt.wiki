@@ -3,7 +3,6 @@
 || [http://www.springsource.org/ Spring] || http://t3.gstatic.com/images?q=tbn:cym3rIRCvZz8WM:http://www.hyperic.com/blog/wp-content/uploads/s2-logo.png ||
 || [http://www.jspresso.org/ Jspresso] || http://www.jspresso.org/files/logo.png ||
 || [http://sonatype.com/ Sonatype] || http://www.sonatype.com/sites/all/themes/sonatype/images/sonatype_logo.gif ||
-|| [http://springframework.me/ Spring ME] ||  ||
 || [http://restfulobjects.sourceforge.net/ Restful Objects] || http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg ||
 || [http://hc.apache.org/httpclient-3.x/ Apache HTTP Client] || http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png ||
 || [https://wiki.ow2.org/frascati/Wiki.jsp?page=DeveloperCorner OW2 Consortium] || https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png ||
@@ -13,7 +12,9 @@
 || [http://fusesource.com/ FuseSource] || http://fusesource.com/images/fuse-logo.png ||
 || [http://code.google.com/p/liquidform/ Liquid Form || ||
 ||
-|| [http://flexmojos.sonatype.org/ FlexMojos || ||
+|| [http://flexmojos.sonatype.org/ FlexMojos] || ||
 || [http://www.springfuse.com/index.action Springfuse || 
 || [http://www.jaxio.com/celerio.html Celerio || ||
 || [http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/index.html cNIS || http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/images/cNIS-logo.png ||
+|| [http://springframework.me/ Spring ME] ||  ||
+|| [http://preon.flotsam.nl/ Preon || ||
