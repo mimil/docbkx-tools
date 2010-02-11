@@ -11,3 +11,4 @@
 || [http://symmetricds.codehaus.org/ SymmetricDS || http://symmetricds.codehaus.org/images/logos/SymmetricDS-Site.png ||
 || [http://code.google.com/p/liquidform/ Liquid Form || ||
 ||
+|| [http://flexmojos.sonatype.org/ FlexMojos || ||
