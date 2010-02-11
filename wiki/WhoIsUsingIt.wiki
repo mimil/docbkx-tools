@@ -7,7 +7,7 @@
 [http://hc.apache.org/httpclient-3.x/ http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png]
 [https://wiki.ow2.org/frascati/Wiki.jsp?page=DeveloperCorner https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png]
 [http://jguard.xwiki.com/ http://jguard.xwiki.com/xwiki/bin/download/XWiki/JGuardSkin/jGuard_logo.png]
-http://oval.sourceforge.net/ http://oval.sourceforge.net/images/oval-banner.png]
+[http://oval.sourceforge.net/ http://oval.sourceforge.net/images/oval-banner.png]
 [http://symmetricds.codehaus.org/ http://symmetricds.codehaus.org/images/logos/SymmetricDS-Site.png]
 [http://fusesource.com/ http://fusesource.com/images/fuse-logo.png]
 [http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/index.html http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/images/cNIS-logo.png]
