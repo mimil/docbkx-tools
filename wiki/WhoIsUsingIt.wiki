@@ -1,5 +1,5 @@
 = Who Is Using It? =
 
-* [http://www.springsource.org/ Spring]
-* [http://www.jspresso.org/ Jspresso]
-* [http://springframework.me/ Spring ME]
+ * [http://www.springsource.org/ Spring]
+ * [http://www.jspresso.org/ Jspresso]
+ * [http://springframework.me/ Spring ME]
