@@ -1,6 +1,6 @@
 = Who Is Using It? =
 
-If you believe your project/organization should be here as well, send us a message at docbkx-users@googlegroups.com.
+Below are some of the organizations/projects using the Docbkx Maven Plugin. If you believe your project/organization should be here as well, feel free to send us a message at docbkx-users@googlegroups.com.
 
 [http://www.springsource.org/ http://blog.exis.com/colin/wp-content/images/springsource-logo.jpg]
 [http://www.jspresso.org/ http://www.jspresso.org/files/logo.png]
