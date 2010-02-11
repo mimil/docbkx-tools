@@ -1,20 +1,20 @@
 = Who Is Using It? =
 
-|| [http://www.springsource.org/ Spring] || http://blog.exis.com/colin/wp-content/images/springsource-logo.jpg ||
-|| [http://www.jspresso.org/ Jspresso] || http://www.jspresso.org/files/logo.png ||
-|| [http://sonatype.com/ Sonatype] || http://www.sonatype.com/sites/all/themes/sonatype/images/sonatype_logo.gif ||
-|| [http://restfulobjects.sourceforge.net/ Restful Objects] || http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg ||
-|| [http://hc.apache.org/httpclient-3.x/ Apache HTTP Client] || http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png ||
-|| [https://wiki.ow2.org/frascati/Wiki.jsp?page=DeveloperCorner OW2 Consortium] || https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png ||
-|| [http://jguard.xwiki.com/ JGuard] || http://jguard.xwiki.com/xwiki/bin/download/XWiki/JGuardSkin/jGuard_logo.png ||
-|| [http://oval.sourceforge.net/ Oval] || http://oval.sourceforge.net/images/oval-banner.png ||
-|| [http://symmetricds.codehaus.org/ SymmetricDS || http://symmetricds.codehaus.org/images/logos/SymmetricDS-Site.png ||
-|| [http://fusesource.com/ FuseSource] || http://fusesource.com/images/fuse-logo.png ||
-|| [http://code.google.com/p/liquidform/ Liquid Form || ||
-||
-|| [http://flexmojos.sonatype.org/ FlexMojos] || ||
-|| [http://www.springfuse.com/index.action Springfuse || 
-|| [http://www.jaxio.com/celerio.html Celerio || ||
-|| [http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/index.html cNIS || http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/images/cNIS-logo.png ||
-|| [http://springframework.me/ Spring ME] ||  ||
-|| [http://preon.flotsam.nl/ Preon || ||
+[http://www.springsource.org/ http://blog.exis.com/colin/wp-content/images/springsource-logo.jpg]
+[http://www.jspresso.org/ http://www.jspresso.org/files/logo.png]
+[http://sonatype.com/ http://www.sonatype.com/sites/all/themes/sonatype/images/sonatype_logo.gif]
+[http://restfulobjects.sourceforge.net/ http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg]
+[http://hc.apache.org/httpclient-3.x/ http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png]
+[https://wiki.ow2.org/frascati/Wiki.jsp?page=DeveloperCorner https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png]
+[http://jguard.xwiki.com/ http://jguard.xwiki.com/xwiki/bin/download/XWiki/JGuardSkin/jGuard_logo.png]
+http://oval.sourceforge.net/ http://oval.sourceforge.net/images/oval-banner.png]
+[http://symmetricds.codehaus.org/ http://symmetricds.codehaus.org/images/logos/SymmetricDS-Site.png]
+[http://fusesource.com/ http://fusesource.com/images/fuse-logo.png]
+[http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/index.html http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/images/cNIS-logo.png]
+
+ * [http://code.google.com/p/liquidform/ Liquid Form]
+ * [http://flexmojos.sonatype.org/ FlexMojos]
+ * [http://www.springfuse.com/index.action Springfuse]
+ * [http://www.jaxio.com/celerio.html Celerio]
+ * [http://springframework.me/ Spring ME]
+ * [http://preon.flotsam.nl/ Preon]
