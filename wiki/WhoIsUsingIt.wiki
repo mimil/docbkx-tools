@@ -12,3 +12,6 @@
 || [http://code.google.com/p/liquidform/ Liquid Form || ||
 ||
 || [http://flexmojos.sonatype.org/ FlexMojos || ||
+|| [http://www.springfuse.com/index.action Springfuse || 
+|| [http://www.jaxio.com/celerio.html Celerio || ||
+|| [http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/index.html cNIS || http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/images/cNIS-logo.png ||
