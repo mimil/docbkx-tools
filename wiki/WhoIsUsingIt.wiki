@@ -1,5 +1,5 @@
 = Who Is Using It? =
 
 || [http://www.springsource.org/ Spring] || http://t3.gstatic.com/images?q=tbn:cym3rIRCvZz8WM:http://www.hyperic.com/blog/wp-content/uploads/s2-logo.png ||
-|| [http://www.jspresso.org/ Jspresso] || ||
-|| [http://springframework.me/ Spring ME] || ||
+|| [http://www.jspresso.org/ Jspresso] || http://www.jspresso.org/files/logo.png ||
+|| [http://springframework.me/ Spring ME] ||  ||
