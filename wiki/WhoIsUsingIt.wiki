@@ -1,6 +1,6 @@
 = Who Is Using It? =
 
-|| [http://www.springsource.org/ Spring] || http://t3.gstatic.com/images?q=tbn:cym3rIRCvZz8WM:http://www.hyperic.com/blog/wp-content/uploads/s2-logo.png ||
+|| [http://www.springsource.org/ Spring] || http://blog.exis.com/colin/wp-content/images/springsource-logo.jpg ||
 || [http://www.jspresso.org/ Jspresso] || http://www.jspresso.org/files/logo.png ||
 || [http://sonatype.com/ Sonatype] || http://www.sonatype.com/sites/all/themes/sonatype/images/sonatype_logo.gif ||
 || [http://restfulobjects.sourceforge.net/ Restful Objects] || http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg ||
