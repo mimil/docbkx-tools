@@ -10,6 +10,7 @@
 || [http://jguard.xwiki.com/ JGuard] || http://jguard.xwiki.com/xwiki/bin/download/XWiki/JGuardSkin/jGuard_logo.png ||
 || [http://oval.sourceforge.net/ Oval] || http://oval.sourceforge.net/images/oval-banner.png ||
 || [http://symmetricds.codehaus.org/ SymmetricDS || http://symmetricds.codehaus.org/images/logos/SymmetricDS-Site.png ||
+|| [http://fusesource.com/ FuseSource] || http://fusesource.com/images/fuse-logo.png ||
 || [http://code.google.com/p/liquidform/ Liquid Form || ||
 ||
 || [http://flexmojos.sonatype.org/ FlexMojos || ||
