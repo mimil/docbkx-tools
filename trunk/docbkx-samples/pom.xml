@@ -757,7 +757,7 @@
     This can be done using something like that:
     -->
     <!--
-       <xsl:import href="urn:docbkx:stylesheet/profile-docbook.xsl"/>
+       <xsl:import href="urn:docbkx:stylesheet/profile-docbook.xsl" />
     -->
     <profile>
       <id>docbkx.profile</id>
