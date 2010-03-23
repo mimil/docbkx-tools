@@ -4,7 +4,28 @@
     <title>Changes</title>
   </properties>
   <body>
-    
+
+    <release version="2.0.10">
+      <action dev="mimil" type="add">
+Add of optional &lt;useStandardOutput/&gt; in docbkx-builder-maven-plugin and the generated
+Mojos for stylesheets directly writing the target filename (manpages ...)
+instead of using stdout as transformation result.
+      </action>
+      <action dev="mimil" type="update">
+Use of latest docbook stylesheets artifacts as dependency instead of embedding parts
+of docbook stylesheet distribution.
+      </action>
+      <action dev="mimil" type="add">
+Add of docbkx-quickstart-archetype (@see http://code.google.com/p/docbkx-tools/wiki/UsingArchetypeTemplate)
+      </action>
+      <action dev="mimil" type="update">
+Fails to create directory with xom xinclude
+      </action>
+      <action dev="mimil" type="add">
+Add of XHTML support (generate-xhtml goal)
+      </action>
+    </release>
+
     <release version="2.0.9">
       <action dev="mimil" type="update">
 	Correction of generation failure when spaces in path.
