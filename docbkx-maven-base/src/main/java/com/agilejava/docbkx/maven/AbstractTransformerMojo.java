@@ -483,6 +483,53 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
             getLog().warn("Failed to search for catalog files.");
             // Let's be a little tolerant here.
         }
+        try {
+            Enumeration enumeration = classLoader.getResources("/docbook/catalog.xml");
+            while (enumeration.hasMoreElements()) {
+                if (!first) {
+                    builder.append(';');
+                } else {
+                    first = false;
+                }
+                URL resource = (URL) enumeration.nextElement();
+                builder.append(resource.toExternalForm());
+            }
+        } catch (IOException ioe) {
+            getLog().warn("Failed to search for catalog files.");
+            // Let's be a little tolerant here.
+        }
+        //TODO just for test
+        try {
+            Enumeration enumeration = classLoader.getResources("docbook/catalog.xml");
+            while (enumeration.hasMoreElements()) {
+                if (!first) {
+                    builder.append(';');
+                } else {
+                    first = false;
+                }
+                URL resource = (URL) enumeration.nextElement();
+                builder.append(resource.toExternalForm());
+            }
+        } catch (IOException ioe) {
+            getLog().warn("Failed to search for catalog files.");
+            // Let's be a little tolerant here.
+        }
+        try {
+            Enumeration enumeration = classLoader.getResources("catalog.xml");
+            while (enumeration.hasMoreElements()) {
+                if (!first) {
+                    builder.append(';');
+                } else {
+                    first = false;
+                }
+                URL resource = (URL) enumeration.nextElement();
+                builder.append(resource.toExternalForm());
+            }
+        } catch (IOException ioe) {
+            getLog().warn("Failed to search for catalog files.");
+            // Let's be a little tolerant here.
+        }
+
         String catalogFiles = builder.toString();
         if (catalogFiles.length() == 0) {
             getLog().warn("Failed to find catalog files.");
