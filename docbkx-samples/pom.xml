@@ -804,6 +804,43 @@
       </properties>
     </profile>
 
-    
+    <profile>
+      <id>docbkx.issue52</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-pdf</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+              <!--dependency>
+                <groupId>net.sf.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>5.0-all</version>
+                <classifier>resources</classifier>
+                <type>zip</type>
+                <scope>runtime</scope>
+              </dependency-->
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
