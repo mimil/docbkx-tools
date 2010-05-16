@@ -74,7 +74,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <id>site</id>
@@ -101,7 +101,7 @@
               <entities>
                 <entity>
                   <name>version</name>
-                  <value>${version}</value>
+                  <value>${project.version}</value>
                 </entity>
               </entities>
               <sourceDirectory>target/docbkx</sourceDirectory>
@@ -142,6 +142,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -175,6 +176,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -215,6 +217,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -272,6 +275,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -311,6 +315,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -379,6 +384,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -391,7 +397,7 @@
               <entities>
                 <entity>
                   <name>version</name>
-                  <value>${version}</value>
+                  <value>${project.version}</value>
                 </entity>
               </entities>
             </configuration>
@@ -437,6 +443,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -474,6 +481,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -509,6 +517,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -563,6 +572,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -599,6 +609,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <dependencies>
               <dependency>
                 <groupId>org.docbook</groupId>
@@ -664,6 +675,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <phase>package</phase>
@@ -728,6 +740,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -774,6 +787,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -811,6 +825,7 @@
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -829,14 +844,14 @@
                 <version>4.4</version>
                 <scope>runtime</scope>
               </dependency>
-              <!--dependency>
+              <dependency>
                 <groupId>net.sf.docbook</groupId>
                 <artifactId>docbook-xml</artifactId>
                 <version>5.0-all</version>
                 <classifier>resources</classifier>
                 <type>zip</type>
                 <scope>runtime</scope>
-              </dependency-->
+              </dependency>
             </dependencies>
           </plugin>
         </plugins>

@@ -79,7 +79,7 @@ import java.util.*;
  * @author Wilfred Springer
  */
 public abstract class AbstractTransformerMojo extends AbstractMojo {
-    protected String[] catalogs = {"catalog.xml", "/catalog.xml", "docbook/catalog.xml", "/docbook/catalog.xml"};
+    protected String[] catalogs = {"catalog.xml", "docbook/catalog.xml"};
 
     /**
      * Builds the actual output document.
@@ -484,7 +484,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 }
             } catch (IOException ioe) {
                 getLog().warn("Failed to search for catalog files: " + catalog);
-                getLog().warn(ioe);
                 // Let's be a little tolerant here.
             }
         }
