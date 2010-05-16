@@ -79,6 +79,7 @@ import java.util.*;
  * @author Wilfred Springer
  */
 public abstract class AbstractTransformerMojo extends AbstractMojo {
+    protected String[] catalogs = {"catalog.xml", "/catalog.xml", "docbook/catalog.xml", "/docbook/catalog.xml"};
 
     /**
      * Builds the actual output document.
@@ -468,72 +469,33 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 .getContextClassLoader();
         StringBuffer builder = new StringBuffer();
         boolean first = true;
-        try {
-            Enumeration enumeration = classLoader.getResources("/catalog.xml");
-            while (enumeration.hasMoreElements()) {
-                if (!first) {
-                    builder.append(';');
-                } else {
-                    first = false;
+        for (int i = 0; i < catalogs.length; i++) {
+            final String catalog = catalogs[i];
+            try {
+                Enumeration enumeration = classLoader.getResources(catalog);
+                while (enumeration.hasMoreElements()) {
+                    if (!first) {
+                        builder.append(';');
+                    } else {
+                        first = false;
+                    }
+                    URL resource = (URL) enumeration.nextElement();
+                    builder.append(resource.toExternalForm());
                 }
-                URL resource = (URL) enumeration.nextElement();
-                builder.append(resource.toExternalForm());
+            } catch (IOException ioe) {
+                getLog().warn("Failed to search for catalog files: " + catalog);
+                getLog().warn(ioe);
+                // Let's be a little tolerant here.
             }
-        } catch (IOException ioe) {
-            getLog().warn("Failed to search for catalog files.");
-            // Let's be a little tolerant here.
-        }
-        try {
-            Enumeration enumeration = classLoader.getResources("/docbook/catalog.xml");
-            while (enumeration.hasMoreElements()) {
-                if (!first) {
-                    builder.append(';');
-                } else {
-                    first = false;
-                }
-                URL resource = (URL) enumeration.nextElement();
-                builder.append(resource.toExternalForm());
-            }
-        } catch (IOException ioe) {
-            getLog().warn("Failed to search for catalog files.");
-            // Let's be a little tolerant here.
-        }
-        //TODO just for test
-        try {
-            Enumeration enumeration = classLoader.getResources("docbook/catalog.xml");
-            while (enumeration.hasMoreElements()) {
-                if (!first) {
-                    builder.append(';');
-                } else {
-                    first = false;
-                }
-                URL resource = (URL) enumeration.nextElement();
-                builder.append(resource.toExternalForm());
-            }
-        } catch (IOException ioe) {
-            getLog().warn("Failed to search for catalog files.");
-            // Let's be a little tolerant here.
-        }
-        try {
-            Enumeration enumeration = classLoader.getResources("catalog.xml");
-            while (enumeration.hasMoreElements()) {
-                if (!first) {
-                    builder.append(';');
-                } else {
-                    first = false;
-                }
-                URL resource = (URL) enumeration.nextElement();
-                builder.append(resource.toExternalForm());
-            }
-        } catch (IOException ioe) {
-            getLog().warn("Failed to search for catalog files.");
-            // Let's be a little tolerant here.
         }
 
         String catalogFiles = builder.toString();
         if (catalogFiles.length() == 0) {
             getLog().warn("Failed to find catalog files.");
         } else {
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Catalogs to load: "+catalogFiles);
+            }
             manager.setCatalogFiles(catalogFiles);
         }
         return manager;
