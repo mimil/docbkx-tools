@@ -165,6 +165,18 @@
               <excludedProperties>${excluded.properties}</excludedProperties>
             </configuration>
           </execution>
+            <execution>
+              <id>generate-epub</id>
+              <goals>
+                <goal>build</goal>
+              </goals>
+              <configuration>
+                <type>epub</type>
+                <superClassName>com.agilejava.docbkx.maven.AbstractEpubMojo</superClassName>
+                <excludedProperties>${excluded.properties},root.filename,base.dir,epub.oebps.dir,epub.metainf.dir,manifest.in.base.dir,epub.opf.filename</excludedProperties>
+                <useStandardOutput>false</useStandardOutput>
+              </configuration>
+            </execution>
         </executions>
         <configuration>
 
