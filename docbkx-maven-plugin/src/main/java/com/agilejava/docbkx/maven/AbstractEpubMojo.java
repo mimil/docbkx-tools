@@ -17,15 +17,7 @@ package com.agilejava.docbkx.maven;
  */
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Target;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.taskdefs.*;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.ZipFileSet;
-import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
-import org.codehaus.plexus.archiver.zip.ZipFile;
 import org.codehaus.plexus.util.FileUtils;
 
 import javax.xml.transform.Transformer;
