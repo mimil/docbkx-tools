@@ -63,11 +63,6 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
                                   String sourceFilename, File targetFile) {
         super.adjustTransformer(transformer, sourceFilename, targetFile);
 
-        /*  if(isValidCss()) {
-        transformer.setParameter("html.stylesheet", htmlStylesheet.getName());
-    }    */
-
-
         String rootFilename = targetFile.getName();
         rootFilename = rootFilename.substring(0, rootFilename
                 .lastIndexOf('.'));
@@ -79,16 +74,13 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
         transformer.setParameter("epub.metainf.dir", targetFile.getParent()
                 + File.separator + "META-INF" + File.separator);
 
+        validateFont();
+
         this.targetFile = targetFile;
     }
 
     public void postProcess() throws MojoExecutionException {
         super.postProcess();
-
-        // Setup Ant tasks
-        AntSetup antSetup = new AntSetup().invoke();
-        Project project = antSetup.getProject();
-        Target target = antSetup.getTarget();
 
         // TODO: temporary trick, svn version of docbook xsl epub stylesheet works differently
         try {
@@ -113,167 +105,24 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
             zipArchiver.setDestFile(targetFile);
             zipArchiver.createArchive();
 
-          /*  final File css = getCss();
-            if(css != null)
-            {
-                zipArchiver.addFile(css, "");
-            }
-
-            final File font = getFontFile();
-                  */
-            /*zipArchiver2.setCompress(false);
-            zipArchiver2.addFile(new File(getTargetDirectory(),"mimetype"), "mimetype");
-            zipArchiver2.setDestFile(new File(getMavenProject().getBasedir(), "epub.epub"));
-            zipArchiver2.setUpdateMode(true);
-            zipArchiver2.createArchive();    */
             getLog().debug("epub file created at: "+zipArchiver.getDestFile().getAbsolutePath());
         } catch (Exception e) {
             throw new MojoExecutionException("Unable to zip epub file", e);
         }
-        // Run the Ant tasks
-        //executeTasks(target, getMavenProject());
+
     }
 
-    private File getCss() {
-        final String css = getProperty("htmlStylesheet");
-        if (css != null) {
-            final File f = new File(css);
-            if (!f.exists()) {
-                getLog().warn("Unable to find specified css: " + f.getAbsolutePath());
-                return null;
-            }
-
-            return f;
-        }
-        return null;
-    }
-
-    private File getFontFile() {
+    private void validateFont() {
         final String font = getProperty("epubEmbeddedFont");
         if (font != null) {
             final File f = new File(font);
             if (!f.exists()) {
                 getLog().warn("Unable to find specified font: " + f.getAbsolutePath());
-                return null;
             }
             if (!font.endsWith("otf")) {
                 getLog().warn("Only otf font is supported: " + font);
-                return null;
             }
-
-            return f;
-        }
-        return null;
-    }
-
-    /* public void postProcess() throws MojoExecutionException {
-super.postProcess();
-
-
-// Setup Ant tasks
-AntSetup antSetup = new AntSetup().invoke();
-Project project = antSetup.getProject();
-Target target = antSetup.getTarget();
-
-// TODO: Delete the result file (will be empty for ePub, since the entire XSLT is chunked to different files)
-Delete delete = new Delete();
-delete.setDir(getTargetDirectory());      */
-    // delete.setIncludes("**/*.epub");
-    /*   initTask(delete, project, target);
-
-// Strip absolute paths from all files under getTargetDirectory()
-// HACK: Due to a pretty nasty bug in the version Saxon that Docbook uses, we
-//       need to strip any absolute paths in the files
-Replace replace = new Replace();
-replace.setDir(getTargetDirectory());
-replace.setToken(withTrailingSeparator(getTargetDirectory().getPath()));
-initTask(replace, project, target);
-
-// Create the mimetype file
-Echo echo = new Echo();
-final File mimetypeFile = new File(getTargetDirectory(), "mimetype");
-echo.setFile(mimetypeFile);
-echo.setMessage("application/epub+zip");
-initTask(echo, project, target);
-
-// Create the zip file
-Zip zip = new Zip();
-zip.setDestFile(bookFile);
-final FileSet mimetypeFileSet = new FileSet();
-mimetypeFileSet.setFile(mimetypeFile);
-zip.addFileset(mimetypeFileSet);
-
-final ZipFileSet metaFileSet = new ZipFileSet();
-metaFileSet.setDir(new File(getTargetDirectory(), metainfDir));
-metaFileSet.setPrefix(metainfDir);
-zip.addZipfileset(metaFileSet);
-
-final ZipFileSet oebpsFileSet = new ZipFileSet();
-oebpsFileSet.setDir(new File(getTargetDirectory(), oebpsDir));
-oebpsFileSet.setPrefix(oebpsDir);
-zip.addZipfileset(oebpsFileSet);
-
-if(isValidFont()) {
-final FileSet fontFileSet = new FileSet();
-fontFileSet.setFile(font);
-zip.addFileset(fontFileSet);
-}
-
-if(isValidCss()) {
-final FileSet cssFileSet = new FileSet();
-cssFileSet.setFile(htmlStylesheet);
-zip.addFileset(cssFileSet);
-}
-
-if(imagesDir != null && imagesDir.exists()) {
-final ZipFileSet imagesFileSet = new ZipFileSet();
-imagesFileSet.setDir(imagesDir);
-imagesFileSet.setPrefix(oebpsDir + "/images");
-// TODO: Would be nice to only include referenced images
-zip.addZipfileset(imagesFileSet);
-}
-
-initTask(zip, project, target);
-
-// Run the Ant tasks
-executeTasks(target, getMavenProject());
-}
-
-private String withTrailingSeparator(String path) {
-return path == null || path.endsWith(File.separator)
-    ? path
-    : path + File.separator;
-}
-              */
-
-    private void initTask(Task task, Project project, Target target) {
-        task.setProject(project);
-        task.setOwningTarget(target);
-        task.init();
-        target.addTask(task);
-    }
-
-    private class AntSetup {
-        private Project project;
-        private Target target;
-
-        public Project getProject() {
-            return project;
-        }
-
-        public Target getTarget() {
-            return target;
-        }
-
-        public AntSetup invoke() {
-            project = new Project();
-            project.setName("DummyProject");
-
-            target = new Target();
-            target.setName("");
-            target.setProject(project);
-            project.addTarget(target);
-            return this;
         }
     }
+
 }
