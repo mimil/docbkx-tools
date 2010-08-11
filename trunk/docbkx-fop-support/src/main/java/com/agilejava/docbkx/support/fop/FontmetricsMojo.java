@@ -164,10 +164,10 @@ public class FontmetricsMojo extends AbstractMojo {
         }
 
         public void transform(String fontFile) throws IOException {
-            StringBuilder builder = new StringBuilder();
-            builder.append(fontFile).append(' ');
-            builder.append(getTargetFile(fontFile));
-            PFMReader.main(builder.toString().split(" "));
+            String[] args = new String[2];
+            args[0] = fontFile;
+            args[1] = getTargetFile(fontFile);
+            PFMReader.main(args);
         }
 
         public void appendSuffixes(List list) {
@@ -184,13 +184,21 @@ public class FontmetricsMojo extends AbstractMojo {
         }
 
         public void transform(String fontFile) throws IOException {
-            StringBuilder builder = new StringBuilder();
+            String[] args;
             if (ansi) {
-                builder.append("-enc ansi ");
+                args = new String[4];
+                args[0] = "-enc";
+                args[1] = "ansi";
+                args[2] = fontFile;
+                args[3] = getTargetFile(fontFile);
             }
-            builder.append(fontFile).append(' ');
-            builder.append(getTargetFile(fontFile));
-            TTFReader.main(builder.toString().split(" "));
+            else
+            {
+                args = new String[2];
+                args[0] = fontFile;
+                args[1] = getTargetFile(fontFile);
+            }
+            TTFReader.main(args);
         }
 
         public void appendSuffixes(List list) {
