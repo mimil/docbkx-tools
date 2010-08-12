@@ -8,16 +8,20 @@ import java.util.List;
 
 import org.apache.fop.fonts.apps.PFMReader;
 import org.apache.fop.fonts.apps.TTFReader;
+import org.apache.fop.fonts.truetype.TTFFile;
+import org.apache.fop.fonts.type1.PFMFile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.w3c.dom.Document;
+
+import javax.xml.transform.TransformerException;
 
 /**
  * A Maven plugin for generating FOP font metrics files from font files.
- * 
- * 
+ *
  * @author Wilfred Springer
  * @goal generate
  */
@@ -27,19 +31,19 @@ public class FontmetricsMojo extends AbstractMojo {
      * The list of all {@link MetricsFileBuilder MetricsFileBuilders} to be
      * included.
      */
-    private MetricsFileBuilder[] builders = new MetricsFileBuilder[] {
-            new Type1MetricsFileBuilder(), new TtfMetricsFileBuilder() };
+    private MetricsFileBuilder[] builders = new MetricsFileBuilder[]{
+            new Type1MetricsFileBuilder(), new TtfMetricsFileBuilder()};
 
     /**
      * The directory containing the font files.
-     * 
+     *
      * @parameter expression="${basedir}/src/fonts"
      */
     protected File sourceDirectory;
 
     /**
      * The directory to which the metrics files will be generated.
-     * 
+     *
      * @parameter expression="${basedir}/target/fonts"
      */
     protected File targetDirectory;
@@ -50,7 +54,7 @@ public class FontmetricsMojo extends AbstractMojo {
      * differences between these two encoding options as currently used within
      * FOP. Please note that this information only applies to TrueType fonts and
      * TrueType collections
-     * 
+     *
      * @parameter
      */
     protected boolean ansi = false;
@@ -76,29 +80,25 @@ public class FontmetricsMojo extends AbstractMojo {
 
     /**
      * Transforms the font file passed in using the given builder.
-     * 
-     * @param fontFile
-     *            The font file to be transformed into a metrics file.
-     * @param builder
-     *            The builder that's going to do it.
-     * @throws MojoExecutionException
-     *             If the builder somehow fails to do it.
+     *
+     * @param fontFile The font file to be transformed into a metrics file.
+     * @param builder  The builder that's going to do it.
+     * @throws MojoExecutionException If the builder somehow fails to do it.
      */
-    private static void transform(String fontFile, MetricsFileBuilder builder)
+    private void transform(String fontFile, MetricsFileBuilder builder)
             throws MojoExecutionException {
         try {
             builder.transform(fontFile);
         } catch (IOException ioe) {
-            throw new MojoExecutionException("Failed to transform " + fontFile,
-                    ioe);
+            // let be tolerant here
+            getLog().warn("Failed to transform " + fontFile, ioe);
         }
     }
 
     /**
      * Returns the target metrics file for the given font file.
-     * 
-     * @param fontFile
-     *            The file to be transformed.
+     *
+     * @param fontFile The file to be transformed.
      * @return The name of the target metrics file.
      */
     private String getTargetFile(String fontFile) {
@@ -112,7 +112,7 @@ public class FontmetricsMojo extends AbstractMojo {
 
     /**
      * Returns an array of the names of all font files found.
-     * 
+     *
      * @return An array with the names of all font files found.
      */
     private String[] getFontFiles() {
@@ -135,7 +135,7 @@ public class FontmetricsMojo extends AbstractMojo {
     /**
      * Returns a list of patterns of font files to be included while scanning
      * for font files.
-     * 
+     *
      * @return A list of patterns matching font files to be included while
      *         scanning for other font files.
      */
@@ -164,10 +164,23 @@ public class FontmetricsMojo extends AbstractMojo {
         }
 
         public void transform(String fontFile) throws IOException {
-            String[] args = new String[2];
-            args[0] = fontFile;
-            args[1] = getTargetFile(fontFile);
-            PFMReader.main(args);
+            PFMReader reader = new PFMReader();
+            getLog().debug("Parsing font: " + fontFile);
+            PFMFile pfm = reader.loadPFM(fontFile);
+            if (pfm == null) {
+                throw new IOException("Unable to load PFM file: " + fontFile);
+            }
+
+            Document doc = reader.constructFontXML(pfm, null, null, null, null);
+            if (doc == null) {
+                throw new IOException("Unable to construct font XML file");
+            }
+
+            try {
+                reader.writeFontXML(doc, getTargetFile(fontFile));
+            } catch (TransformerException e) {
+                throw new IOException("Unable to write font XML file", e);
+            }
         }
 
         public void appendSuffixes(List list) {
@@ -184,21 +197,23 @@ public class FontmetricsMojo extends AbstractMojo {
         }
 
         public void transform(String fontFile) throws IOException {
-            String[] args;
-            if (ansi) {
-                args = new String[4];
-                args[0] = "-enc";
-                args[1] = "ansi";
-                args[2] = fontFile;
-                args[3] = getTargetFile(fontFile);
+            TTFReader reader = new TTFReader();
+            getLog().debug("Parsing font: " + fontFile);
+            TTFFile ttf = reader.loadTTF(fontFile, null);
+            if (ttf == null) {
+                throw new IOException("Unable to load TTF file: " + fontFile);
             }
-            else
-            {
-                args = new String[2];
-                args[0] = fontFile;
-                args[1] = getTargetFile(fontFile);
+
+            Document doc = reader.constructFontXML(ttf, null, null, null, null, !ansi, null);
+            if (doc == null) {
+                throw new IOException("Unable to construct font XML file");
             }
-            TTFReader.main(args);
+
+            try {
+                reader.writeFontXML(doc, getTargetFile(fontFile));
+            } catch (TransformerException e) {
+                throw new IOException("Unable to write font XML file", e);
+            }
         }
 
         public void appendSuffixes(List list) {
