@@ -35,14 +35,14 @@ public class FontmetricsMojo extends AbstractMojo {
      * 
      * @parameter expression="${basedir}/src/fonts"
      */
-    private File sourceDirectory;
+    protected File sourceDirectory;
 
     /**
      * The directory to which the metrics files will be generated.
      * 
      * @parameter expression="${basedir}/target/fonts"
      */
-    private File targetDirectory;
+    protected File targetDirectory;
 
     /**
      * Creates a WinAnsi-encoded font metrics file. Without this option, a
@@ -53,7 +53,7 @@ public class FontmetricsMojo extends AbstractMojo {
      * 
      * @parameter
      */
-    private boolean ansi;
+    protected boolean ansi = false;
 
     /**
      * {@inheritDoc} Generates font metric files from the font files found in
