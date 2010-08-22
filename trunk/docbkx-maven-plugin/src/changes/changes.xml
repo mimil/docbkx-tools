@@ -5,6 +5,22 @@
   </properties>
   <body>
 
+    <release version="2.0.11">
+      <action dev="mimil" type="update">
+Docbook XML catalogs of both previous and current versions are now correctly loaded.
+      </action>
+      <action dev="mimil" type="add">
+Add of epub plugin
+      </action>
+      <action dev="mimil" type="update">
+docbkx-tools plugin now works correctly under maven 3
+      </action>
+        <action dev="mimil" type="update">
+Bugs in the fop-support plugin was causing the plugin to stop and not working when space characters
+were encountered into the path.
+      </action>
+    </release>
+
     <release version="2.0.10">
       <action dev="mimil" type="add">
 Add of optional &lt;useStandardOutput/&gt; in docbkx-builder-maven-plugin and the generated
