@@ -852,7 +852,7 @@
                 <postProcess>
                   <!-- Copy the images -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/covers">
-                    <fileset dir="src/docbkx/epubbook/covers/"/>
+                    <fileset dir="src/docbkx/epubbook/covers/" />
                   </copy>
                   <!-- Copy the font -->
                   <!-- Copy the css -->
