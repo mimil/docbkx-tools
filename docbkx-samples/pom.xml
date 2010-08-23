@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.agilejava.docbkx</groupId>
     <artifactId>docbkx</artifactId>
-    <version>2.0.11</version>
+    <version>2.0.12-SNAPSHOT</version>
   </parent>
   <artifactId>docbkx-samples</artifactId>
   <packaging>pom</packaging>
