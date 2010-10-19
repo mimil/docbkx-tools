@@ -1,7 +1,13 @@
 group fonts;
 
-config(fonts) ::= <<
+config(fonts, targetResolution, sourceResolution) ::= <<
 <fop version="1.0">
+  $if(targetResolution)$
+  <target-resolution>$targetResolution$</target-resolution>
+  $endif$
+  $if(sourceResolution)$
+  <source-resolution>$sourceResolution$</source-resolution>
+  $endif$
   <renderers>
   	<renderer mime="application/pdf">
   	  <fonts>
