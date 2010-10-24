@@ -1,6 +1,7 @@
 package com.agilejava.docbkx.maven;
 
 import java.lang.reflect.Method;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,29 +14,39 @@ import org.apache.commons.el.ExpressionEvaluatorImpl;
 
 import junit.framework.TestCase;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
 public class ExpressionEvaluatorTest extends TestCase {
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws ELException DOCUMENT ME!
+   */
+  public void testEvaluator() throws ELException {
+    ExpressionEvaluator evaluator = new ExpressionEvaluatorImpl();
+    final Map           foo       = new HashMap();
+    foo.put("bar", "whatever");
 
-    public void testEvaluator() throws ELException {
-        ExpressionEvaluator evaluator = new ExpressionEvaluatorImpl();
-        final Map foo = new HashMap();
-        foo.put("bar", "whatever");
-        Object result =
-        evaluator.evaluate("${foo.bar}", Object.class, new VariableResolver() {
+    Object result =
+      evaluator.evaluate("${foo.bar}", Object.class,
+                         new VariableResolver() {
+          public Object resolveVariable(String name) throws ELException {
+            System.out.println(name);
 
-            public Object resolveVariable(String name) throws ELException {
-                System.out.println(name);
-                return foo;
-            }
-
-        }, new FunctionMapper() {
-
-            public Method resolveFunction(String arg0, String arg1) {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
+            return foo;
+          }
+        },
+                         new FunctionMapper() {
+          public Method resolveFunction(String arg0, String arg1) {
+            // TODO Auto-generated method stub
+            return null;
+          }
         });
-        System.out.println(result);
-    }
 
+    System.out.println(result);
+  }
 }

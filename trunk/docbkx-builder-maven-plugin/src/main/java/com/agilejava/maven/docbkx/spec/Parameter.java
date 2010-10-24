@@ -13,79 +13,128 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.agilejava.maven.docbkx.spec;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
 public class Parameter {
+  private String name;
+  private String value;
+  private String description;
+  private String type = "string";
 
-    private String name;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param type DOCUMENT ME!
+   */
+  public void setTypeFromRefType(String type) {
+    if ("attribute set".equals(type)) {
+      this.type = "attributeSet";
+    } else {
+      this.type = type;
+    }
+  }
 
-    private String value;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getType() {
+    return type;
+  }
 
-    private String description;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param name DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    private String type = "string";
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
 
-    public void setTypeFromRefType(String type) {
-        if ("attribute set".equals(type)) {
-            this.type = "attributeSet";
+  /**
+   * DOCUMENT ME!
+   *
+   * @param value DOCUMENT ME!
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getValue() {
+    return value;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param description DOCUMENT ME!
+   */
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getDescription() {
+    if ("boolean".equals(type)) {
+      String result = description.replaceAll("non-zero (true)", "true");
+      result = result.replaceAll("non-zero", "true");
+
+      return result;
+    } else {
+      return description;
+    }
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getJavaIdentifier() {
+    StringBuffer builder       = new StringBuffer();
+    int          size          = name.length();
+    boolean      nextUpperCase = false;
+
+    for (int i = 0; i < size; i++) {
+      char c = name.charAt(i);
+
+      if ((c == '.') || (c == '-')) {
+        nextUpperCase = true;
+      } else {
+        if (nextUpperCase) {
+          builder.append(Character.toUpperCase(c));
+          nextUpperCase = false;
         } else {
-            this.type = type;
+          builder.append(c);
         }
+      }
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        if ("boolean".equals(type)) {
-            String result = description.replaceAll("non-zero (true)", "true");
-            result = result.replaceAll("non-zero", "true");
-            return result;
-        } else {
-            return description;
-        }
-    }
-
-    public String getJavaIdentifier() {
-        StringBuffer builder = new StringBuffer();
-        int size = name.length();
-        boolean nextUpperCase = false;
-        for (int i = 0; i < size; i++) {
-            char c = name.charAt(i);
-            if (c == '.' || c == '-') {
-                nextUpperCase = true;
-            } else {
-                if (nextUpperCase) {
-                    builder.append(Character.toUpperCase(c));
-                    nextUpperCase = false;
-                } else {
-                    builder.append(c);
-                }
-            }
-        }
-        return builder.toString();
-    }
-    
+    return builder.toString();
+  }
 }

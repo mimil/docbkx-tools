@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.agilejava.maven.docbkx.spec;
 
 import java.util.ArrayList;
@@ -21,164 +20,263 @@ import java.util.List;
 
 /**
  * A representation of the the DocBook-XSL specific version of a plugin.
- * 
+ *
  * @author Wilfred Springer
  */
 public class Specification {
+  /**
+   * The extension of the target file.
+   */
+  private String targetFileExtension;
 
-    /**
-     * The extension of the target file.
-     */
-    private String targetFileExtension;
+  /**
+   * The location in which the stylesheets will be stored.
+   */
+  private String stylesheetLocation;
 
-    /**
-     * The location in which the stylesheets will be stored.
-     */
-    private String stylesheetLocation;
+  /**
+   * The type of content to be generated. Affects the output directory name, and the name of
+   * the plugin.
+   */
+  private String type;
 
-    /**
-     * The type of content to be generated. Affects the output directory name,
-     * and the name of the plugin.
-     */
-    private String type;
-    
-    /**
-     * The suffix of the plugin: generate-....
-     */
-    private String pluginSuffix;
+  /**
+   * The suffix of the plugin: generate-....
+   */
+  private String pluginSuffix;
 
-    /**
-     * The name of the Mojo class implementing the required behaviour.
-     */
-    private String className;
+  /**
+   * The name of the Mojo class implementing the required behaviour.
+   */
+  private String className;
 
-    /**
-     * The name of the super class for this class.
-     */
-    private String superClassName;
+  /**
+   * The name of the super class for this class.
+   */
+  private String superClassName;
 
-    /**
-     * The package in which the generated class should reside.
-     */
-    private String packageName;
+  /**
+   * The package in which the generated class should reside.
+   */
+  private String packageName;
 
-    /**
-     * The version of the DocBook XSL stylesheets.
-     */
-    private String docbookXslVersion;
+  /**
+   * The version of the DocBook XSL stylesheets.
+   */
+  private String docbookXslVersion;
 
-    /**
-     * A list of all parameters.
-     */
-    private List parameters;
+  /**
+   * A list of all parameters.
+   */
+  private List parameters;
 
-    /**
-     * False if the stylesheet is responsible to create the output file(s) using its own naming scheme.
+  /**
+   * False if the stylesheet is responsible to create the output file(s) using its own naming
+   * scheme.
+   */
+  private boolean useStandardOutput = true;
+
+/**
+     * Constructs a new instance.
      *
      */
-    private boolean useStandardOutput = true;
+  public Specification() {
+    parameters = new ArrayList();
+  }
 
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getClassName() {
+    return className;
+  }
 
-    /**
-     * Constructs a new instance.
-     * 
-     */
-    public Specification() {
-        parameters = new ArrayList();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param className DOCUMENT ME!
+   */
+  public void setClassName(String className) {
+    this.className = className;
+  }
 
-    public String getClassName() {
-        return className;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getDocbookXslVersion() {
+    return docbookXslVersion;
+  }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param docbookXslVersion DOCUMENT ME!
+   */
+  public void setDocbookXslVersion(String docbookXslVersion) {
+    this.docbookXslVersion = docbookXslVersion;
+  }
 
-    public String getDocbookXslVersion() {
-        return docbookXslVersion;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getPackageName() {
+    return packageName;
+  }
 
-    public void setDocbookXslVersion(String docbookXslVersion) {
-        this.docbookXslVersion = docbookXslVersion;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param packageName DOCUMENT ME!
+   */
+  public void setPackageName(String packageName) {
+    this.packageName = packageName;
+  }
 
-    public String getPackageName() {
-        return packageName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param name DOCUMENT ME!
+   * @param description DOCUMENT ME!
+   */
+  public void addParameter(String name, String description) {
+    Parameter parameter = new Parameter();
+    parameter.setName(name);
+    parameter.setDescription(description);
+    parameters.add(parameter);
+  }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public List getParameters() {
+    return parameters;
+  }
 
-    public void addParameter(String name, String description) {
-        Parameter parameter = new Parameter();
-        parameter.setName(name);
-        parameter.setDescription(description);
-        parameters.add(parameter);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param parameters DOCUMENT ME!
+   */
+  public void setParameters(List parameters) {
+    this.parameters = parameters;
+  }
 
-    public List getParameters() {
-        return parameters;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getStylesheetLocation() {
+    return stylesheetLocation;
+  }
 
-    public void setParameters(List parameters) {
-        this.parameters = parameters;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param stylesheetLocation DOCUMENT ME!
+   */
+  public void setStylesheetLocation(String stylesheetLocation) {
+    this.stylesheetLocation = stylesheetLocation;
+  }
 
-    public String getStylesheetLocation() {
-        return stylesheetLocation;
-    }
+  /**
+   * Returns the extension of the files being generated by the plugin generated from this
+   * specification, which will be based on the {@link #type} variable if it is not explicitly
+   * overridden.
+   *
+   * @return The extension of the files being generated by the plugin generated from this
+   *         specification.
+   */
+  public String getTargetFileExtension() {
+    return (targetFileExtension == null) ? type : targetFileExtension;
+  }
 
-    public void setStylesheetLocation(String stylesheetLocation) {
-        this.stylesheetLocation = stylesheetLocation;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param targetFileExtension DOCUMENT ME!
+   */
+  public void setTargetFileExtension(String targetFileExtension) {
+    this.targetFileExtension = targetFileExtension;
+  }
 
-    /**
-     * Returns the extension of the files being generated by the plugin
-     * generated from this specification, which will be based on the
-     * {@link #type} variable if it is not explicitly overridden.
-     * 
-     * @return The extension of the files being generated by the plugin
-     *         generated from this specification.
-     */
-    public String getTargetFileExtension() {
-        return targetFileExtension == null ? type : targetFileExtension;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getType() {
+    return type;
+  }
 
-    public void setTargetFileExtension(String targetFileExtension) {
-        this.targetFileExtension = targetFileExtension;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param type DOCUMENT ME!
+   */
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public String getType() {
-        return type;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getSuperClassName() {
+    return superClassName;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param superClassName DOCUMENT ME!
+   */
+  public void setSuperClassName(String superClassName) {
+    this.superClassName = superClassName;
+  }
 
-    public String getSuperClassName() {
-        return superClassName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public String getPluginSuffix() {
+    return (pluginSuffix == null) ? type : pluginSuffix;
+  }
 
-    public void setSuperClassName(String superClassName) {
-        this.superClassName = superClassName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param pluginSuffix DOCUMENT ME!
+   */
+  public void setPluginSuffix(String pluginSuffix) {
+    this.pluginSuffix = pluginSuffix;
+  }
 
-    public String getPluginSuffix() {
-        return pluginSuffix == null ? type : pluginSuffix;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public boolean isUseStandardOutput() {
+    return useStandardOutput;
+  }
 
-    public void setPluginSuffix(String pluginSuffix) {
-        this.pluginSuffix = pluginSuffix;
-    }
-
-    public boolean isUseStandardOutput() {
-        return useStandardOutput;
-    }
-
-    public void setUseStandardOutput(boolean useStandardOutput) {
-        this.useStandardOutput = useStandardOutput;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param useStandardOutput DOCUMENT ME!
+   */
+  public void setUseStandardOutput(boolean useStandardOutput) {
+    this.useStandardOutput = useStandardOutput;
+  }
 }

@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,15 +16,16 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import org.apache.maven.plugin.MojoExecutionException;
+
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 
-import javax.xml.transform.Transformer;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.xml.transform.Transformer;
 
 /**
  * A dedicated base class for plugins generating ePub output, in order to allow
@@ -33,9 +35,9 @@ import java.net.URL;
  * @author Cedric Pronzato
  * @author Brian Richard Jackson
  */
-public abstract class AbstractEpubMojo extends AbstractMojoBase {
-
-
+public abstract class AbstractEpubMojo
+    extends AbstractMojoBase
+{
     /**
      * The Zip archiver.
      *
@@ -43,78 +45,91 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
      * @required
      */
     private ZipArchiver zipArchiver;
-
     private File targetFile;
-
 
     /**
      * {@inheritDoc} This implementation will set the root.filename property,
      * based on the targetFile's name.
      */
-    public void adjustTransformer(Transformer transformer,
-                                  String sourceFilename, File targetFile) {
-        super.adjustTransformer(transformer, sourceFilename, targetFile);
+    public void adjustTransformer( Transformer transformer, String sourceFilename, File targetFile )
+    {
+        super.adjustTransformer( transformer, sourceFilename, targetFile );
 
-        String rootFilename = targetFile.getName();
-        rootFilename = rootFilename.substring(0, rootFilename
-                .lastIndexOf('.'));
-        transformer.setParameter("root.filename", rootFilename);
-        transformer.setParameter("base.dir", targetFile.getParent()
-                + File.separator);
-        transformer.setParameter("epub.oebps.dir", targetFile.getParent()
-                + File.separator);
-        transformer.setParameter("epub.metainf.dir", targetFile.getParent()
-                + File.separator + "META-INF" + File.separator);
+        String rootFilename = targetFile.getName(  );
+        rootFilename =
+            rootFilename.substring( 0,
+                                    rootFilename.lastIndexOf( '.' ) );
+        transformer.setParameter( "root.filename", rootFilename );
+        transformer.setParameter( "base.dir", targetFile.getParent(  ) + File.separator );
+        transformer.setParameter( "epub.oebps.dir", targetFile.getParent(  ) + File.separator );
+        transformer.setParameter( "epub.metainf.dir",
+                                  targetFile.getParent(  ) + File.separator + "META-INF" + File.separator );
 
-        validateFont();
+        validateFont(  );
 
         this.targetFile = targetFile;
     }
 
-    public void postProcess() throws MojoExecutionException {
-        super.postProcess();
+    public void postProcess(  )
+                     throws MojoExecutionException
+    {
+        super.postProcess(  );
 
         // TODO: temporary trick, svn version of docbook xsl epub stylesheet works differently
-        try {
-            final URL containerURL = getClass().getResource("/epub/container.xml");
-            FileUtils.copyURLToFile(containerURL, new File(targetFile.getParentFile(), "META-INF" + File.separator + "container.xml"));
-        } catch (IOException e) {
-            throw new MojoExecutionException("Unable to copy hardcoded container.xml file", e);
+        try
+        {
+            final URL containerURL = getClass(  ).getResource( "/epub/container.xml" );
+            FileUtils.copyURLToFile( containerURL,
+                                     new File( targetFile.getParentFile(  ),
+                                               "META-INF" + File.separator + "container.xml" ) );
+        } catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to copy hardcoded container.xml file", e );
         }
 
         // copy mimetype file
-        try {
-            final URL mimetypeURL = getClass().getResource("/epub/mimetype");
-            FileUtils.copyURLToFile(mimetypeURL, new File(targetFile.getParentFile(), "mimetype"));
-        } catch (IOException e) {
-            throw new MojoExecutionException("Unable to copy hardcoded mimetype file", e);
+        try
+        {
+            final URL mimetypeURL = getClass(  ).getResource( "/epub/mimetype" );
+            FileUtils.copyURLToFile( mimetypeURL,
+                                     new File( targetFile.getParentFile(  ),
+                                               "mimetype" ) );
+        } catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to copy hardcoded mimetype file", e );
         }
 
+        try
+        {
+            zipArchiver.addDirectory( targetFile.getParentFile(  ) );
+            zipArchiver.setCompress( true ); // seems to not be a problem to have mimetype compressed
+            zipArchiver.setDestFile( targetFile );
+            zipArchiver.createArchive(  );
 
-        try {
-            zipArchiver.addDirectory(targetFile.getParentFile());
-            zipArchiver.setCompress(true); // seems to not be a problem to have mimetype compressed
-            zipArchiver.setDestFile(targetFile);
-            zipArchiver.createArchive();
-
-            getLog().debug("epub file created at: "+zipArchiver.getDestFile().getAbsolutePath());
-        } catch (Exception e) {
-            throw new MojoExecutionException("Unable to zip epub file", e);
-        }
-
-    }
-
-    private void validateFont() {
-        final String font = getProperty("epubEmbeddedFont");
-        if (font != null) {
-            final File f = new File(font);
-            if (!f.exists()) {
-                getLog().warn("Unable to find specified font: " + f.getAbsolutePath());
-            }
-            if (!font.endsWith("otf")) {
-                getLog().warn("Only otf font is supported: " + font);
-            }
+            getLog(  ).debug( "epub file created at: " + zipArchiver.getDestFile(  ).getAbsolutePath(  ) );
+        } catch ( Exception e )
+        {
+            throw new MojoExecutionException( "Unable to zip epub file", e );
         }
     }
 
+    private void validateFont(  )
+    {
+        final String font = getProperty( "epubEmbeddedFont" );
+
+        if ( font != null )
+        {
+            final File f = new File( font );
+
+            if ( ! f.exists(  ) )
+            {
+                getLog(  ).warn( "Unable to find specified font: " + f.getAbsolutePath(  ) );
+            }
+
+            if ( ! font.endsWith( "otf" ) )
+            {
+                getLog(  ).warn( "Only otf font is supported: " + font );
+            }
+        }
+    }
 }

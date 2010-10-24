@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,58 +16,55 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * The representation of an XSL parameter made of a name and a value.
- * 
+ *
  * @author Cedric Pronzato
  */
 public class Parameter {
+  /**
+   * The name of the parameter.
+   */
+  private String name;
 
-    /**
-     * The name of the parameter.
-     */
-    private String name;
-    
-    /**
-     * The value of the parameter.
-     */
-    private String value;
+  /**
+   * The value of the parameter.
+   */
+  private String value;
 
-    /**
-     * Returns the name of the parameter.
-     * 
-     * @return The name of the parameter.
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Returns the name of the parameter.
+   *
+   * @return The name of the parameter.
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the name of the parameter.
-     * 
-     * @param name Sets the name of the parameter.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+  /**
+   * Sets the name of the parameter.
+   *
+   * @param name Sets the name of the parameter.
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    /**
-     * Returns the value of the parameter.
-     * 
-     * @return The value of the parameter.
-     */
-    public String getValue() {
-        return value;
-    }
+  /**
+   * Returns the value of the parameter.
+   *
+   * @return The value of the parameter.
+   */
+  public String getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the parameter.
-     * 
-     * @param value The value of the parameter.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
-    
+  /**
+   * Sets the value of the parameter.
+   *
+   * @param value The value of the parameter.
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 }

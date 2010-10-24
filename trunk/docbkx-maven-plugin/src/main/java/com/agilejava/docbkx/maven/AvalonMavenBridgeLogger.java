@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,107 +16,209 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import org.apache.avalon.framework.logger.Logger;
+
 import org.apache.maven.plugin.logging.Log;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
 public class AvalonMavenBridgeLogger implements Logger {
+  private Log     mavenLog;
+  private boolean errorIsDebug = false;
+  private boolean warnIsDebug  = false;
 
-    private Log mavenLog;
+/**
+   * Creates a new AvalonMavenBridgeLogger object.
+   *
+   * @param mavenLog DOCUMENT ME!
+   */
+  public AvalonMavenBridgeLogger(Log mavenLog) {
+    this.mavenLog = mavenLog;
+  }
 
-    private boolean errorIsDebug = false;
+/**
+   * Creates a new AvalonMavenBridgeLogger object.
+   *
+   * @param mavenLog DOCUMENT ME!
+   * @param errorIsDebug DOCUMENT ME!
+   * @param warnIsDebug DOCUMENT ME!
+   */
+  public AvalonMavenBridgeLogger(Log mavenLog, boolean errorIsDebug, boolean warnIsDebug) {
+    this(mavenLog);
+    this.errorIsDebug   = errorIsDebug;
+    this.warnIsDebug    = warnIsDebug;
+  }
 
-    private boolean warnIsDebug = false;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   */
+  public void debug(String arg0) {
+    if (mavenLog.isDebugEnabled())
+      mavenLog.debug(arg0);
+  }
 
-    public AvalonMavenBridgeLogger(Log mavenLog) {
-        this.mavenLog = mavenLog;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   * @param arg1 DOCUMENT ME!
+   */
+  public void debug(String arg0, Throwable arg1) {
+    if (mavenLog.isDebugEnabled())
+      mavenLog.debug(arg0, arg1);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   */
+  public void error(String arg0) {
+    if (errorIsDebug) {
+      debug(arg0);
+    } else {
+      mavenLog.error(arg0);
     }
+  }
 
-    public AvalonMavenBridgeLogger(Log mavenLog, boolean errorIsDebug,
-            boolean warnIsDebug) {
-        this(mavenLog);
-        this.errorIsDebug = errorIsDebug;
-        this.warnIsDebug = warnIsDebug;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   * @param arg1 DOCUMENT ME!
+   */
+  public void error(String arg0, Throwable arg1) {
+    if (errorIsDebug) {
+      debug(arg0, arg1);
+    } else {
+      mavenLog.error(arg0, arg1);
     }
+  }
 
-    public void debug(String arg0) {
-        mavenLog.debug(arg0);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   */
+  public void fatalError(String arg0) {
+    mavenLog.error(arg0);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   * @param arg1 DOCUMENT ME!
+   */
+  public void fatalError(String arg0, Throwable arg1) {
+    mavenLog.error(arg0, arg1);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public Logger getChildLogger(String arg0) {
+    return null;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   */
+  public void info(String arg0) {
+    mavenLog.info(arg0);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   * @param arg1 DOCUMENT ME!
+   */
+  public void info(String arg0, Throwable arg1) {
+    mavenLog.info(arg0, arg1);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public boolean isDebugEnabled() {
+    return mavenLog.isDebugEnabled();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public boolean isErrorEnabled() {
+    return mavenLog.isErrorEnabled();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public boolean isFatalErrorEnabled() {
+    return mavenLog.isErrorEnabled();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public boolean isInfoEnabled() {
+    return mavenLog.isInfoEnabled();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  public boolean isWarnEnabled() {
+    return mavenLog.isWarnEnabled();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   */
+  public void warn(String arg0) {
+    if (warnIsDebug) {
+      debug(arg0);
+    } else {
+      mavenLog.warn(arg0);
     }
+  }
 
-    public void debug(String arg0, Throwable arg1) {
-        mavenLog.debug(arg0, arg1);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param arg0 DOCUMENT ME!
+   * @param arg1 DOCUMENT ME!
+   */
+  public void warn(String arg0, Throwable arg1) {
+    if (warnIsDebug) {
+      debug(arg0, arg1);
+    } else {
+      mavenLog.warn(arg0, arg1);
     }
-
-    public void error(String arg0) {
-        if (errorIsDebug) {
-            debug(arg0);
-        } else {
-            mavenLog.error(arg0);
-        }
-    }
-
-    public void error(String arg0, Throwable arg1) {
-        if (errorIsDebug) {
-            debug(arg0, arg1);
-        } else {
-            mavenLog.error(arg0, arg1);
-        }
-    }
-
-    public void fatalError(String arg0) {
-        mavenLog.error(arg0);
-    }
-
-    public void fatalError(String arg0, Throwable arg1) {
-        mavenLog.error(arg0, arg1);
-    }
-
-    public Logger getChildLogger(String arg0) {
-        return null;
-    }
-
-    public void info(String arg0) {
-        mavenLog.info(arg0);
-    }
-
-    public void info(String arg0, Throwable arg1) {
-        mavenLog.info(arg0, arg1);
-    }
-
-    public boolean isDebugEnabled() {
-        return mavenLog.isDebugEnabled();
-    }
-
-    public boolean isErrorEnabled() {
-        return mavenLog.isErrorEnabled();
-    }
-
-    public boolean isFatalErrorEnabled() {
-        return mavenLog.isErrorEnabled();
-    }
-
-    public boolean isInfoEnabled() {
-        return mavenLog.isInfoEnabled();
-    }
-
-    public boolean isWarnEnabled() {
-        return mavenLog.isWarnEnabled();
-    }
-
-    public void warn(String arg0) {
-        if (warnIsDebug) {
-            debug(arg0);
-        } else {
-            mavenLog.warn(arg0);
-        }
-    }
-
-    public void warn(String arg0, Throwable arg1) {
-        if (warnIsDebug) {
-            debug(arg0, arg1);
-        } else {
-            mavenLog.warn(arg0, arg1);
-        }
-    }
-
+  }
 }
