@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.agilejava.docbkx.maven;
 
 import java.util.List;
@@ -24,61 +23,67 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * A {@link XMLFilter} managing a collection of
- * {@link ProcessingInstructionHandler ProcessingInstructionHandlers}, using
- * them to handle processing instructions encountered while parsing the XML
- * document.
+ * A {@link XMLFilter} managing a collection of {@link ProcessingInstructionHandler
+ * ProcessingInstructionHandlers}, using them to handle processing instructions encountered while
+ * parsing the XML document.
  *
  * @author Wilfred Springer
- *
  */
 public class PreprocessingFilter extends XMLFilterImpl {
+  /**
+   * The list of {@link ProcessingInstructionHandler} instances to which this object might
+   * delegate.
+   */
+  private List handlers;
 
-    /**
-     * The list of {@link ProcessingInstructionHandler} instances to which this
-     * object might delegate.
-     */
-    private List handlers;
-
-    /**
+/**
      * Constructs a new instance.
      *
      * @param reader The parent reader.
      */
-    public PreprocessingFilter(XMLReader parent) {
-        super(parent);
+  public PreprocessingFilter(XMLReader parent) {
+    super(parent);
+  }
+
+  // JavaDoc inherited
+  /**
+   * DOCUMENT ME!
+   *
+   * @param target DOCUMENT ME!
+   * @param data DOCUMENT ME!
+   *
+   * @throws SAXException DOCUMENT ME!
+   */
+  public void processingInstruction(String target, String data)
+                             throws SAXException {
+    for (int i = handlers.size() - 1; i >= 0; i--) {
+      ProcessingInstructionHandler handler = (ProcessingInstructionHandler) handlers.get(i);
+
+      if (handler.matches(target)) {
+        handler.handle(data, this);
+
+        return;
+      }
     }
 
-    // JavaDoc inherited
-    public void processingInstruction(String target, String data)
-            throws SAXException {
-        for (int i = handlers.size() - 1; i >= 0; i--) {
-            ProcessingInstructionHandler handler = (ProcessingInstructionHandler) handlers
-                    .get(i);
-            if (handler.matches(target)) {
-                handler.handle(data, this);
-                return;
-            }
-        }
-        super.processingInstruction(target, data);
-    }
+    super.processingInstruction(target, data);
+  }
 
-    /**
-     * Sets the list of handlers.
-     *
-     * @param handlers The list of handlers to which this filter might delegate.
-     */
-    public void setHandlers(List handlers) {
-        this.handlers = handlers;
-    }
+  /**
+   * Sets the list of handlers.
+   *
+   * @param handlers The list of handlers to which this filter might delegate.
+   */
+  public void setHandlers(List handlers) {
+    this.handlers = handlers;
+  }
 
-    /**
-     * Returns the list of handlers.
-     *
-     * @return The list of handlers to which this filter might delegate.
-     */
-    public List getHandlers() {
-        return handlers;
-    }
-
+  /**
+   * Returns the list of handlers.
+   *
+   * @return The list of handlers to which this filter might delegate.
+   */
+  public List getHandlers() {
+    return handlers;
+  }
 }

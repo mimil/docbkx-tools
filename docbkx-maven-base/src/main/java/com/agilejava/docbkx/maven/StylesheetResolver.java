@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,47 +16,58 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 /**
- * A simple {@link URIResolver} decorator that will bail out of the normal way
- * of retrieving entities as soon as the publicId or systemId matches a given
- * URN.
- * 
+ * A simple {@link URIResolver} decorator that will bail out of the normal way of retrieving
+ * entities as soon as the publicId or systemId matches a given URN.
+ *
  * @author Wilfred Springer
- * 
  */
 public class StylesheetResolver implements URIResolver {
+  private String      urn;
+  private Source      stylesheet;
+  private URIResolver wrapped;
 
-	private String urn;
+/**
+   * Creates a new StylesheetResolver object.
+   *
+   * @param urn DOCUMENT ME!
+   * @param stylesheet DOCUMENT ME!
+   * @param wrapped DOCUMENT ME!
+   */
+  public StylesheetResolver(String urn, Source stylesheet, URIResolver wrapped) {
+    this.urn          = urn;
+    this.stylesheet   = stylesheet;
+    this.wrapped      = wrapped;
+  }
 
-	private Source stylesheet;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param href DOCUMENT ME!
+   * @param base DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   *
+   * @throws TransformerException DOCUMENT ME!
+   */
+  public Source resolve(String href, String base) throws TransformerException {
+    if (urn.equals(href)) {
+      // return main stylesheet location
+      return stylesheet;
+    } else if ((href != null) && href.startsWith(urn)) {
+      // return the resource using the main stylesheet location directory as base
+      int    dirIndex    = stylesheet.getSystemId().lastIndexOf("/");
+      String dirPath     = stylesheet.getSystemId().substring(0, dirIndex);
+      String newLocation = dirPath.concat(href.replace(urn, ""));
 
-	private URIResolver wrapped;
-
-	public StylesheetResolver(String urn, Source stylesheet, URIResolver wrapped) {
-		this.urn = urn;
-		this.stylesheet = stylesheet;
-		this.wrapped = wrapped;
-	}
-
-	public Source resolve(String href, String base) throws TransformerException {
-		if (urn.equals(href)) {
-			// return main stylesheet location
-			return stylesheet;
-		} else if (href != null && href.startsWith(urn)) {
-			// return the resource using the main stylesheet location directory as base
-			int dirIndex = stylesheet.getSystemId().lastIndexOf("/");
-			String dirPath = stylesheet.getSystemId().substring(0, dirIndex);
-			String newLocation = dirPath.concat(href.replace(urn, ""));
-			return new StreamSource(newLocation);
-		} else {
-			return wrapped.resolve(href, base);
-		}
-	}
-
+      return new StreamSource(newLocation);
+    } else {
+      return wrapped.resolve(href, base);
+    }
+  }
 }

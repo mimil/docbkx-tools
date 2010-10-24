@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,19 +16,41 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
 public class NullWriter extends Writer {
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws IOException DOCUMENT ME!
+   */
+  public void close() throws IOException {
+  }
 
-    public void close() throws IOException {
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws IOException DOCUMENT ME!
+   */
+  public void flush() throws IOException {
+  }
 
-    public void flush() throws IOException {
-    }
-
-    public void write(char[] cbuf, int off, int len) throws IOException {
-    }
-
+  /**
+   * DOCUMENT ME!
+   *
+   * @param cbuf DOCUMENT ME!
+   * @param off DOCUMENT ME!
+   * @param len DOCUMENT ME!
+   *
+   * @throws IOException DOCUMENT ME!
+   */
+  public void write(char[] cbuf, int off, int len) throws IOException {
+  }
 }

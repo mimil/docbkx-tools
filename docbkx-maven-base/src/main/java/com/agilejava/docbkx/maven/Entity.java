@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright 2006 Wilfred Springer
  *
@@ -15,58 +16,55 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * The representation of an entity, consisting of a name and a value.
- * 
+ *
  * @author Wilfred Springer
  */
 public class Entity {
+  /**
+   * The name of the entity reference.
+   */
+  private String name;
 
-    /**
-     * The name of the entity reference.
-     */
-    private String name;
-    
-    /**
-     * The value of the entity.
-     */
-    private String value;
+  /**
+   * The value of the entity.
+   */
+  private String value;
 
-    /**
-     * Returns the name of the entity.
-     * 
-     * @return The name of the entity.
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Returns the name of the entity.
+   *
+   * @return The name of the entity.
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the name of the entity.
-     * 
-     * @param name Sets the name of the entity.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+  /**
+   * Sets the name of the entity.
+   *
+   * @param name Sets the name of the entity.
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    /**
-     * Returns the value of the entity.
-     * 
-     * @return The value of the entity.
-     */
-    public String getValue() {
-        return value;
-    }
+  /**
+   * Returns the value of the entity.
+   *
+   * @return The value of the entity.
+   */
+  public String getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the entity.
-     * 
-     * @param value The value of the entity.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
-    
+  /**
+   * Sets the value of the entity.
+   *
+   * @param value The value of the entity.
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 }

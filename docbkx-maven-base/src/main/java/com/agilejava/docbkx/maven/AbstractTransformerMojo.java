@@ -129,10 +129,10 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 final File sourceFile = new File(sourceDirectory, inputFilename);
                 getLog().debug("SourceFile: " + sourceFile.toString());
                 final File targetFile = new File(targetDirectory, targetFilename);
-                if(isUseStandardOutput()) {
+                if (isUseStandardOutput()) {
                     getLog().debug("TargetFile: " + targetFile.toString());
                 } else {
-                    getLog().debug("TargetDirectory: "+targetDirectory.getAbsolutePath());
+                    getLog().debug("TargetDirectory: " + targetDirectory.getAbsolutePath());
                 }
 
                 if (!targetFile.exists()
@@ -151,7 +151,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                     final Transformer transformer = builder.build();
                     adjustTransformer(transformer, sourceFile.getAbsolutePath(), targetFile);
                     final Result result = new StreamResult(targetFile.getAbsolutePath());
-                    if(isUseStandardOutput()) {
+                    if (isUseStandardOutput()) {
                         transformer.transform(xmlSource, result);
                     } else {
                         transformer.transform(xmlSource, new StreamResult(System.out));
@@ -159,10 +159,10 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
                     postProcessResult(targetFile);
 
-                    if(isUseStandardOutput()) {
+                    if (isUseStandardOutput()) {
                         getLog().info(targetFile + " has been generated.");
                     } else {
-                        getLog().info("See "+targetDirectory.getAbsolutePath() + " for generated file(s)");
+                        getLog().info("See " + targetDirectory.getAbsolutePath() + " for generated file(s)");
                     }
                 } else {
                     getLog().info(targetFile + " is up to date.");
@@ -493,7 +493,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
             getLog().warn("Failed to find catalog files.");
         } else {
             if (getLog().isDebugEnabled()) {
-                getLog().debug("Catalogs to load: "+catalogFiles);
+                getLog().debug("Catalogs to load: " + catalogFiles);
             }
             manager.setCatalogFiles(catalogFiles);
         }

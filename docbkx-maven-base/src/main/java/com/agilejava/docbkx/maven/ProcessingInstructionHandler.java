@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.agilejava.docbkx.maven;
 
 import org.xml.sax.ContentHandler;
@@ -26,30 +25,25 @@ import org.xml.sax.ContentHandler;
  *
  */
 public interface ProcessingInstructionHandler {
+  /**
+   * Returns a boolean indicating if this filter is interested in handling the processing
+   * instruction.
+   *
+   * @param target The <code>target</code> part of the processing instruction.
+   *
+   * @return A boolean indicating if this object has an interest in handling this processing
+   *         instruction.
+   */
+  boolean matches(String target);
 
-    /**
-     * Returns a boolean indicating if this filter is interested in handling the
-     * processing instruction.
-     *
-     * @param target
-     *            The <code>target</code> part of the processing instruction.
-     * @return A boolean indicating if this object has an interest in handling
-     *         this processing instruction.
-     */
-    boolean matches(String target);
-
-    /**
-     * Handles the processing instruction, optionally using the
-     * <code>handler</code> to replace content. Note that implementations need
-     * to take care that the result is still going to be a well-balanced XML
-     * document.
-     *
-     * @param data
-     *            The <code>data</code> part of the processing instruction.
-     * @param handler
-     *            The {@link org.xml.sax.ContentHandler} optionally receiving
-     *            some additional events.
-     */
-    void handle(String data, ContentHandler handler);
-
+  /**
+   * Handles the processing instruction, optionally using the <code>handler</code> to replace
+   * content. Note that implementations need to take care that the result is still going to be a
+   * well-balanced XML document.
+   *
+   * @param data The <code>data</code> part of the processing instruction.
+   * @param handler The {@link org.xml.sax.ContentHandler} optionally receiving some additional
+   *        events.
+   */
+  void handle(String data, ContentHandler handler);
 }
