@@ -863,7 +863,38 @@
           </plugin>
         </plugins>
       </build>
-    </profile>  
+    </profile>
+
+    <profile>
+      <id>docbkx.webhelp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-webhelp</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+              <configuration>
+                <includes>webhelpsite/readme.xml</includes>
+
+                <preProcess>
+                  <!-- Copy the template -->
+                  <copy todir="${project.build.directory}/docbkx/webhelp/webhelpsite/">
+                    <fileset dir="C:\projets\docbook\docbook-xsl\lib\docbook-xsl-ns-1.76.0\docbook-xsl-ns-1.76.0\webhelp\template" />
+                  </copy>
+                </preProcess>
+              </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
     <profile>
       <id>docbkx.issue52</id>
