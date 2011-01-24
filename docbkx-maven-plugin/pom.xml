@@ -164,7 +164,7 @@
             </goals>
             <configuration>
               <type>fo</type>
-              <superClassName>com.agilejava.docbkx.maven.AbstractPdfMojo</superClassName>
+              <superClassName>com.agilejava.docbkx.maven.AbstractFoMojo</superClassName>
               <className>DocbkxPdfMojo</className>
               <pluginSuffix>pdf</pluginSuffix>
               <targetFileExtension>pdf</targetFileExtension>
@@ -178,7 +178,7 @@
             </goals>
             <configuration>
               <type>fo</type>
-              <superClassName>com.agilejava.docbkx.maven.AbstractPdfMojo</superClassName>
+              <superClassName>com.agilejava.docbkx.maven.AbstractFoMojo</superClassName>
               <className>DocbkxRtfMojo</className>
               <pluginSuffix>rtf</pluginSuffix>
               <targetFileExtension>rtf</targetFileExtension>

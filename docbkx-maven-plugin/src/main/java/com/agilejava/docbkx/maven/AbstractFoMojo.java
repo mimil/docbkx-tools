@@ -65,7 +65,7 @@ import org.xml.sax.SAXException;
  *
  * @author Wilfred Springer
  */
-public abstract class AbstractPdfMojo extends AbstractMojoBase {
+public abstract class AbstractFoMojo extends AbstractMojoBase {
   private String baseUrl;
 
   /**
