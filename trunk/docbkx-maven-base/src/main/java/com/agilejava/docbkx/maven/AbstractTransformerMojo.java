@@ -795,6 +795,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     protected abstract String getTargetFileExtension();
 
     /**
+     * Sets the file extension, this can be usefull to override this value especially
+     * for multiple transformations plugins (like XML to FO to PDF). 
+     *
+     * @param extension The file extension to set
+     */
+    protected abstract void setTargetFileExtension(String extension);
+
+    /**
      * Returns a list of {@link Entity Entities}
      */
     protected abstract List getEntities();

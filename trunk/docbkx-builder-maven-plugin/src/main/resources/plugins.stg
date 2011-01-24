@@ -191,6 +191,10 @@ public class $spec.className$
         return targetFileExtension;
     }
 
+    public void setTargetFileExtension(String extension) {
+        targetFileExtension = extension;
+    }
+
     public String[] getIncludes() {
         String[] results = includes.split(",");
         for (int i = 0; i < results.length; i++) {

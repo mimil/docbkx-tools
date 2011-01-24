@@ -158,6 +158,13 @@ public class GeneratorMojo
     private String type;
 
     /**
+     * The extension of the target file
+     *
+     * @parameter
+     */
+    private String targetFileExtension;
+
+    /**
      * False if the stylesheet is responsible to create the output file(s) using its own naming scheme.
      *
      * @parameter default-value=true
@@ -402,6 +409,7 @@ public class GeneratorMojo
         specification.setPluginSuffix( pluginSuffix );
         specification.setParameters( extractParameters(  ) );
         specification.setUseStandardOutput( useStandardOutput );
+        specification.setTargetFileExtension(targetFileExtension);
 
         return specification;
     }
