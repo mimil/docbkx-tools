@@ -92,20 +92,23 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
    * parameter will disable the use of maven inline FOP configuration.
    */
   File externalFOPConfiguration = null;
-
-
   private String currentFileExtension;
 
-    public void preProcess() throws MojoExecutionException {
-        super.preProcess();
-        // as this FO output is a transformation in 2 phases (XML to FO) and (FO to targetFileExtension)
-        // we need to set the targetFileExtension to FO for the parent class and restore the
-        // expected targetFileExtension later.
-        currentFileExtension = getTargetFileExtension();
-        setTargetFileExtension(getType());
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws MojoExecutionException DOCUMENT ME!
+   */
+  public void preProcess() throws MojoExecutionException {
+    super.preProcess();
+    // as this FO output is a transformation in 2 phases (XML to FO) and (FO to targetFileExtension)
+    // we need to set the targetFileExtension to FO for the parent class and restore the
+    // expected targetFileExtension later.
+    currentFileExtension = getTargetFileExtension();
+    setTargetFileExtension(getType());
+  }
 
-    /**
+  /**
    * DOCUMENT ME!
    *
    * @param result DOCUMENT ME!
@@ -128,9 +131,10 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
     OutputStream  out           = null;
 
     try {
-      in    = openFileForInput(result);
+      in = openFileForInput(result);
+
       final File outputFile = getOutputFile(result);
-      out   = openFileForOutput(outputFile);
+      out = openFileForOutput(outputFile);
       fopFactory.setUserConfig(configuration);
 
       Fop fop = fopFactory.newFop(getMimeType(), userAgent, out);
@@ -147,13 +151,13 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
 
       // Start XSLT transformation and FOP processing
       transformer.transform(src, res);
-     getLog().info(outputFile.getAbsolutePath() + " has been generated.");
+      getLog().info(outputFile.getAbsolutePath() + " has been generated.");
     } catch (FOPException e) {
-      throw new MojoExecutionException("Failed to convert to "+getTargetFileExtension(), e);
+      throw new MojoExecutionException("Failed to convert to " + getTargetFileExtension(), e);
     } catch (TransformerConfigurationException e) {
       throw new MojoExecutionException("Failed to load JAXP configuration", e);
     } catch (TransformerException e) {
-      throw new MojoExecutionException("Failed to transform to "+getTargetFileExtension(), e);
+      throw new MojoExecutionException("Failed to transform to " + getTargetFileExtension(), e);
     } finally {
       IOUtils.closeQuietly(out);
       IOUtils.closeQuietly(in);
@@ -182,14 +186,19 @@ public abstract class AbstractPdfMojo extends AbstractMojoBase {
     }
   }
 
-  protected String getMimeType()
-  {
-      getLog().info("targetFileExtension "+getTargetFileExtension());
-      getLog().info("type "+getType());
-    if("rtf".equals(getTargetFileExtension()))
-    {
-        return MimeConstants.MIME_RTF;       
+  /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+  protected String getMimeType() {
+    getLog().info("targetFileExtension " + getTargetFileExtension());
+    getLog().info("type " + getType());
+
+    if ("rtf".equals(getTargetFileExtension())) {
+      return MimeConstants.MIME_RTF;
     }
+
     // return as default for now
     return MimeConstants.MIME_PDF;
   }
