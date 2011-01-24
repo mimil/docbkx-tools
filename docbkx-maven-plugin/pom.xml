@@ -167,6 +167,21 @@
               <superClassName>com.agilejava.docbkx.maven.AbstractPdfMojo</superClassName>
               <className>DocbkxPdfMojo</className>
               <pluginSuffix>pdf</pluginSuffix>
+              <targetFileExtension>pdf</targetFileExtension>
+              <excludedProperties>${excluded.properties}</excludedProperties>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-rtf</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <type>fo</type>
+              <superClassName>com.agilejava.docbkx.maven.AbstractPdfMojo</superClassName>
+              <className>DocbkxRtfMojo</className>
+              <pluginSuffix>rtf</pluginSuffix>
+              <targetFileExtension>rtf</targetFileExtension>
               <excludedProperties>${excluded.properties}</excludedProperties>
             </configuration>
           </execution>

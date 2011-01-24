@@ -865,6 +865,34 @@
       </build>
     </profile>
 
+    <!-- This sample show different outputs (here PDF and RTF) based on FO stylesheet -->
+    <profile>
+      <id>docbkx.rtf</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>generate-rtf</goal>
+                  <goal>generate-pdf</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+                <highlightSource>1</highlightSource>
+                <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
+                <includes>sample2.xml</includes>  
+            </configuration>
+          </plugin>
+        </plugins>
+        </build>
+      </profile>
+
     <profile>
       <id>docbkx.webhelp</id>
       <build>
