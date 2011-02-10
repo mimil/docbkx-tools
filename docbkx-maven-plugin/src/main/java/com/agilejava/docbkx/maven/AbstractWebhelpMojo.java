@@ -63,7 +63,6 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     transformer.setParameter("root.filename", rootFilename); // force to index?
     transformer.setParameter("webhelp.base.dir", targetFile.getParent() + File.separator);
     targetBaseDir = new File(targetFile.getParentFile(), "content");
-    transformer.setParameter("base.dir", targetBaseDir.getAbsolutePath() + File.separator);
     searchBaseDir = new File(targetBaseDir, "search");
   }
 
@@ -92,16 +91,13 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
 
-    if (//copyTemplate();
-
-     // Get the list of all html files but the tocs, covers and indexes
-     //DirList nsiDoc = new DirList(inputDir, "^(?!(toc|index|search|frameset|ix01)).*\\.html$", 1);
-     getLog().isDebugEnabled())
+    if (getLog().isDebugEnabled())
+      getLog().debug("DirList on: " + targetBaseDir);
       //copyTemplate();
 
       // Get the list of all html files but the tocs, covers and indexes
       //DirList nsiDoc = new DirList(inputDir, "^(?!(toc|index|search|frameset|ix01)).*\\.html$", 1);
-      getLog().debug("DirList on: " + targetBaseDir);
+
 
     DirList nsiDoc = new DirList(targetBaseDir, "^.*\\.html?$", 1);
 
@@ -147,6 +143,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
       // parse each html files
       for (int f = 0; f < htmlFiles.size(); f++) {
         File ftemp = (File) htmlFiles.get(f);
+        getLog().debug("Parsing html file: "+ftemp.getAbsolutePath());
 
         //tempMap.put(key, value);
         //The HTML file information are added in the list of FileInfoObject
