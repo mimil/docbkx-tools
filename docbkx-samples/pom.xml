@@ -910,7 +910,7 @@
               </execution>
             </executions>
               <configuration>
-                <includes>webhelpsite/readme.xml</includes>
+                <includes>webhelpsite/index.xml</includes>
                 <webhelpIndexerLanguage>fr</webhelpIndexerLanguage>
                 <webhelpIncludeSearchTab>1</webhelpIncludeSearchTab>
                 <preProcess>
