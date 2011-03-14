@@ -58,7 +58,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   public void adjustTransformer(Transformer transformer, String sourceFilename, File targetFile) {
     super.adjustTransformer(transformer, sourceFilename, targetFile);
 
-    String rootFilename = targetFile.getName();
+    String rootFilename = "index.html";
     rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
     transformer.setParameter("root.filename", rootFilename); // force to index?
     transformer.setParameter("webhelp.base.dir", targetFile.getParent() + File.separator);
