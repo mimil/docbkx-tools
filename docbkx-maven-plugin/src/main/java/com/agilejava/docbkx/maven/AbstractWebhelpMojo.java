@@ -1,25 +1,4 @@
 package com.agilejava.docbkx.maven;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import java.net.URL;
-
-import java.util.*;
-
-import javax.xml.transform.Transformer;
-
-import org.apache.maven.plugin.MojoExecutionException;
-
-import org.codehaus.plexus.util.FileUtils;
-
-import com.nexwave.nquindexer.SaxHTMLIndex;
-import com.nexwave.nquindexer.WriteJSFiles;
-
-import com.nexwave.nsidita.DirList;
-import com.nexwave.nsidita.DocFileInfo;
-
 /*
  * Copyright Cedric Pronzato
  *
@@ -35,6 +14,31 @@ import com.nexwave.nsidita.DocFileInfo;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import java.net.URL;
+
+import java.security.CodeSource;
+import java.util.*;
+import java.util.zip.ZipInputStream;
+
+import javax.xml.transform.Transformer;
+
+import org.apache.maven.plugin.MojoExecutionException;
+
+import com.nexwave.nquindexer.SaxHTMLIndex;
+import com.nexwave.nquindexer.WriteJSFiles;
+
+import com.nexwave.nsidita.DirList;
+import com.nexwave.nsidita.DocFileInfo;
+
+/**
+ * DOCUMENT ME!
+ * based on IndexerTask.java from docbook xsl (webhelpindexer module)
+ */
 public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   //File name initialization
   private static final String HTML_LIST      = "htmlFileList.js";
@@ -48,6 +52,14 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   File targetBaseDir = null;
   File searchBaseDir = null;
 
+    /**
+     * The directory containing the webhelp template or null if using the template provided
+     * by docbook xsl distribution.
+     *
+     * @parameter
+     */
+    private File templateDirectory;
+
   /**
    * DOCUMENT ME!
    *
@@ -60,7 +72,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
 
     String rootFilename = "index.html";
     rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
-    transformer.setParameter("root.filename", rootFilename); // force to index?
+    transformer.setParameter("root.filename", rootFilename);
     transformer.setParameter("webhelp.base.dir", targetFile.getParent() + File.separator);
     targetBaseDir = new File(targetFile.getParentFile(), "content");
     searchBaseDir = new File(targetBaseDir, "search");
@@ -73,9 +85,19 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
    */
   protected void copyTemplate() throws MojoExecutionException {
     try {
-      URL url = this.getClass().getClassLoader().getResource("docbook/webhelp/template/");
 
-      // FileUtils.copyDirectoryStructure(url., targetBaseDir.getParentFile());
+      if(templateDirectory == null)
+      {
+        getLog().debug("Copying template from docbook xsl release");
+        URL url = this.getClass().getClassLoader().getResource("docbook/webhelp/template/");
+        FileUtils.copyResourcesRecursively(url, targetBaseDir.getParentFile());
+      }
+      else
+      {
+        getLog().debug("Copying template from custom directory: "+templateDirectory.getAbsolutePath());
+        FileUtils.copyResourcesRecursively(templateDirectory.toURL(), targetBaseDir.getParentFile());
+      }
+
     } catch (Exception e) {
       throw new MojoExecutionException("Unable to copy template", e);
     }
@@ -91,13 +113,9 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
 
-    if (getLog().isDebugEnabled())
-      getLog().debug("DirList on: " + targetBaseDir);
-      //copyTemplate();
+    getLog().debug("webhelp indexing on: " + targetBaseDir);
 
-      // Get the list of all html files but the tocs, covers and indexes
-      //DirList nsiDoc = new DirList(inputDir, "^(?!(toc|index|search|frameset|ix01)).*\\.html$", 1);
-
+    copyTemplate();
 
     DirList nsiDoc = new DirList(targetBaseDir, "^.*\\.html?$", 1);
 
@@ -108,18 +126,12 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
       throw new MojoExecutionException("No file *.html listed in: " + targetBaseDir);
     }
 
-    if (getLog().isDebugEnabled())
-      getLog().debug("number of html files:" + htmlFiles.size());
-
     // Get the list of all html files with relative paths
     ArrayList htmlFilesPathRel = nsiDoc.getListFilesRelTo(targetBaseDir.getAbsolutePath());
 
     if (htmlFilesPathRel == null) {
       throw new MojoExecutionException("No relative html files calculated.");
     }
-
-    if (getLog().isDebugEnabled())
-      getLog().debug("number of relative files:" + htmlFilesPathRel.size());
 
     // Create the list of the existing html files (index starts at 0)
     searchBaseDir.mkdirs();

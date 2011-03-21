@@ -865,7 +865,7 @@
       </build>
     </profile>
 
-    <!-- This sample show different outputs (here PDF and RTF) based on FO stylesheet -->
+    <!-- This sample shows different outputs (here PDF and RTF) based on FO stylesheet -->
     <profile>
       <id>docbkx.rtf</id>
       <build>
@@ -910,15 +910,10 @@
               </execution>
             </executions>
               <configuration>
-                <includes>webhelpsite/index.xml</includes>
+                <includes>webhelpsite/readme.xml</includes>
                 <webhelpIndexerLanguage>fr</webhelpIndexerLanguage>
                 <webhelpIncludeSearchTab>1</webhelpIncludeSearchTab>
-                <preProcess>
-                  <!-- Copy the template -->
-                  <copy todir="${project.build.directory}/docbkx/webhelp/webhelpsite/">
-                    <fileset dir="C:\projets\docbook\docbook-xsl\lib\docbook-xsl-ns-1.76.0\docbook-xsl-ns-1.76.0\webhelp\template" />
-                  </copy>
-                </preProcess>
+                <!--templateDirectory>path/to/your/webhelptemplate/</templateDirectory-->
               </configuration>
           </plugin>
         </plugins>
