@@ -128,7 +128,7 @@ public class GeneratorMojo
     /**
      * The maven project helper class for adding resources.
      *
-     * @parameter expression="${component.org.apache.maven.project.MavenProjectHelper}"
+     * @component role="org.apache.maven.project.MavenProjectHelper"
      */
     private MavenProjectHelper projectHelper;
 
