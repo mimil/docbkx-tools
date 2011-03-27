@@ -1,0 +1,21 @@
+#summary Frequently Asked Questions
+
+=== My customization stylesheet does not want to apply ===
+If you have respected the import statements format required by Docbkx plugin (`<xsl:import href="urn:docbkx:stylesheet"/>` etc), it is certainly due to the fact that our plugin is based on latest docbook-xsl namespaced version.
+
+You just need to adapt your customization stylesheet to be namespaced compliant, here is a sample where you can notice the *d:* namespace:
+{{{
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:html="http://www.w3.org/1999/xhtml"
+                xmlns:fo="http://www.w3.org/1999/XSL/Format"
+                xmlns:d="http://docbook.org/ns/docbook">
+    <xsl:import href="urn:docbkx:stylesheet"/>
+
+    <xsl:template match="d:remark">
+      <fo:inline font-style="italic" color="blue">
+        <xsl:call-template name="inline.charseq"/>
+      </fo:inline>
+    </xsl:template>
+
+</xsl:stylesheet>
+}}}
