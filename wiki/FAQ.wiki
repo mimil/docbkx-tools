@@ -19,3 +19,18 @@ You just need to adapt your customization stylesheet to be namespaced compliant,
 
 </xsl:stylesheet>
 }}}
+
+=== How can I pass XSL parameters to my customization stylesheet? ===
+Docbkx plugin gives you shortcuts to use regular docbook-xsl parameters using the following convention: A docbook-xsl parameter named `footnote.number.format` will have a Docbkx plugin parameter named `footnoteNumberFormat`.
+
+These regular docbook-xsl parameters are supported out-of-the-box because they are generated from the stylesheets directly, but how is it about custom xsl parameters I may have in my customization stylesheet?
+In order to handle this case we added a manual way to define arbitrary xsl parameters, here is a sample:
+
+{{{
+<customizationParameters>
+  <parameter>
+    <name>key</name>
+    <value>value</value>
+  </parameter>
+</customizationParameters>
+}}}
