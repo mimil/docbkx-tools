@@ -34,3 +34,5 @@ In order to handle this case we added a manual way to define arbitrary xsl param
   </parameter>
 </customizationParameters>
 }}}
+
+From the API point of view, `AbstractTransformerMojo.getProperty()` and `AbstractTransformerMojo.setProperty()` give access to regular docbook-xsl parameters and `AbstractTransformerMojo.getCustomizationParameters()` returns a list of `Parameter` instances, each of them representing a custom xsl parameter.
