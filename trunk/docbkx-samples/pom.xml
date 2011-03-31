@@ -906,12 +906,12 @@
                   
                 <postProcess>
                   <!-- Copy the images -->
-                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/covers">
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001/covers">
                     <fileset dir="src/docbkx/epubbook/covers/" />
                   </copy>
                   <!-- Copy the font -->
                   <!-- Copy the css -->
-                  <copy todir="${project.build.directory}/docbkx/epub/epubbook" file="src/docbkx/epubbook/test.css">
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001" file="src/docbkx/epubbook/test.css">
                   </copy>
                   </postProcess>
               </configuration>

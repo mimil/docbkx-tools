@@ -76,11 +76,12 @@ public abstract class AbstractEpubMojo
         super.postProcess(  );
 
         // TODO: temporary trick, svn version of docbook xsl epub stylesheet works differently
+        final File targetDirectory = targetFile.getParentFile();
         try
         {
             final URL containerURL = getClass(  ).getResource( "/epub/container.xml" );
             FileUtils.copyURLToFile( containerURL,
-                                     new File( targetFile.getParentFile(  ),
+                                     new File(targetDirectory,
                                                "META-INF" + File.separator + "container.xml" ) );
         } catch ( IOException e )
         {
@@ -92,7 +93,7 @@ public abstract class AbstractEpubMojo
         {
             final URL mimetypeURL = getClass(  ).getResource( "/epub/mimetype" );
             FileUtils.copyURLToFile( mimetypeURL,
-                                     new File( targetFile.getParentFile(  ),
+                                     new File(targetDirectory,
                                                "mimetype" ) );
         } catch ( IOException e )
         {
@@ -101,9 +102,9 @@ public abstract class AbstractEpubMojo
 
         try
         {
-            zipArchiver.addDirectory( targetFile.getParentFile(  ) );
+            zipArchiver.addDirectory(targetDirectory);
             zipArchiver.setCompress( true ); // seems to not be a problem to have mimetype compressed
-            zipArchiver.setDestFile( targetFile );
+            zipArchiver.setDestFile( new File(targetDirectory.getParentFile(), targetFile.getName())); // copy it to parent dir
             zipArchiver.createArchive(  );
 
             getLog(  ).debug( "epub file created at: " + zipArchiver.getDestFile(  ).getAbsolutePath(  ) );
