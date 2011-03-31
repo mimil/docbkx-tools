@@ -30,6 +30,8 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
   /**
    * Indicates if the output should either be a single page, or if it should be spread across
    * multiple pages.
+   *
+   * @parameter default="false"
    */
   private boolean chunkedOutput;
 
@@ -54,7 +56,7 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
     super.adjustTransformer(transformer, sourceFilename, targetFile);
 
     if (chunkedOutput) {
-      getLog().debug("Chunking output.");
+      getLog().info("Chunking output.");
 
       String rootFilename = targetFile.getName();
       rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
