@@ -125,13 +125,20 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 }
                 final String inputFilename = included[i];
                 // targetFilename is inputFilename - ".xml" + targetFile extension
-                final String targetFilename = inputFilename.substring(0, inputFilename.length() - 4) + "." + getTargetFileExtension();
+                String baseTargetFile = inputFilename.substring(0, inputFilename.length() - 4);
+                final String targetFilename = baseTargetFile + "." + getTargetFileExtension();
                 final File sourceFile = new File(sourceDirectory, inputFilename);
                 getLog().debug("SourceFile: " + sourceFile.toString());
-                final File targetFile = new File(targetDirectory, targetFilename);
+                File targetFile = null;
                 if (isUseStandardOutput()) {
+                    targetFile = new File(targetDirectory, targetFilename);
                     getLog().debug("TargetFile: " + targetFile.toString());
                 } else {
+                    String name = new File(baseTargetFile).getName();
+                    String dir = new File(baseTargetFile).getParent();
+                    targetFile = new File(targetDirectory, dir);
+                    targetFile = new File(targetFile, name);
+                    targetFile = new File(targetFile, name+"."+getTargetFileExtension());
                     getLog().debug("TargetDirectory: " + targetDirectory.getAbsolutePath());
                 }
 
@@ -162,7 +169,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                     if (isUseStandardOutput()) {
                         getLog().info(targetFile + " has been generated.");
                     } else {
-                        getLog().info("See " + targetDirectory.getAbsolutePath() + " for generated file(s)");
+                        getLog().info("See " + targetFile.getParentFile().getAbsolutePath() + " for generated file(s)");
                     }
                 } else {
                     getLog().info(targetFile + " is up to date.");
