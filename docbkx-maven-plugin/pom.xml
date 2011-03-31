@@ -136,6 +136,7 @@
             <configuration>
               <type>eclipse</type>
               <stylesheetPath>eclipse/eclipse.xsl</stylesheetPath>
+              <useStandardOutput>false</useStandardOutput>
               <superClassName>com.agilejava.docbkx.maven.AbstractEclipseMojo</superClassName>
               <excludedProperties>${excluded.properties},root.filename,base.dir,manifest.in.base.dir
               </excludedProperties>
@@ -149,6 +150,7 @@
             <configuration>
               <type>javahelp</type>
               <stylesheetPath>javahelp/javahelp.xsl</stylesheetPath>
+              <useStandardOutput>false</useStandardOutput>
               <superClassName>com.agilejava.docbkx.maven.AbstractJavahelpMojo</superClassName>
               <excludedProperties>${excluded.properties},root.filename,base.dir</excludedProperties>
             </configuration>

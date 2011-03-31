@@ -16,6 +16,9 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+
 import java.io.File;
 
 import javax.xml.transform.Transformer;
@@ -48,7 +51,12 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
     }
   }
 
-  /**
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        setUseStandardOutput(!chunkedOutput);
+        super.execute();
+    }
+
+    /**
    * {@inheritDoc} This implementation will set the root.filename property, based on the
    * targetFile's name.
    */

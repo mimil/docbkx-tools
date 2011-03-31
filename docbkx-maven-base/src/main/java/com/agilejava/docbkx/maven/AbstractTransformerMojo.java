@@ -393,7 +393,10 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
      *
      * @return If using the standard output.
      */
-    protected abstract boolean isUseStandardOutput();
+    abstract protected boolean isUseStandardOutput();
+
+    abstract void setUseStandardOutput(boolean useStandardOutput);
+
 
     /**
      * The operation to override when it is required to make some adjustments to the {@link Transformer} right before it is
