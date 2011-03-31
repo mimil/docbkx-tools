@@ -149,6 +149,8 @@ public class $spec.className$
      */
     private File generatedSourceDirectory;
 
+    private boolean useStandardOutput = $spec.useStandardOutput$;
+
     $spec.parameters:variable(); separator="\n\n"$
 
     protected void configure(Transformer transformer) {
@@ -237,10 +239,19 @@ public class $spec.className$
         return xincludeSupported;
     }
 
-    protected boolean isUseStandardOutput()
-    {
-        return $spec.useStandardOutput$;
+    /**
+     * Returns false if the stylesheet is responsible to create the output file(s) using its own naming scheme.
+     *
+     * @return If using the standard output.
+     */
+    protected boolean isUseStandardOutput() {
+        return useStandardOutput;
     }
+
+    protected void setUseStandardOutput(boolean useStandardOutput) {
+        this.useStandardOutput = useStandardOutput;
+    }
+
     
 }
 >>
