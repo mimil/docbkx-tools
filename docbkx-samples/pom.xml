@@ -776,6 +776,52 @@
     </profile>
 
     <!--
+        The Eclipse help format allows your documentation to be accessible into the
+        Eclipse platform as a Plugin.
+     -->
+    <!--
+        The only operation needed to enable it into Eclipse platform is to create a directory
+        inside the 'plugins' directory of your Eclipse installation using the same name as the 'eclipsePluginId'
+        The help will then be available inside the menu named 'Help contents'
+    -->
+    <profile>
+      <id>docbkx.eclipse</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-eclipse</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+              <eclipsePluginId>docbkx.sample</eclipsePluginId>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Eclipse help example</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
     This samples shows you how to use profiling stylesheets (in this case the html one).
     In order to do this you will have to make an empty (at least) stylesheet customization
     layer and just point to the profiling stylesheet of the official docbook distribution.
