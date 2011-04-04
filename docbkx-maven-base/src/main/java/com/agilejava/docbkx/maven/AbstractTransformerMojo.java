@@ -136,7 +136,11 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
                 } else {
                     String name = new File(baseTargetFile).getName();
                     String dir = new File(baseTargetFile).getParent();
-                    targetFile = new File(targetDirectory, dir);
+                    if(dir == null) { // file is located on root of targetDirectory
+                        targetFile = targetDirectory;
+                    } else { // else append the relative directory to targetDirectory
+                        targetFile = new File(targetDirectory, dir);
+                    }
                     targetFile = new File(targetFile, name);
                     targetFile = new File(targetFile, name+"."+getTargetFileExtension());
                     getLog().debug("TargetDirectory: " + targetDirectory.getAbsolutePath());
