@@ -18,6 +18,8 @@ package com.agilejava.docbkx.maven;
  */
 import org.apache.maven.plugin.MojoExecutionException;
 
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -38,14 +40,13 @@ import javax.xml.transform.Transformer;
 public abstract class AbstractEpubMojo
     extends AbstractMojoBase
 {
-    /**
-     * The Zip archiver.
-     *
-     * @component role="org.codehaus.plexus.archiver.Archiver" roleHint="zip"
-     * @required
-     */
-    private ZipArchiver zipArchiver;
-    private File targetFile;
+   /**
+   * To look up Archiver/UnArchiver implementations
+   *
+   * @component
+   * @required
+   */
+    protected ArchiverManager archiverManager;
 
     /**
      * {@inheritDoc} This implementation will set the root.filename property,
@@ -66,17 +67,13 @@ public abstract class AbstractEpubMojo
                                   targetFile.getParent(  ) + File.separator + "META-INF" + File.separator );
 
         validateFont(  );
-
-        this.targetFile = targetFile;
     }
 
-    public void postProcess(  )
-                     throws MojoExecutionException
-    {
-        super.postProcess(  );
+    public void postProcessResult(File result) throws MojoExecutionException {
+        super.postProcessResult(result);
 
         // TODO: temporary trick, svn version of docbook xsl epub stylesheet works differently
-        final File targetDirectory = targetFile.getParentFile();
+        final File targetDirectory = result.getParentFile();
         try
         {
             final URL containerURL = getClass(  ).getResource( "/epub/container.xml" );
@@ -102,9 +99,10 @@ public abstract class AbstractEpubMojo
 
         try
         {
+            ZipArchiver zipArchiver = (ZipArchiver)archiverManager.getArchiver("zip");
             zipArchiver.addDirectory(targetDirectory);
             zipArchiver.setCompress( true ); // seems to not be a problem to have mimetype compressed
-            zipArchiver.setDestFile( new File(targetDirectory.getParentFile(), targetFile.getName())); // copy it to parent dir
+            zipArchiver.setDestFile( new File(targetDirectory.getParentFile(), result.getName())); // copy it to parent dir
             zipArchiver.createArchive(  );
 
             getLog(  ).debug( "epub file created at: " + zipArchiver.getDestFile(  ).getAbsolutePath(  ) );
