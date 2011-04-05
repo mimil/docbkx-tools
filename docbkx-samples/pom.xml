@@ -900,11 +900,10 @@
             </executions>
               <configuration>
                 <includes>epubbook/orm.book.001.xml</includes>
-                
                 <htmlStylesheet>test.css</htmlStylesheet>
                 <chunkQuietly>true</chunkQuietly>
                   
-                <postProcess>
+                <preProcess>
                   <!-- Copy the images -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001/covers">
                     <fileset dir="src/docbkx/epubbook/covers/" />
@@ -913,7 +912,7 @@
                   <!-- Copy the css -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001" file="src/docbkx/epubbook/test.css">
                   </copy>
-                  </postProcess>
+                </preProcess>
               </configuration>
           </plugin>
         </plugins>
