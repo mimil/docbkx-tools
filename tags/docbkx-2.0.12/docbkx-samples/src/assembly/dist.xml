@@ -1,0 +1,29 @@
+<assembly>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <directory>${basedir}/src/main/resources</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>README*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>src/docbkx/**</include>
+        <include>src/fonts/**</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/target/samples</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>*.pom</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>
