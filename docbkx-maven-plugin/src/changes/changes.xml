@@ -5,6 +5,32 @@
   </properties>
   <body>
 
+    <release version="2.0.12">
+      <action dev="mimil" type="update">
+Outputs having the property useStandardOutput set to false will generate their content to a dedicated directory using
+the input filename as directory name. Current outputs concerned are: (x)html chunked, epub, webhelp, man, eclipse, javahelp
+      </action>
+      <action dev="mimil" type="update">
+Move to FOP 1.0
+      </action>
+      <action dev="mimil" type="update">
+Remove deprecated maven configuration keys, mandatory for maven 3 fresh install to compile the plugin
+      </action>
+      <action dev="mimil" type="update">
+Move to docbook xsl stylesheets 1.76.1
+      </action>
+      <action dev="mimil" type="add">
+Add support for WebHelp output. WebHelp is a feature-rich, nice looking XSL customization and is a better
+alternative for web deployments.
+      </action>
+      <action dev="mimil" type="add">
+Add support for RTF output (Rich Text Format)
+      </action>
+      <action dev="mimil" type="update">
+EPUB output was not correctly zipping content when multiple input documents were specified
+      </action>
+    </release>
+
     <release version="2.0.11">
       <action dev="mimil" type="update">
 Docbook XML catalogs of both previous and current versions are now correctly loaded.
