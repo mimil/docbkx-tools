@@ -1,5 +1,8 @@
 package com.agilejava.docbkx.maven;
 
+import java.io.File;
+
+import javax.xml.transform.Transformer;
 
 /*
  * Copyright 2006 Wilfred Springer
@@ -19,10 +22,6 @@ package com.agilejava.docbkx.maven;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-import java.io.File;
-
-import javax.xml.transform.Transformer;
-
 /**
  * A dedicated base class for plugins generating HTML output, in order to allow the specific
  * stylesheet chosen to be dependent on the {@link #chunkedOutput} property.
@@ -33,8 +32,6 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
   /**
    * Indicates if the output should either be a single page, or if it should be spread across
    * multiple pages.
-   *
-   * @parameter default="false"
    */
   private boolean chunkedOutput;
 
@@ -51,12 +48,18 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
     }
   }
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        setUseStandardOutput(!chunkedOutput);
-        super.execute();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws MojoExecutionException DOCUMENT ME!
+   * @throws MojoFailureException DOCUMENT ME!
+   */
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    setUseStandardOutput(!chunkedOutput);
+    super.execute();
+  }
 
-    /**
+  /**
    * {@inheritDoc} This implementation will set the root.filename property, based on the
    * targetFile's name.
    */

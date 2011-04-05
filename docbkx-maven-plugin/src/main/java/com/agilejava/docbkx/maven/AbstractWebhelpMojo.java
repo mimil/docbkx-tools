@@ -1,4 +1,5 @@
 package com.agilejava.docbkx.maven;
+
 /*
  * Copyright Cedric Pronzato
  *
@@ -14,7 +15,6 @@ package com.agilejava.docbkx.maven;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.security.CodeSource;
+
 import java.util.*;
 import java.util.zip.ZipInputStream;
 
@@ -36,8 +37,7 @@ import com.nexwave.nsidita.DirList;
 import com.nexwave.nsidita.DocFileInfo;
 
 /**
- * DOCUMENT ME!
- * based on IndexerTask.java from docbook xsl (webhelpindexer module)
+ * DOCUMENT ME! based on IndexerTask.java from docbook xsl (webhelpindexer module)
  */
 public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   //File name initialization
@@ -49,16 +49,14 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   ArrayList cleanUpStrings = new ArrayList();
   ArrayList cleanUpChars   = new ArrayList();
   Map       tempDico       = new HashMap();
-  File targetBaseDir = null;
-  File searchBaseDir = null;
+  File      targetBaseDir  = null;
+  File      searchBaseDir  = null;
 
-    /**
-     * The directory containing the webhelp template or null if using the template provided
-     * by docbook xsl distribution.
-     *
-     * @parameter
-     */
-    private File templateDirectory;
+  /**
+   * The directory containing the webhelp template or null if using the template provided by
+   * docbook xsl distribution.
+   */
+  private File templateDirectory;
 
   /**
    * DOCUMENT ME!
@@ -74,8 +72,8 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
     transformer.setParameter("root.filename", rootFilename);
     transformer.setParameter("webhelp.base.dir", targetFile.getParent() + File.separator);
-    targetBaseDir = new File(targetFile.getParentFile(), "content");
-    searchBaseDir = new File(targetBaseDir, "search");
+    targetBaseDir   = new File(targetFile.getParentFile(), "content");
+    searchBaseDir   = new File(targetBaseDir, "search");
   }
 
   /**
@@ -85,19 +83,16 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
    */
   protected void copyTemplate() throws MojoExecutionException {
     try {
-
-      if(templateDirectory == null)
-      {
+      if (templateDirectory == null) {
         getLog().debug("Copying template from docbook xsl release");
+
         URL url = this.getClass().getClassLoader().getResource("docbook/webhelp/template/");
         FileUtils.copyResourcesRecursively(url, targetBaseDir.getParentFile());
-      }
-      else
-      {
-        getLog().debug("Copying template from custom directory: "+templateDirectory.getAbsolutePath());
+      } else {
+        getLog()
+           .debug("Copying template from custom directory: " + templateDirectory.getAbsolutePath());
         FileUtils.copyResourcesRecursively(templateDirectory.toURL(), targetBaseDir.getParentFile());
       }
-
     } catch (Exception e) {
       throw new MojoExecutionException("Unable to copy template", e);
     }
@@ -113,7 +108,8 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
 
-    getLog().debug("webhelp indexing on: " + targetBaseDir);
+    if (getLog().isDebugEnabled())
+      getLog().debug("webhelp indexing on: " + targetBaseDir);
 
     copyTemplate();
 
@@ -155,7 +151,9 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
       // parse each html files
       for (int f = 0; f < htmlFiles.size(); f++) {
         File ftemp = (File) htmlFiles.get(f);
-        getLog().debug("Parsing html file: "+ftemp.getAbsolutePath());
+
+        if (getLog().isDebugEnabled())
+          getLog().debug("Parsing html file: " + ftemp.getAbsolutePath());
 
         //tempMap.put(key, value);
         //The HTML file information are added in the list of FileInfoObject
@@ -164,10 +162,10 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
           new DocFileInfo(spe.runExtractData(ftemp,
                                              (indexerLanguage == null) ? "en" : indexerLanguage));
 
-        ftemp                       = docFileInfoTemp.getFullpath();
+        ftemp = docFileInfoTemp.getFullpath();
 
-        String stemp                = ftemp.toString();
-        int    i                    = stemp.indexOf(targetBaseDir.getAbsolutePath());
+        String stemp = ftemp.toString();
+        int    i     = stemp.indexOf(targetBaseDir.getAbsolutePath());
 
         if (i != 0) {
           System.out.println("the documentation root does not match with the documentation input!");
@@ -227,7 +225,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     DirList   props     = new DirList(targetBaseDir, "^(?!(punctuation)).*\\.props$", 1);
     ArrayList wordsList = props.getListFiles();
 
-    //		System.out.println("props files:"+wordsList);
+    //		System.out.println("props files:"+wordsList);epub now handles correctly multiples input files and also zip them correctly
     //TODO all properties are taken to a single arraylist. does it ok?.
     Properties enProps = new Properties();
 
