@@ -118,9 +118,6 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
 
-    // restoring the expected file extension    
-    setTargetFileExtension(currentFileExtension);
-
     final FopFactory  fopFactory = FopFactory.newInstance();
     final FOUserAgent userAgent  = fopFactory.newFOUserAgent();
     userAgent.setBaseURL(baseUrl);
@@ -175,7 +172,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
   private File getOutputFile(File inputFile) {
     String basename = FileUtils.basename(inputFile.getAbsolutePath());
 
-    return new File(getTargetDirectory(), basename + getTargetFileExtension());
+    return new File(getTargetDirectory(), basename + currentFileExtension);
   }
 
   private OutputStream openFileForOutput(File file) throws MojoExecutionException {
@@ -192,10 +189,10 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
    * @return DOCUMENT ME!
    */
   protected String getMimeType() {
-    getLog().info("targetFileExtension " + getTargetFileExtension());
+    getLog().info("targetFileExtension " + currentFileExtension);
     getLog().info("type " + getType());
 
-    if ("rtf".equals(getTargetFileExtension())) {
+    if ("rtf".equals(currentFileExtension)) {
       return MimeConstants.MIME_RTF;
     }
 
