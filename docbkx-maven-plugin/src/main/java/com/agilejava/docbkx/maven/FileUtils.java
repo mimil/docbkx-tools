@@ -98,7 +98,7 @@ public class FileUtils {
                                              throws IOException {
     final JarFile jarFile = jarConnection.getJarFile();
 
-    Enumeration   e = jarFile.entries();
+    Enumeration   e       = jarFile.entries();
 
     while (e.hasMoreElements()) {
       final JarEntry entry = (JarEntry) e.nextElement();
@@ -106,7 +106,7 @@ public class FileUtils {
       if (entry.getName().startsWith(jarConnection.getEntryName())) {
         final String filename = entry.getName().replace(jarConnection.getEntryName(), "");
 
-        final File   f = new File(destDir, filename);
+        final File   f        = new File(destDir, filename);
 
         if (!entry.isDirectory()) {
           final InputStream entryInputStream = jarFile.getInputStream(entry);
