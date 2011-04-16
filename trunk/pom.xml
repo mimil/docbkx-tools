@@ -66,6 +66,9 @@
         <version>0.3.1</version>
         <configuration>
           <configFile>${project.parent.basedir}/src/main/resources/eclipse_formatter.xml</configFile>
+          <compilerSource>1.4</compilerSource>
+          <compilerCompliance>1.4</compilerCompliance>
+          <compilerTargetPlatform>1.4</compilerTargetPlatform>
         </configuration>
       </plugin>
     </plugins>
