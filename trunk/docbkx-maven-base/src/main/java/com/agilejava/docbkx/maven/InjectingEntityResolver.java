@@ -1,20 +1,16 @@
 package com.agilejava.docbkx.maven;
 
-
 /*
  * Copyright 2006 Wilfred Springer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +65,7 @@ public class InjectingEntityResolver implements EntityResolver {
    */
   private Log log;
 
-/**
+  /**
    * Creates a new InjectingEntityResolver object.
    *
    * @param entities DOCUMENT ME!
@@ -78,11 +74,11 @@ public class InjectingEntityResolver implements EntityResolver {
    * @param log DOCUMENT ME!
    */
   public InjectingEntityResolver(List entities, EntityResolver resolver, String type, Log log) {
-    this.resolver                         = resolver;
-    this.entities                         = entities;
-    this.injected                         = false;
-    this.log                              = log;
-    this.type                             = type;
+    this.resolver = resolver;
+    this.entities = entities;
+    this.injected = false;
+    this.log = log;
+    this.type = type;
   }
 
   /**
@@ -100,8 +96,7 @@ public class InjectingEntityResolver implements EntityResolver {
    * @throws SAXException DOCUMENT ME!
    * @throws IOException DOCUMENT ME!
    */
-  public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException, IOException {
+  public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
     if (systemId.endsWith("docbkx." + type + ".ent")) {
       log.debug("Handling type specific entities.");
 

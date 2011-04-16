@@ -25,10 +25,9 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
   }
 
   private void configureXslthl() {
-    URL url =
-      this.getClass().getClassLoader().getResource("docbook/highlighting/xslthl-config.xml");
+    URL url = this.getClass().getClassLoader().getResource("docbook/highlighting/xslthl-config.xml");
 
-    final String config        = getProperty("highlightXslthlConfig");
+    final String config = getProperty("highlightXslthlConfig");
     final String xslthlSysProp = System.getProperty("xslthl.config");
 
     if (config != null) {
@@ -61,8 +60,8 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
       throw new IllegalArgumentException("Config file path must not be null");
     }
 
-    final String s    = path.replace("file:///", "/");
-    final File   file = new File(s);
+    final String s = path.replace("file:///", "/");
+    final File file = new File(s);
 
     if (!file.exists() || !file.isFile() || !file.canRead()) {
       getLog().warn("The given XSLTHL config file seems to not be legal: " + path);

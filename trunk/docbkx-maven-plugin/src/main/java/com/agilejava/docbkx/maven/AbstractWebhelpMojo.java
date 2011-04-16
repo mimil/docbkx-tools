@@ -1,20 +1,16 @@
 package com.agilejava.docbkx.maven;
 
-
 /*
  * Copyright Cedric Pronzato
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,16 +38,16 @@ import com.nexwave.nsidita.DocFileInfo;
  */
 public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   //File name initialization
-  private static final String HTML_LIST      = "htmlFileList.js";
+  private static final String HTML_LIST = "htmlFileList.js";
   private static final String HTML_INFO_LIST = "htmlFileInfoList.js";
-  String                      indexName      = ".js";
+  String indexName = ".js";
 
   // Init the lists which will contain the words and chars to remove
   ArrayList cleanUpStrings = new ArrayList();
-  ArrayList cleanUpChars   = new ArrayList();
-  Map       tempDico       = new HashMap();
-  File      targetBaseDir  = null;
-  File      searchBaseDir  = null;
+  ArrayList cleanUpChars = new ArrayList();
+  Map tempDico = new HashMap();
+  File targetBaseDir = null;
+  File searchBaseDir = null;
 
   /**
    * The directory containing the webhelp template or null if using the template provided by
@@ -75,8 +71,8 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
     transformer.setParameter("root.filename", rootFilename);
     transformer.setParameter("webhelp.base.dir", targetFile.getParent() + File.separator);
-    targetBaseDir   = new File(targetFile.getParentFile(), "content");
-    searchBaseDir   = new File(targetBaseDir, "search");
+    targetBaseDir = new File(targetFile.getParentFile(), "content");
+    searchBaseDir = new File(targetBaseDir, "search");
   }
 
   /**
@@ -92,8 +88,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
         URL url = this.getClass().getClassLoader().getResource("docbook/webhelp/template/");
         FileUtils.copyResourcesRecursively(url, targetBaseDir.getParentFile());
       } else {
-        getLog()
-           .debug("Copying template from custom directory: " + templateDirectory.getAbsolutePath());
+        getLog().debug("Copying template from custom directory: " + templateDirectory.getAbsolutePath());
         FileUtils.copyResourcesRecursively(templateDirectory.toURL(), targetBaseDir.getParentFile());
       }
     } catch (Exception e) {
@@ -160,15 +155,14 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
 
         //tempMap.put(key, value);
         //The HTML file information are added in the list of FileInfoObject
-        String      indexerLanguage = getProperty("webhelpIndexerLanguage");
-        DocFileInfo docFileInfoTemp =
-          new DocFileInfo(spe.runExtractData(ftemp,
-                                             (indexerLanguage == null) ? "en" : indexerLanguage));
+        String indexerLanguage = getProperty("webhelpIndexerLanguage");
+        DocFileInfo docFileInfoTemp = new DocFileInfo(spe.runExtractData(ftemp, (indexerLanguage == null) ? "en"
+            : indexerLanguage));
 
         ftemp = docFileInfoTemp.getFullpath();
 
         String stemp = ftemp.toString();
-        int    i     = stemp.indexOf(targetBaseDir.getAbsolutePath());
+        int i = stemp.indexOf(targetBaseDir.getAbsolutePath());
 
         if (i != 0) {
           System.out.println("the documentation root does not match with the documentation input!");
@@ -181,8 +175,8 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
         if (stemp.equals(targetBaseDir.getAbsolutePath()))
           ad = 0;
 
-        stemp   = stemp.substring(i + targetBaseDir.getAbsolutePath().length() + ad); //i is redundant (i==0 always)
-        ftemp   = new File(stemp);
+        stemp = stemp.substring(i + targetBaseDir.getAbsolutePath().length() + ad); //i is redundant (i==0 always)
+        ftemp = new File(stemp);
         docFileInfoTemp.setFullpath(ftemp);
 
         filesDescription.add(docFileInfoTemp);
@@ -221,11 +215,11 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
 
   private int retrieveCleanUpProps() {
     // Files for punctuation (only one for now)
-    String[]        punctuationFiles = new String[] { "punctuation.props" };
+    String[] punctuationFiles = new String[] { "punctuation.props" };
     FileInputStream input;
 
     // Get the list of the props file containing the words to remove (not the punctuation)
-    DirList   props     = new DirList(targetBaseDir, "^(?!(punctuation)).*\\.props$", 1);
+    DirList props = new DirList(targetBaseDir, "^(?!(punctuation)).*\\.props$", 1);
     ArrayList wordsList = props.getListFiles();
 
     //		System.out.println("props files:"+wordsList);epub now handles correctly multiples input files and also zip them correctly
@@ -249,7 +243,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
       // Retrieve char to remove (punctuation for ex.)
       for (int i = 0; i < punctuationFiles.length; i++) {
         String punctuationFile = punctuationFiles[i];
-        File   ftemp           = new File(searchBaseDir, punctuationFile);
+        File ftemp = new File(searchBaseDir, punctuationFile);
 
         if (ftemp.exists()) {
           enProps.load(input = new FileInputStream(ftemp));

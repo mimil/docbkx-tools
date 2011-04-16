@@ -60,16 +60,14 @@
           <target>1.4</target>
         </configuration>
       </plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>jalopy-maven-plugin</artifactId>
-            <version>1.0-alpha-1</version>
-            <configuration>
-                <convention>${project.parent.basedir}/src/main/resources/jalopy.xml</convention>
-                <failOnError>false</failOnError>
-
-            </configuration>
-        </plugin>
+      <plugin>
+        <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+        <artifactId>maven-java-formatter-plugin</artifactId>
+        <version>0.3.1</version>
+        <configuration>
+          <configFile>${project.parent.basedir}/src/main/resources/eclipse_formatter.xml</configFile>
+        </configuration>
+      </plugin>
     </plugins>
     <extensions>
       <extension>

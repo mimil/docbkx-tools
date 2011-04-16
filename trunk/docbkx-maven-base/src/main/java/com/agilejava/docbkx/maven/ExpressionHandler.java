@@ -1,17 +1,14 @@
 /*
  * Copyright 2007 Wilfred Springer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.agilejava.docbkx.maven;
 
@@ -54,14 +51,13 @@ public class ExpressionHandler implements ProcessingInstructionHandler {
   /**
    * A simplified function mapper that basically does not support any functions at all.
    */
-  private FunctionMapper mapper =
-    new FunctionMapper() {
-      public Method resolveFunction(String prefix, String localName) {
-        return null;
-      }
-    };
+  private FunctionMapper mapper = new FunctionMapper() {
+    public Method resolveFunction(String prefix, String localName) {
+      return null;
+    }
+  };
 
-/**
+  /**
    * Constructs a new instance.
    * 
    * @param resolver
@@ -71,8 +67,8 @@ public class ExpressionHandler implements ProcessingInstructionHandler {
    *            The object used for logging. (Not <code>null</code>.)
    */
   public ExpressionHandler(VariableResolver resolver, Log log) {
-    this.resolver   = resolver;
-    this.log        = log;
+    this.resolver = resolver;
+    this.log = log;
   }
 
   // JavaDoc inherited
@@ -84,10 +80,10 @@ public class ExpressionHandler implements ProcessingInstructionHandler {
    */
   public void handle(String data, ContentHandler handler) {
     ExpressionEvaluator evaluator = new ExpressionEvaluatorImpl();
-    Object              value;
+    Object value;
 
     try {
-      value                       = evaluator.evaluate(data, Object.class, resolver, mapper);
+      value = evaluator.evaluate(data, Object.class, resolver, mapper);
 
       if (value != null) {
         char[] result = value.toString().toCharArray();

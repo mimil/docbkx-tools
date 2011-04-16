@@ -1,17 +1,14 @@
 /*
  * Copyright 2006,2007 Wilfred Springer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.agilejava.maven.docbkx;
 
@@ -41,12 +38,12 @@ public class ZipFileProcessor {
    */
   private File file;
 
-/**
-     * Constructs a new instance, wrapping the <code>file</code> passed in.
-     *
-     * @param file
-     *            The zip file wrapped by this object.
-     */
+  /**
+   * Constructs a new instance, wrapping the <code>file</code> passed in.
+   *
+   * @param file
+   *            The zip file wrapped by this object.
+   */
   public ZipFileProcessor(File file) {
     this.file = file;
   }
@@ -62,13 +59,13 @@ public class ZipFileProcessor {
    *         in.
    */
   public void process(ZipEntryVisitor visitor) throws IOException {
-    InputStream    in    = null;
+    InputStream in = null;
     ZipInputStream zipIn = null;
 
     try {
-      in      = new FileInputStream(file);
-      in      = new BufferedInputStream(in);
-      zipIn   = new ZipInputStream(in);
+      in = new FileInputStream(file);
+      in = new BufferedInputStream(in);
+      zipIn = new ZipInputStream(in);
 
       ZipEntry entry = null;
 
@@ -81,11 +78,11 @@ public class ZipFileProcessor {
     }
   }
 
-/**
-     * The interface to be implemented by all objects that want to be notified
-     * of entries in a zip file.
-     *
-     */
+  /**
+   * The interface to be implemented by all objects that want to be notified
+   * of entries in a zip file.
+   *
+   */
   public interface ZipEntryVisitor {
     /**
      * Notifies the visitor of a zip file entry encoutered.
@@ -119,15 +116,15 @@ public class ZipFileProcessor {
      */
     private ZipInputStream in;
 
-/**
-         * Constructs a new instance.
-         *
-         * @param entry The {@link ZipEntry} allowing you to access the details of the compressed zip entry.
-         * @param in An <code>InputStream</code> providing <em>direct</em> access to the zip file entry.
-         */
+    /**
+     * Constructs a new instance.
+     *
+     * @param entry The {@link ZipEntry} allowing you to access the details of the compressed zip entry.
+     * @param in An <code>InputStream</code> providing <em>direct</em> access to the zip file entry.
+     */
     public SafeZipEntryInputStream(ZipEntry entry, ZipInputStream in) {
-      size      = entry.getCompressedSize();
-      this.in   = in;
+      size = entry.getCompressedSize();
+      this.in = in;
     }
 
     // JavaDoc inherited

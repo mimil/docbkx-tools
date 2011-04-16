@@ -1,20 +1,16 @@
 package com.agilejava.maven.docbkx;
 
-
 /*
  * Copyright 2006,2007 Wilfred Springer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +33,7 @@ import junit.framework.TestCase;
  * @version $Revision$
  */
 public class ZipFileProcessorTest extends TestCase {
-  private static List FILENAMES =
-    Arrays.asList(new String[] { "test1.txt", "test2.txt", "test3.txt" });
+  private static List FILENAMES = Arrays.asList(new String[] { "test1.txt", "test2.txt", "test3.txt" });
 
   /**
    * DOCUMENT ME!
@@ -46,21 +41,20 @@ public class ZipFileProcessorTest extends TestCase {
    * @throws Exception DOCUMENT ME!
    */
   public void testProcessFile() throws Exception {
-    File             file      = new File(getDirectory(), "sample.zip");
+    File file = new File(getDirectory(), "sample.zip");
     ZipFileProcessor processor = new ZipFileProcessor(file);
-    final int[]      count     = new int[1];
+    final int[] count = new int[1];
     processor.process(new ZipEntryVisitor() {
-        public void visit(ZipEntry entry, InputStream in)
-                   throws IOException {
-          count[0]++;
-          assertTrue(FILENAMES.contains(entry.getName()));
+      public void visit(ZipEntry entry, InputStream in) throws IOException {
+        count[0]++;
+        assertTrue(FILENAMES.contains(entry.getName()));
 
-          if ((entry.getCompressedSize() > 0) && entry.getName().endsWith("test2.txt")) {
-            assertEquals("i have a dream", IOUtils.toString(in));
-            in.close();
-          }
+        if ((entry.getCompressedSize() > 0) && entry.getName().endsWith("test2.txt")) {
+          assertEquals("i have a dream", IOUtils.toString(in));
+          in.close();
         }
-      });
+      }
+    });
     assertEquals(3, count[0]);
   }
 
@@ -69,9 +63,9 @@ public class ZipFileProcessorTest extends TestCase {
     dirname = (dirname == null) ? System.getProperty("user.dir") : dirname;
 
     File dir = new File(dirname);
-    dir   = new File(dir, "src");
-    dir   = new File(dir, "test");
-    dir   = new File(dir, "resources");
+    dir = new File(dir, "src");
+    dir = new File(dir, "test");
+    dir = new File(dir, "resources");
 
     return dir;
   }

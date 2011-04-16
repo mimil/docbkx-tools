@@ -28,24 +28,21 @@ public class ExpressionEvaluatorTest extends TestCase {
    */
   public void testEvaluator() throws ELException {
     ExpressionEvaluator evaluator = new ExpressionEvaluatorImpl();
-    final Map           foo       = new HashMap();
+    final Map foo = new HashMap();
     foo.put("bar", "whatever");
 
-    Object result =
-      evaluator.evaluate("${foo.bar}", Object.class,
-                         new VariableResolver() {
-          public Object resolveVariable(String name) throws ELException {
-            System.out.println(name);
+    Object result = evaluator.evaluate("${foo.bar}", Object.class, new VariableResolver() {
+      public Object resolveVariable(String name) throws ELException {
+        System.out.println(name);
 
-            return foo;
-          }
-        },
-                         new FunctionMapper() {
-          public Method resolveFunction(String arg0, String arg1) {
-            // TODO Auto-generated method stub
-            return null;
-          }
-        });
+        return foo;
+      }
+    }, new FunctionMapper() {
+      public Method resolveFunction(String arg0, String arg1) {
+        // TODO Auto-generated method stub
+        return null;
+      }
+    });
 
     System.out.println(result);
   }

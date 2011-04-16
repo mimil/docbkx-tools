@@ -52,7 +52,7 @@ public class FOPReaderExitTest extends PlexusTestCase {
    * @throws Exception DOCUMENT ME!
    */
   public void testFopExistsOnInvalidFont() throws Exception {
-    File font    = new File(PlexusTestCase.getBasedir(), "src/test/resources/fontsko/test.ttf");
+    File font = new File(PlexusTestCase.getBasedir(), "src/test/resources/fontsko/test.ttf");
     File metrics = new File(PlexusTestCase.getBasedir(), "target/test/fontsko/test-metrics.xml");
     metrics.getParentFile().mkdirs();
 
@@ -77,8 +77,7 @@ public class FOPReaderExitTest extends PlexusTestCase {
       mojo.execute();
 
       File expectedGen = new File(mojo.targetDirectory, "test-metrics.xml");
-      assertTrue("metrics file not generated: " + expectedGen.getAbsolutePath(),
-                 !expectedGen.exists());
+      assertTrue("metrics file not generated: " + expectedGen.getAbsolutePath(), !expectedGen.exists());
     } catch (ExitException e) {
       fail("FontmetricsMojo should not exits");
     }

@@ -1,20 +1,16 @@
 package com.agilejava.docbkx.maven;
 
-
 /*
  * Copyright 2006 Wilfred Springer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -126,14 +122,14 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
 
-    final FopFactory  fopFactory = FopFactory.newInstance();
-    final FOUserAgent userAgent  = fopFactory.newFOUserAgent();
+    final FopFactory fopFactory = FopFactory.newInstance();
+    final FOUserAgent userAgent = fopFactory.newFOUserAgent();
     userAgent.setBaseURL(baseUrl);
 
     // FOUserAgent can be used to set PDF metadata
     Configuration configuration = loadFOPConfig();
-    InputStream   in            = null;
-    OutputStream  out           = null;
+    InputStream in = null;
+    OutputStream out = null;
 
     try {
       in = openFileForInput(result);
@@ -145,8 +141,8 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
       Fop fop = fopFactory.newFop(getMimeType(), userAgent, out);
 
       // Setup JAXP using identity transformer
-      TransformerFactory factory     = TransformerFactory.newInstance();
-      Transformer        transformer = factory.newTransformer(); // identity transformer
+      TransformerFactory factory = TransformerFactory.newInstance();
+      Transformer transformer = factory.newTransformer(); // identity transformer
 
       // Setup input stream
       Source src = new StreamSource(in);
@@ -222,8 +218,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
 
       try {
         if (getLog().isDebugEnabled())
-          getLog()
-             .debug("Using external FOP configuration file: " + externalFOPConfiguration.toString());
+          getLog().debug("Using external FOP configuration file: " + externalFOPConfiguration.toString());
 
         getLog().info("Ignoring pom inline FOP configuration");
 
@@ -238,11 +233,11 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
 
       // else generating the configuration file
     } else {
-      ClassLoader         loader   = this.getClass().getClassLoader();
-      InputStream         in       = loader.getResourceAsStream("fonts.stg");
-      Reader              reader   = new InputStreamReader(in);
-      StringTemplateGroup group    = new StringTemplateGroup(reader);
-      StringTemplate      template = group.getInstanceOf("config");
+      ClassLoader loader = this.getClass().getClassLoader();
+      InputStream in = loader.getResourceAsStream("fonts.stg");
+      Reader reader = new InputStreamReader(in);
+      StringTemplateGroup group = new StringTemplateGroup(reader);
+      StringTemplate template = group.getInstanceOf("config");
       template.setAttribute("fonts", fonts);
 
       if (targetResolution != 0) {
@@ -254,7 +249,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
       }
 
       DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
-      final String                config  = template.toString();
+      final String config = template.toString();
 
       if (getLog().isDebugEnabled()) {
         getLog().debug(config);

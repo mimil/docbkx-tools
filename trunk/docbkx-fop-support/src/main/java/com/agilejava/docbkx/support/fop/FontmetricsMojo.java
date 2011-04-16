@@ -28,253 +28,210 @@ import javax.xml.transform.TransformerException;
  * @author Wilfred Springer
  * @goal generate
  */
-public class FontmetricsMojo
-    extends AbstractMojo
-{
-    /**
-     * The list of all {@link MetricsFileBuilder MetricsFileBuilders} to be
-     * included.
-     */
-    private MetricsFileBuilder[] builders =
-        new MetricsFileBuilder[] { new Type1MetricsFileBuilder(  ), new TtfMetricsFileBuilder(  ) };
+public class FontmetricsMojo extends AbstractMojo {
+  /**
+   * The list of all {@link MetricsFileBuilder MetricsFileBuilders} to be
+   * included.
+   */
+  private MetricsFileBuilder[] builders = new MetricsFileBuilder[] { new Type1MetricsFileBuilder(),
+      new TtfMetricsFileBuilder() };
 
-    /**
-     * The directory containing the font files.
-     *
-     * @parameter expression="${basedir}/src/fonts"
-     */
-    protected File sourceDirectory;
+  /**
+   * The directory containing the font files.
+   *
+   * @parameter expression="${basedir}/src/fonts"
+   */
+  protected File sourceDirectory;
 
-    /**
-     * The directory to which the metrics files will be generated.
-     *
-     * @parameter expression="${basedir}/target/fonts"
-     */
-    protected File targetDirectory;
+  /**
+   * The directory to which the metrics files will be generated.
+   *
+   * @parameter expression="${basedir}/target/fonts"
+   */
+  protected File targetDirectory;
 
-    /**
-     * Creates a WinAnsi-encoded font metrics file. Without this option, a
-     * CID-keyed font metrics file is created. The table below summarizes the
-     * differences between these two encoding options as currently used within
-     * FOP. Please note that this information only applies to TrueType fonts and
-     * TrueType collections
-     *
-     * @parameter
-     */
-    protected boolean ansi = false;
+  /**
+   * Creates a WinAnsi-encoded font metrics file. Without this option, a
+   * CID-keyed font metrics file is created. The table below summarizes the
+   * differences between these two encoding options as currently used within
+   * FOP. Please note that this information only applies to TrueType fonts and
+   * TrueType collections
+   *
+   * @parameter
+   */
+  protected boolean ansi = false;
 
-    /**
-     * {@inheritDoc} Generates font metric files from the font files found in
-     * {@link #sourceDirectory the source directory}.
-     */
-    public void execute(  )
-                 throws MojoExecutionException, MojoFailureException
-    {
-        String[] fontFiles = getFontFiles(  );
-        targetDirectory.mkdirs(  );
+  /**
+   * {@inheritDoc} Generates font metric files from the font files found in
+   * {@link #sourceDirectory the source directory}.
+   */
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    String[] fontFiles = getFontFiles();
+    targetDirectory.mkdirs();
 
-        for ( int i = 0; i < fontFiles.length; i++ )
-        {
-            String fontFile = fontFiles[i];
+    for (int i = 0; i < fontFiles.length; i++) {
+      String fontFile = fontFiles[i];
 
-            for ( int j = 0; j < builders.length; j++ )
-            {
-                if ( builders[j].matches( fontFile ) )
-                {
-                    transform( new File( sourceDirectory, fontFile ).getAbsolutePath(  ),
-                               builders[j] );
+      for (int j = 0; j < builders.length; j++) {
+        if (builders[j].matches(fontFile)) {
+          transform(new File(sourceDirectory, fontFile).getAbsolutePath(), builders[j]);
 
-                    break;
-                }
-            }
+          break;
         }
+      }
+    }
+  }
+
+  /**
+   * Transforms the font file passed in using the given builder.
+   *
+   * @param fontFile The font file to be transformed into a metrics file.
+   * @param builder  The builder that's going to do it.
+   * @throws MojoExecutionException If the builder somehow fails to do it.
+   */
+  private void transform(String fontFile, MetricsFileBuilder builder) throws MojoExecutionException {
+    try {
+      builder.transform(fontFile);
+    } catch (IOException ioe) {
+      // let be tolerant here
+      getLog().warn("Failed to transform " + fontFile, ioe);
+    }
+  }
+
+  /**
+   * Returns the target metrics file for the given font file.
+   *
+   * @param fontFile The file to be transformed.
+   * @return The name of the target metrics file.
+   */
+  private String getTargetFile(String fontFile) {
+    StringBuilder builder = new StringBuilder();
+    String basename = FileUtils.basename(fontFile);
+    builder.append(basename.substring(0, basename.length() - 1));
+    builder.append("-metrics.xml");
+
+    File file = new File(targetDirectory, builder.toString());
+
+    return file.getAbsolutePath();
+  }
+
+  /**
+   * Returns an array of the names of all font files found.
+   *
+   * @return An array with the names of all font files found.
+   */
+  private String[] getFontFiles() {
+    String[] includes = getFontFileIncludes();
+    getLog().debug("Patterns " + Arrays.asList(includes));
+
+    DirectoryScanner scanner = new DirectoryScanner();
+    scanner.setBasedir(sourceDirectory);
+    scanner.setIncludes(includes);
+    scanner.scan();
+
+    String[] results = scanner.getIncludedFiles();
+
+    if (getLog().isDebugEnabled()) {
+      for (int i = 0; i < results.length; i++) {
+        getLog().debug("Found " + results[i]);
+      }
+
+      getLog().debug("Found " + results.length + " font files in total.");
     }
 
-    /**
-     * Transforms the font file passed in using the given builder.
-     *
-     * @param fontFile The font file to be transformed into a metrics file.
-     * @param builder  The builder that's going to do it.
-     * @throws MojoExecutionException If the builder somehow fails to do it.
-     */
-    private void transform( String fontFile, MetricsFileBuilder builder )
-                    throws MojoExecutionException
-    {
-        try
-        {
-            builder.transform( fontFile );
-        } catch ( IOException ioe )
-        {
-            // let be tolerant here
-            getLog(  ).warn( "Failed to transform " + fontFile, ioe );
-        }
+    return results;
+  }
+
+  /**
+   * Returns a list of patterns of font files to be included while scanning
+   * for font files.
+   *
+   * @return A list of patterns matching font files to be included while
+   *         scanning for other font files.
+   */
+  private String[] getFontFileIncludes() {
+    List results = new ArrayList();
+
+    for (int i = 0; i < builders.length; i++) {
+      builders[i].appendSuffixes(results);
     }
 
-    /**
-     * Returns the target metrics file for the given font file.
-     *
-     * @param fontFile The file to be transformed.
-     * @return The name of the target metrics file.
-     */
-    private String getTargetFile( String fontFile )
-    {
-        StringBuilder builder = new StringBuilder(  );
-        String basename = FileUtils.basename( fontFile );
-        builder.append( basename.substring( 0, basename.length(  ) - 1 ) );
-        builder.append( "-metrics.xml" );
+    return (String[]) results.toArray(new String[0]);
+  }
 
-        File file = new File( targetDirectory,
-                              builder.toString(  ) );
+  private interface MetricsFileBuilder {
+    boolean matches(String fontFile);
 
-        return file.getAbsolutePath(  );
+    void transform(String fontFile) throws IOException;
+
+    void appendSuffixes(List list);
+  }
+
+  private class Type1MetricsFileBuilder implements MetricsFileBuilder {
+    public boolean matches(String fontFile) {
+      return fontFile.toLowerCase().endsWith(".pfm");
     }
 
-    /**
-     * Returns an array of the names of all font files found.
-     *
-     * @return An array with the names of all font files found.
-     */
-    private String[] getFontFiles(  )
-    {
-        String[] includes = getFontFileIncludes(  );
-        getLog(  ).debug( "Patterns " + Arrays.asList( includes ) );
+    public void transform(String fontFile) throws IOException {
+      PFMReader reader = new PFMReader();
+      getLog().debug("Parsing font: " + fontFile);
 
-        DirectoryScanner scanner = new DirectoryScanner(  );
-        scanner.setBasedir( sourceDirectory );
-        scanner.setIncludes( includes );
-        scanner.scan(  );
+      PFMFile pfm = reader.loadPFM(fontFile);
 
-        String[] results = scanner.getIncludedFiles(  );
+      if (pfm == null) {
+        throw new IOException("Unable to load PFM file: " + fontFile);
+      }
 
-        if ( getLog(  ).isDebugEnabled(  ) )
-        {
-            for ( int i = 0; i < results.length; i++ )
-            {
-                getLog(  ).debug( "Found " + results[i] );
-            }
+      Document doc = reader.constructFontXML(pfm, null, null, null, null);
 
-            getLog(  ).debug( "Found " + results.length + " font files in total." );
-        }
+      if (doc == null) {
+        throw new IOException("Unable to construct font XML file");
+      }
 
-        return results;
+      try {
+        reader.writeFontXML(doc, getTargetFile(fontFile));
+      } catch (TransformerException e) {
+        throw new IOException("Unable to write font XML file", e);
+      }
     }
 
-    /**
-     * Returns a list of patterns of font files to be included while scanning
-     * for font files.
-     *
-     * @return A list of patterns matching font files to be included while
-     *         scanning for other font files.
-     */
-    private String[] getFontFileIncludes(  )
-    {
-        List results = new ArrayList(  );
+    public void appendSuffixes(List list) {
+      list.add("*.pfm");
+      list.add("*.PFM");
+    }
+  }
 
-        for ( int i = 0; i < builders.length; i++ )
-        {
-            builders[i].appendSuffixes( results );
-        }
-
-        return (String[]) results.toArray( new String[0] );
+  private class TtfMetricsFileBuilder implements MetricsFileBuilder {
+    public boolean matches(String fontFile) {
+      return fontFile.toLowerCase().endsWith(".ttf");
     }
 
-    private interface MetricsFileBuilder
-    {
-        boolean matches( String fontFile );
+    public void transform(String fontFile) throws IOException {
+      TTFReader reader = new TTFReader();
+      getLog().debug("Parsing font: " + fontFile);
 
-        void transform( String fontFile )
-                throws IOException;
+      TTFFile ttf = reader.loadTTF(fontFile, null);
 
-        void appendSuffixes( List list );
+      if (ttf == null) {
+        throw new IOException("Unable to load TTF file: " + fontFile);
+      }
+
+      Document doc = reader.constructFontXML(ttf, null, null, null, null, !ansi, null);
+
+      if (doc == null) {
+        throw new IOException("Unable to construct font XML file");
+      }
+
+      try {
+        reader.writeFontXML(doc, getTargetFile(fontFile));
+      } catch (TransformerException e) {
+        throw new IOException("Unable to write font XML file", e);
+      }
     }
 
-    private class Type1MetricsFileBuilder
-        implements MetricsFileBuilder
-    {
-        public boolean matches( String fontFile )
-        {
-            return fontFile.toLowerCase(  ).endsWith( ".pfm" );
-        }
-
-        public void transform( String fontFile )
-                       throws IOException
-        {
-            PFMReader reader = new PFMReader(  );
-            getLog(  ).debug( "Parsing font: " + fontFile );
-
-            PFMFile pfm = reader.loadPFM( fontFile );
-
-            if ( pfm == null )
-            {
-                throw new IOException( "Unable to load PFM file: " + fontFile );
-            }
-
-            Document doc = reader.constructFontXML( pfm, null, null, null, null );
-
-            if ( doc == null )
-            {
-                throw new IOException( "Unable to construct font XML file" );
-            }
-
-            try
-            {
-                reader.writeFontXML( doc,
-                                     getTargetFile( fontFile ) );
-            } catch ( TransformerException e )
-            {
-                throw new IOException( "Unable to write font XML file", e );
-            }
-        }
-
-        public void appendSuffixes( List list )
-        {
-            list.add( "*.pfm" );
-            list.add( "*.PFM" );
-        }
+    public void appendSuffixes(List list) {
+      list.add("*.ttf");
+      list.add("*.TTF");
     }
-
-    private class TtfMetricsFileBuilder
-        implements MetricsFileBuilder
-    {
-        public boolean matches( String fontFile )
-        {
-            return fontFile.toLowerCase(  ).endsWith( ".ttf" );
-        }
-
-        public void transform( String fontFile )
-                       throws IOException
-        {
-            TTFReader reader = new TTFReader(  );
-            getLog(  ).debug( "Parsing font: " + fontFile );
-
-            TTFFile ttf = reader.loadTTF( fontFile, null );
-
-            if ( ttf == null )
-            {
-                throw new IOException( "Unable to load TTF file: " + fontFile );
-            }
-
-            Document doc = reader.constructFontXML( ttf, null, null, null, null, ! ansi, null );
-
-            if ( doc == null )
-            {
-                throw new IOException( "Unable to construct font XML file" );
-            }
-
-            try
-            {
-                reader.writeFontXML( doc,
-                                     getTargetFile( fontFile ) );
-            } catch ( TransformerException e )
-            {
-                throw new IOException( "Unable to write font XML file", e );
-            }
-        }
-
-        public void appendSuffixes( List list )
-        {
-            list.add( "*.ttf" );
-            list.add( "*.TTF" );
-        }
-    }
+  }
 }

@@ -1,20 +1,16 @@
 package com.agilejava.docbkx.maven;
 
-
 /*
  * Copyright 2006 Wilfred Springer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
@@ -28,11 +24,11 @@ import javax.xml.transform.stream.StreamSource;
  * @author Wilfred Springer
  */
 public class StylesheetResolver implements URIResolver {
-  private String      urn;
-  private Source      stylesheet;
+  private String urn;
+  private Source stylesheet;
   private URIResolver wrapped;
 
-/**
+  /**
    * Creates a new StylesheetResolver object.
    *
    * @param urn DOCUMENT ME!
@@ -40,9 +36,9 @@ public class StylesheetResolver implements URIResolver {
    * @param wrapped DOCUMENT ME!
    */
   public StylesheetResolver(String urn, Source stylesheet, URIResolver wrapped) {
-    this.urn          = urn;
-    this.stylesheet   = stylesheet;
-    this.wrapped      = wrapped;
+    this.urn = urn;
+    this.stylesheet = stylesheet;
+    this.wrapped = wrapped;
   }
 
   /**
@@ -61,8 +57,8 @@ public class StylesheetResolver implements URIResolver {
       return stylesheet;
     } else if ((href != null) && href.startsWith(urn)) {
       // return the resource using the main stylesheet location directory as base
-      int    dirIndex    = stylesheet.getSystemId().lastIndexOf("/");
-      String dirPath     = stylesheet.getSystemId().substring(0, dirIndex);
+      int dirIndex = stylesheet.getSystemId().lastIndexOf("/");
+      String dirPath = stylesheet.getSystemId().substring(0, dirIndex);
       String newLocation = dirPath.concat(href.replace(urn, ""));
 
       return new StreamSource(newLocation);
