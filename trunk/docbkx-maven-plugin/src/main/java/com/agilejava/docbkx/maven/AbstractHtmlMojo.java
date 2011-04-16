@@ -32,6 +32,8 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
   /**
    * Indicates if the output should either be a single page, or if it should be spread across
    * multiple pages.
+   *
+   * @parameter default="false"
    */
   private boolean chunkedOutput;
 

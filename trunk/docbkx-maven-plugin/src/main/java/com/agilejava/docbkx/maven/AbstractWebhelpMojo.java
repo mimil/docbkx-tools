@@ -1,5 +1,6 @@
 package com.agilejava.docbkx.maven;
 
+
 /*
  * Copyright Cedric Pronzato
  *
@@ -55,6 +56,8 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   /**
    * The directory containing the webhelp template or null if using the template provided by
    * docbook xsl distribution.
+   *
+   * @parameter
    */
   private File templateDirectory;
 
