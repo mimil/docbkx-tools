@@ -9,16 +9,16 @@ import javax.xml.transform.Transformer;
  * @author Wilfred Springer
  */
 public class CachingTransformerBuilder implements TransformerBuilder {
-  private Transformer        transformer;
+  private Transformer transformer;
   private TransformerBuilder builder;
 
-/**
-     * Constructs a new instance.
-     * 
-     * @param builder
-     *            The {@link TransformerBuilder} creating the actual instance of
-     *            the Transformer.
-     */
+  /**
+   * Constructs a new instance.
+   * 
+   * @param builder
+   *            The {@link TransformerBuilder} creating the actual instance of
+   *            the Transformer.
+   */
   public CachingTransformerBuilder(TransformerBuilder builder) {
     if (builder == null)
       throw new IllegalArgumentException("TransformerBuilder should not be null.");

@@ -940,7 +940,7 @@
             <configuration>
                 <highlightSource>1</highlightSource>
                 <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
-                <includes>sample2.xml</includes>  
+                <includes>sample2.xml</includes>
             </configuration>
           </plugin>
         </plugins>

@@ -1,19 +1,15 @@
 package com.agilejava.docbkx.maven;
 
-
 /*
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 import java.io.*;
 
@@ -93,12 +89,11 @@ public class FileUtils {
    *
    * @throws IOException DOCUMENT ME!
    */
-  public static boolean copyJarResourcesRecursively(final File destDir,
-                                                    final JarURLConnection jarConnection)
-                                             throws IOException {
+  public static boolean copyJarResourcesRecursively(final File destDir, final JarURLConnection jarConnection)
+      throws IOException {
     final JarFile jarFile = jarConnection.getJarFile();
 
-    Enumeration   e       = jarFile.entries();
+    Enumeration e = jarFile.entries();
 
     while (e.hasMoreElements()) {
       final JarEntry entry = (JarEntry) e.nextElement();
@@ -106,7 +101,7 @@ public class FileUtils {
       if (entry.getName().startsWith(jarConnection.getEntryName())) {
         final String filename = entry.getName().replace(jarConnection.getEntryName(), "");
 
-        final File   f        = new File(destDir, filename);
+        final File f = new File(destDir, filename);
 
         if (!entry.isDirectory()) {
           final InputStream entryInputStream = jarFile.getInputStream(entry);
@@ -136,7 +131,7 @@ public class FileUtils {
    * @return DOCUMENT ME!
    */
   public static boolean copyResourcesRecursively( //
-  final URL originUrl, final File destination) {
+      final URL originUrl, final File destination) {
     try {
       final URLConnection urlConnection = originUrl.openConnection();
 
@@ -180,7 +175,7 @@ public class FileUtils {
     try {
       final byte[] buf = new byte[1024];
 
-      int          len = 0;
+      int len = 0;
 
       while ((len = is.read(buf)) > 0) {
         os.write(buf, 0, len);

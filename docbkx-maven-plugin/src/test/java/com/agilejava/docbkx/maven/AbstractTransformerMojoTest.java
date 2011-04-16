@@ -48,9 +48,8 @@ public class AbstractTransformerMojoTest extends AbstractMojoTestCase {
     final File pluginXml = new File(getBasedir(), "src/test/resources/catalog/pom-nodep.xml");
 
     //AbstractTransformerMojo mojo = (AbstractTransformerMojo)lookupMojo("generate-pdf", pluginXml);
-    DocbkxPdfMojo       mojo                = new DocbkxPdfMojo();
-    PlexusConfiguration pluginConfiguration =
-      extractPluginConfiguration("docbkx-maven-plugin", pluginXml);
+    DocbkxPdfMojo mojo = new DocbkxPdfMojo();
+    PlexusConfiguration pluginConfiguration = extractPluginConfiguration("docbkx-maven-plugin", pluginXml);
     configureMojo(mojo, pluginConfiguration);
 
     //assertNotNull("Unable to find requested mojo", mojo);
@@ -68,7 +67,7 @@ public class AbstractTransformerMojoTest extends AbstractMojoTestCase {
 
   private void printClassPath(AbstractTransformerMojo mojo) {
     ClassLoader loader = mojo.getClass().getClassLoader();
-    URL[]       urls   = ((URLClassLoader) loader).getURLs();
+    URL[] urls = ((URLClassLoader) loader).getURLs();
 
     for (int i = 0; i < urls.length; i++) {
       System.out.println(urls[i].getFile());
@@ -79,8 +78,7 @@ public class AbstractTransformerMojoTest extends AbstractMojoTestCase {
     findInCatalog(catalog, "http://docbook.sourceforge.net/release/xsl-ns/current");
   }
 
-  private void findInCatalog(Catalog catalog, String uri)
-                      throws Exception {
+  private void findInCatalog(Catalog catalog, String uri) throws Exception {
     try {
       String res = catalog.resolveURI(uri);
 

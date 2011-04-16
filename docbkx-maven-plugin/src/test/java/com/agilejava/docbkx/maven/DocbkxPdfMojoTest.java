@@ -48,7 +48,7 @@ public class DocbkxPdfMojoTest extends PlexusTestCase {
    */
   public void testLoadFOPConfigEmpty() throws MojoExecutionException {
     Configuration configuration = mojo.loadFOPConfig();
-    Configuration target        = configuration.getChild("target-resolution", false);
+    Configuration target = configuration.getChild("target-resolution", false);
     assertNull("default configuration does not set targetResolution", target);
 
     Configuration source = configuration.getChild("source-resolution", false);
@@ -61,8 +61,8 @@ public class DocbkxPdfMojoTest extends PlexusTestCase {
    * @throws MojoExecutionException DOCUMENT ME!
    */
   public void testLoadFOPConfigWithParam() throws MojoExecutionException {
-    mojo.sourceResolution   = 10;
-    mojo.targetResolution   = 10;
+    mojo.sourceResolution = 10;
+    mojo.targetResolution = 10;
 
     Configuration configuration = mojo.loadFOPConfig();
 
@@ -92,8 +92,7 @@ public class DocbkxPdfMojoTest extends PlexusTestCase {
    * @throws MojoExecutionException DOCUMENT ME!
    */
   public void testLoadFOPConfigValidFile() throws MojoExecutionException {
-    mojo.externalFOPConfiguration = new File(PlexusTestCase.getBasedir(),
-                                             "src/test/resources/fop.xconf");
+    mojo.externalFOPConfiguration = new File(PlexusTestCase.getBasedir(), "src/test/resources/fop.xconf");
 
     mojo.loadFOPConfig();
   }
