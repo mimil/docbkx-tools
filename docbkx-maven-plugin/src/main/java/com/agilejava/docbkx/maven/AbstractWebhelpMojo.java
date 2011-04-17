@@ -43,9 +43,9 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
   String indexName = ".js";
 
   // Init the lists which will contain the words and chars to remove
-  ArrayList cleanUpStrings = new ArrayList();
-  ArrayList cleanUpChars = new ArrayList();
-  Map tempDico = new HashMap();
+  ArrayList cleanUpStrings = null;
+  ArrayList cleanUpChars = null;
+  Map tempDico = null;
   File targetBaseDir = null;
   File searchBaseDir = null;
 
@@ -73,6 +73,9 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     transformer.setParameter("webhelp.base.dir", targetFile.getParent() + File.separator);
     targetBaseDir = new File(targetFile.getParentFile(), "content");
     searchBaseDir = new File(targetBaseDir, "search");
+    cleanUpStrings = new ArrayList();
+    cleanUpChars = new ArrayList();
+    tempDico = new HashMap();
   }
 
   /**
