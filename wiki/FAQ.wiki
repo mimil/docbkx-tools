@@ -10,7 +10,7 @@ As for now the current docbook outputs are the following, the name given here is
  * generate-man
  * generate-javahelp
  * generate-epub
- * generate-webhelp (not yet released, subversion)
+ * generate-webhelp
 
 === My customization stylesheet does not want to apply ===
 If you have respected the import statements format required by Docbkx plugin (`<xsl:import href="urn:docbkx:stylesheet"/>` etc), it is certainly due to the fact that our plugin is based on latest docbook-xsl namespaced version.
