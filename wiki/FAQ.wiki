@@ -48,3 +48,64 @@ In order to handle this case we added a manual way to define arbitrary xsl param
 }}}
 
 From the API point of view, `AbstractTransformerMojo.getProperty()` and `AbstractTransformerMojo.setProperty()` give access to regular docbook-xsl parameters and `AbstractTransformerMojo.getCustomizationParameters()` returns a list of `Parameter` instances, each of them representing a custom xsl parameter.
+
+=== Generation is slow ===
+If your source files are specifying the docbook DTD or any other element pointing to docbook 'public identifier', you will need to setup correctly the XML catalog resolution. The plugin does the hard work, you just need to set the right dependency in your pom.
+
+Here is a sample for Docbook 4.4:
+
+{{{
+<plugins>
+  <plugin>
+    <groupId>com.agilejava.docbkx</groupId>
+    <artifactId>docbkx-maven-plugin</artifactId>
+    <version>${project.version}</version>
+      <dependencies>
+        <dependency>
+          <groupId>org.docbook</groupId>
+          <artifactId>docbook-xml</artifactId>
+          <version>4.4</version>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+...
+}}}
+
+For Docbook 4.5 you will need to add sonatype repository (https://repository.sonatype.org/content/groups/public/) in your pom:
+
+{{{
+<repositories>
+  <repository>
+    <id>sonatype-public</id>
+    <name>Sonatype Public</name>
+    <url>http://repository.sonatype.org/content/groups/public</url>
+  </repository>
+</repositories>
+}}}
+
+And then add this dependency:
+
+{{{
+...
+    <dependency>
+      <groupId>docbook</groupId>
+      <artifactId>docbook-xml</artifactId>
+      <version>4.5</version>
+    </dependency>
+...
+}}}
+
+For Docbook 5.0 the dependency is the following:
+
+{{{
+...
+    <dependency>
+      <groupId>net.sf.docbook</groupId>
+      <artifactId>docbook-xml</artifactId>
+      <version>5.0-all</version>
+      <classifier>resources</classifier>
+      <type>zip</type>
+      <scope>runtime</scope>
+    </dependency>
+...
+}}}
