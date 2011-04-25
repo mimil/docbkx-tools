@@ -86,7 +86,6 @@ For Docbook 4.5 you will need to add sonatype repository (https://repository.son
 And then add this dependency:
 
 {{{
-...
     <dependency>
       <groupId>docbook</groupId>
       <artifactId>docbook-xml</artifactId>
@@ -98,7 +97,6 @@ And then add this dependency:
 For Docbook 5.0 the dependency is the following:
 
 {{{
-...
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xml</artifactId>
