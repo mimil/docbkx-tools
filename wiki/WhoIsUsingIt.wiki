@@ -14,7 +14,7 @@ Below are some of the organizations/projects using the Docbkx Maven Plugin. If y
 [http://oval.sourceforge.net/ http://oval.sourceforge.net/images/oval-banner.png]
 [http://symmetricds.codehaus.org/ http://symmetricds.codehaus.org/images/logos/SymmetricDS-Site.png]
 [http://fusesource.com/ http://fusesource.com/images/fuse-logo.png]
-[http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/index.html http://downloads.geant2.net/repository/cNIS/current-release/doc/maven-site/images/cNIS-logo.png]
+[http://cnis.geant.net http://cnis.geant.net/wspolne/geant_02.jpg]
 [http://www.geomajas.org/ http://ligit0.uab.es/web/img/recomanat/geomajas.gif]
 [http://www.openstack.org/ http://www.openstack.org/images/open-stack-cloud-computing-logo-2.png]
 [http://www.rackspace.com http://www.rackspace.com/images/header/logo.png]
