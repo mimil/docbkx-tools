@@ -8,7 +8,7 @@ Below are some of the organizations/projects using the Docbkx Maven Plugin. If y
 [http://www.jspresso.org/ http://www.jspresso.org/files/logo.png]
 [http://sonatype.com/ http://sonatype.com/images/sonatype_logo.gif]
 [http://restfulobjects.sourceforge.net/ http://restfulobjects.sourceforge.net/m2-site/main/images/hal-logo-for-maven-site.jpg]
-[http://hc.apache.org/httpclient-3.x/ http://hc.apache.org/httpclient-3.x/images/httpclient_logo.png]
+[http://hc.apache.org/httpclient-3.x/ http://hc.apache.org/httpcomponents-client-ga/tutorial/html/images/hc_logo.png]
 [https://wiki.ow2.org/frascati/Wiki.jsp?page=DeveloperCorner https://wiki.ow2.org/frascati/templates/ow2/media/logoOW2.png]
 [http://jguard.xwiki.com/ http://jguard.xwiki.com/xwiki/bin/download/XWiki/JGuardSkin/jGuard_logo.png]
 [http://oval.sourceforge.net/ http://oval.sourceforge.net/images/oval-banner.png]
