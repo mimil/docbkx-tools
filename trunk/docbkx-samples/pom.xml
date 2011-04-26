@@ -435,9 +435,11 @@
             <version>${project.version}</version>
             <dependencies>
               <dependency>
-                <groupId>org.docbook</groupId>
+                <groupId>net.sf.docbook</groupId>
                 <artifactId>docbook-xml</artifactId>
-                <version>4.4</version>
+                <version>5.0-all</version>
+                <classifier>resources</classifier>
+                <type>zip</type>
                 <scope>runtime</scope>
               </dependency>
             </dependencies>
@@ -448,12 +450,14 @@
                   <value>${project.version}</value>
                 </entity>
               </entities>
+              <includes>entities/article.xml</includes>
             </configuration>
           </plugin>
         </plugins>
       </build>
       <properties>
         <example.title>Entity substitution</example.title>
+        <foo>foo 2.0</foo>
       </properties>
     </profile>
 
