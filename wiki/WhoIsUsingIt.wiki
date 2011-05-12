@@ -18,6 +18,7 @@ Below are some of the organizations/projects using the Docbkx Maven Plugin. If y
 [http://www.geomajas.org/ http://ligit0.uab.es/web/img/recomanat/geomajas.gif]
 [http://www.openstack.org/ http://www.openstack.org/images/open-stack-cloud-computing-logo-2.png]
 [http://www.rackspace.com http://www.rackspace.com/images/header/logo.png]
+[http://www.talend.com http://www.talend.com/img/style/logo_talend-open-data-solution.jpg]
 
  * [http://code.google.com/p/liquidform/ Liquid Form]
  * [http://flexmojos.sonatype.org/ FlexMojos]
