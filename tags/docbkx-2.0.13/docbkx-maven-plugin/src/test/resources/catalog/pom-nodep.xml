@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.agilejava.docbkx</groupId>
+    <artifactId>testme</artifactId>
+    <packaging>pom</packaging>
+    <name>testme</name>
+    <version>2.0.11-SNAPSHOT</version>
+
+
+    <build>
+        <plugins>
+            <plugin>
+
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <version>2.0.11-SNAPSHOT</version>
+
+                <executions>
+                    <execution>
+                        <id>documentation identifier</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>generate-pdf</goal>
+                        </goals>
+                        <configuration>
+                            <includes>book.xml</includes>
+                            <draftMode>yes</draftMode>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>                
+                </configuration>
+                <!--dependencies>
+                  <dependency>
+                    <groupId>org.docbook</groupId>
+                    <artifactId>docbook-xml</artifactId>
+                    <version>4.4</version>
+                    <scope>runtime</scope>
+                  </dependency>
+                </dependencies-->
+                <!-- I don't know yet if it is needed -->
+                <dependencies>
+                  <dependency>
+                    <groupId>net.sf.docbook</groupId>
+                    <artifactId>docbook-xsl</artifactId>
+                    <version>1.75.2</version>
+                    <classifier>ns-resources</classifier>
+                    <type>zip</type>
+                    <scope>runtime</scope>
+                  </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

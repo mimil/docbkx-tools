@@ -1,0 +1,1018 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.agilejava.docbkx</groupId>
+    <artifactId>docbkx</artifactId>
+    <version>2.0.13</version>
+  </parent>
+  <artifactId>docbkx-samples</artifactId>
+  <packaging>pom</packaging>
+  <name>Docbkx Maven Samples</name>
+  <description>A number of examples, showing how to use the Maven
+    Docbkx Plugin.
+  </description>
+  <profiles>
+    <profile>
+      <id>docbkx.release</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>attached</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0-beta-2</version>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>${basedir}</dir>
+                  <includes>
+                    <include>pom.xml</include>
+                  </includes>
+                  <outputDir>target</outputDir>
+                  <stylesheet>src/xslt/pom-to-poms.xsl</stylesheet>
+                  <parameters>
+                    <parameter>
+                      <name>pluginVersion</name>
+                      <value>${project.version}</value>
+                    </parameter>
+                  </parameters>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>xalan</groupId>
+                <artifactId>xalan</artifactId>
+                <version>2.7.0</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <id>site</id>
+                <goals>
+                  <goal>generate-html</goal>
+                </goals>
+                <phase>pre-site</phase>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+              <dependency>
+                <groupId>ant</groupId>
+                <artifactId>ant-trax</artifactId>
+                <version>1.6.5</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <entities>
+                <entity>
+                  <name>version</name>
+                  <value>${project.version}</value>
+                </entity>
+              </entities>
+              <sourceDirectory>target/docbkx</sourceDirectory>
+              <targetDirectory>target/site/</targetDirectory>
+              <preProcess>
+                <mkdir dir="${basedir}/target/docbkx" />
+                <xslt style="${basedir}/src/xslt/pom-to-docbkx.xsl" in="pom.xml" out="target/docbkx/manual.xml" />
+              </preProcess>
+              <htmlStylesheet>http://agilejava.com/downloads/kubrick-docbkx.css</htmlStylesheet>
+              <headerRule>0</headerRule>
+              <footerRule>0</footerRule>
+              <draftMode>0</draftMode>
+              <bodyFontFamily>Helvetica</bodyFontFamily>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!--
+        This is by far the simplest example that you can possibly
+        imagine. At a bare minimum, you need to specify a dependency
+        on the jar file containing the DocBook DTD. That is, if your
+        source documents are refering to a DocBook DTD at all. There
+        are however good reasons to include a DTD reference, as you
+        will find out in one of the following examples.
+    -->
+    <!--
+       Using this configuration, you can build a document from the
+       sources by invoking docbkx:generate-html. This will try to
+       convert all files matching the *.xml file pattern in
+       ${basedir}/src/docbkx to HTML pages.
+    -->
+    <profile>
+      <id>docbkx.simple</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Minimal configuration</example.title>
+        <example.input>any xml file</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        Normally you would of course want generation of the documents
+        to happen automatically. In this sense, the Docbkx Maven
+        Plugin is hardly any different than all of the other existing
+        Maven 2 plugins. Simply add an execution element to specify
+        the goal and the phase. The example below specifies that the
+        documents in src/docbkx should be turned into HTML and XHTML in the
+        pre-site phase.
+    -->
+    <profile>
+      <id>docbkx.automatic</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-html</goal>
+                  <goal>generate-xhtml</goal>
+                </goals>
+                <phase>pre-site</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Attached to a phase</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!-- Adding other output formats is easy. Simply specify it as
+        additional goals. In the example below, we are not only
+        rendering HTML but also PDF, UNIX man pages and Eclipse help
+        files. (Note however that it does not make a lot of sense to
+        render man pages from an appendix. You still need to add your
+        own common sense to figure out which output formats make sense
+        with your documents.  -->
+    <profile>
+      <id>docbkx.multipleFormats</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-html</goal>
+                  <goal>generate-pdf</goal>
+                  <goal>generate-manpages</goal>
+                  <goal>generate-eclipse</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Multiple output formats</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        This sample shows how to setup a dependency to docbook xml 4.4 in order to enable xml catalog resolution for
+        Docbook 4.4 public identifier. It is especially needed if you want to work offline
+     -->
+     <profile>
+      <id>docbkx.dtd4.4</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <includes>4.4/article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Docbook XML 4.4 DTD</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        This sample is same nature of the previous one but this time it enables the xml catalog resolution for
+        Docbook 5.0 public identifer.
+     -->
+    <profile>
+      <id>docbkx.5.0</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <configuration>
+              <includes>article.xml</includes>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>5.0-all</version>
+                <classifier>resources</classifier>
+                <type>zip</type>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Docbook XML 5.0</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        So now we are able to render different types of output. You
+        might however not be impressed too much by the default output
+        of the plugins. The good news is that there is a lot (!) to
+        customize. Every goal (every output format) defines its own
+        collection of customizable properties. The entire list would
+        be far to big to list here, so we will just give a simple
+        example. Let's just assume that you crafted your own CSS file
+        containing the essential bling bling for your DocBook output
+        file. In that case you can simply link this stylesheet to all
+        HTML pages generated by addding the htmlStylesheet property,
+        like shown below.
+    -->
+    <!--
+        Note that - in case of boolean parameters - there are two ways
+        you can pass values. The prefered way is to use 'true' and
+        'false', just like you're used to. However, in order to be
+        compatible with previous versions, you *can* pass a numeric
+        value as well. Zero is interpreted as false. Anything non-zero
+        is interpreted as true. (This is the way the DocBook XSL
+        stylesheets accept parameters.)
+    -->
+    <profile>
+      <id>docbkx.configuration</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <htmlStylesheet>http://.....</htmlStylesheet>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Additional customization</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        The example given above highlights one of 200+ customizable
+        properties that correspond to XSL parameters defined by the
+        DocBook stylesheets. In addition, the plugin also defines a
+        couple of properties of its own. You will probably find the
+        includes property among the ones you will use most often. This
+        property allows you to specify a comma separated list of file
+        patterns to include in the transformation. The example given
+        below specifies that any file matching
+        ${basedir}/src/docbkx/*-docbkx.xml should be included in the
+        transformation.
+    -->
+    <profile>
+      <id>docbkx.includes</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <includes>*-docbkx.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Explicit source file selection</example.title>
+        <example.input>just-xml.xml</example.input>
+        <example.input>just-docbkx.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        One of the more advanced and interesting things of the Docbkx
+        Maven Plugin is that it allows you to refer to POM properties
+        from within your DocBook documents. Take some time to think
+        that over... The plugin solves this by mapping entities to
+        values defined in your POM. And in your POM you can define the
+        values to be composed of other POM properties.
+    -->
+    <!--
+        An example will help you to understand what this means. First
+        of all, it is not uncommon for documents to refer to a version
+        of the software. Maintaining the dependency by hand would be
+        a lot of work, and there would be severe chance that it would
+        go out whack in no-time. So, would it not be awesome if we
+        could refer to the Maven version number from within our
+        DocBook source document?
+    -->
+    <!--
+        The good news is: you can. Look at the code snipped below to
+        figure out how to do it. In all honesty, it is not that
+        complicated at all. Within the entities section, you simply
+        define an entity called version, and define it to be the value
+        of the POM property version. The plugin will make sure that
+        any reference to &amp;version; will be translated to the
+        version number defined in your POM.
+    -->
+    <!--
+	As of version 2.0.5 of the plugin it got even better. Version
+	2.0.5 allows you to refer to properties *directly*,
+	introducing the mapping to entities.
+    -->
+    <!--
+	The procedure is simple. The plugin defines a dedicated
+	processing instruction for inserting Maven properties. The
+	processing instruction relies on the JSP Expression Language
+	(probably familiar to many of you). So, you would for example
+	be able to inject this <?eval ${project.version}?> to include
+	the version number of your pom.xml file anywhere in your
+	DocBook content.
+    -->
+    <profile>
+      <id>docbkx.entities</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>5.0-all</version>
+                <classifier>resources</classifier>
+                <type>zip</type>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <entities>
+                <entity>
+                  <name>version</name>
+                  <value>${project.version}</value>
+                </entity>
+              </entities>
+              <includes>entities/article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Entity substitution</example.title>
+        <foo>foo 2.0</foo>
+      </properties>
+    </profile>
+
+    <!--
+        Hopefully all of the above will make you consider using
+        DocBook. DocBook does not need to be hard at all, and - if you
+        want to - DocBook authoring can be almost like
+        .... coding. The fact that it is plain old XML just makes it a
+        very interesting candidate for completely automating your
+        document generation. And with all of the XML based metadata
+        available in your projects, it would actually be incredibly
+        easy to accomplish.
+    -->
+    <!--
+        The only problem that might get in the way if you are thinking
+        about generating DocBook sources is the fact that Maven does
+        not really provide a clear hook or phase for it. For that
+        reason, the Maven Docbkx Plugin defines the preProcess and
+        postProcess properties. When your project requires you to
+        generate some content just in time, right before rendering PDF
+        or HTML from DocBook, or if you need to do some post
+        processing, then the plugin allows you to 'script' it in Ant
+        vocabulary as part of the plugins configuration.
+    -->
+    <!--
+        The example below does not really do anything interesting
+        before rendering PDF output. It does however demonstrate how
+        you could include your own scripts to be executed right before
+        or right after the DocBook to output format transformation.
+    -->
+    <profile>
+      <id>docbkx.scripting</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <preProcess>
+                <echo>Some script executing.</echo>
+              </preProcess>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Preprocessing DocBook sources</example.title>
+      </properties>
+    </profile>
+
+    <!--
+        This example demonstrates how you can split up your HTML
+        output document in multiple parts. Simply set the
+        chunkedOutput property to true. That's all. The plugin will
+        continue to use target file name, but reserve it for the first
+        chunk of HTML. The remainder of the document will broken up
+        into several pieces, depending on the policies you specified
+        with customization properties.
+    -->
+    <profile>
+      <id>docbkx.chunked</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-html</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <chunkedOutput>true</chunkedOutput>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Chunked output</example.title>
+      </properties>
+    </profile>
+
+    <!--
+        In the past, the only way to compose a DocBook document from
+        several parts required system entity include statements as
+        part of your DTD declaration. XInclude provides an alternative
+        and much more sophisticated way to pull in data from other
+        sources. If you want XInclude support, then you should set the
+        'xincludeSupport' property to 'true'. Note that this feature
+        is still fairly experimental.
+    -->
+    <!-- As no goal is specified nor attached to a phase, you must specify it on the command line like
+    'docbkx:generate-pdf' -->
+    <profile>
+      <id>docbkx.xinclude</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <configuration>
+              <xincludeSupported>true</xincludeSupported>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>XInclude Support</example.title>
+      </properties>
+    </profile>
+
+    <!--
+        The advanced XInclude mode is activated by specifying the additional 'generatedSourceDirectory' parameter.
+        By doing this XOM xml parser will be used instead of Xerces, XOM being more powerful concerning XML Inclusions
+        (xpointer ...)
+     -->
+    <!--
+        As no goal is specified nor attached to a phase, you must specify it on the command line like
+        'docbkx:generate-pdf'
+     -->
+    <profile>
+      <id>docbkx.xinclude.advanced</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <configuration>
+              <xincludeSupported>true</xincludeSupported>
+              <generatedSourceDirectory>${project.build.directory}/xinclude</generatedSourceDirectory>
+              <includes>xinclude/book.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Advanced XInclude Support</example.title>
+      </properties>
+    </profile>
+
+    <!--
+        The easiest way to customize your DocBook output is probably
+        by changing property values, as outlined above. However, there
+        may be situations in which you need more flexbility. The
+        plugin provides this flexibility by allowing you to pass a
+        reference to your own stylesheet.
+    -->
+    <!--
+        The mechanism is similar to what you would do normally when
+        adding your own customization layer. You create a
+        customization stylesheet that starts by importing the
+        standard docbook.xsl stylesheet. The trick is how to locate
+        the 'standard' docbook.xsl stylesheet. After all, the plugin
+        would normally hide it from you entirely, right?
+    -->
+    <!--
+        The trick is to use a 'symbolic' reference instead of a real
+        location in your import. By using this import: <xsl:import href="urn:docbkx:stylesheet" />, you basically tell the plugin
+        to import the standard stylesheet for your specific output
+        format.
+    -->
+    <!--
+        Once you have your own customization stylesheet (probably
+        based on some of the tips in Bob Sagehills excellent book),
+        you can simply tell the plugin to use that customization, by
+        setting the foCustomization property (in case of PDF output)
+        or/and the htmlCustomization property (for HTML output).
+    -->
+    <profile>
+      <id>docbkx.external</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <configuration>
+              <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Advanced Customization</example.title>
+      </properties>
+    </profile>
+
+    <!--
+         The later versions of the DocBook stylesheets support syntax
+         highlighting. In order to use it, add a language attribute to
+         the DocBook element containing your sources, and set it to
+         the language of the sources within that element. In your
+         pom.xml configuration, set highlightSource to true and import
+         highlight.xsl in your customization layer in order to enable
+         highlighting support. (&lt;xsl:import href="urn:docbkx:stylesheet/highlight.xsl"/&gt;)
+    -->
+    <profile>
+      <id>docbkx.highlighter</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                  <groupId>net.sf.xslthl</groupId>
+                  <artifactId>xslthl</artifactId>
+                  <version>2.0.1</version>
+                  <scope>runtime</scope>
+              </dependency>
+              <dependency>
+                  <groupId>net.sf.offo</groupId>
+                  <artifactId>fop-hyph</artifactId>
+                  <version>1.2</version>
+                  <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <highlightSource>1</highlightSource>
+              <!--highlightXslthlConfig>/file/.../xslthl-config.xml</highlightXslthlConfig-->
+              <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Syntax Highlighting</example.title>
+      </properties>
+    </profile>
+
+    <!--
+        PDF has built-in support for a number of fonts. It's not
+        unlikely that you want to replace those fonts with something
+        else. You can always refer to other fonts installed on your
+        system, but then there is a chance that your audience does not
+        have those fonts installed causing your document to be
+        completely unreadable. So, it's probably safer to embed those
+        fonts in the PDF files generated. This is supported as of
+        version 2.0.8 of the Docbkx Maven Plugin.
+    -->
+    <!--
+        The snippet included below shows how you include another
+        font. The first thing that you should know is that PDF
+        generation is based on Apache FOP. Apache FOP requires access
+        to a 'metrics' file, containing some font metrics. Apache FOP
+        ships a couple of tools for generating those font metrics, so
+        you *could* generate those metrics file yourself, and include
+        them in your sources. The Docbkx Tools project has a Maven
+        plugin wrapping these tools, making it a little easier to
+        generate those font files.
+    -->
+    <!--
+        Once you have these metrics files, embedding the font in your
+        PDF document is a breeze. The only thing that you need to do
+        is add a font tag containing all relevant metadata. Simply
+        include a reference to the .ttf file and the metrics file, and
+        add some additional metadata. Once you have done that, you can
+        refer to this font in the plugin parameters or in
+        customization stylesheets you created yourself. In this case,
+        we are overriding the default body font.
+    -->
+    <profile>
+      <id>docbkx.alternative.fonts</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate-pdf</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <bodyFontFamily>Kaffeesatz</bodyFontFamily>
+              <fonts>
+                <font>
+                  <name>Kaffeesatz</name>
+                  <style>normal</style>
+                  <weight>normal</weight>
+                  <embedFile>${basedir}/src/fonts/YanoneKaffeesatz-Regular.ttf</embedFile>
+                  <metricsFile>${basedir}/target/fonts/YanoneKaffeesatz-Regular-metrics.xml</metricsFile>
+                </font>
+              </fonts>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-fop-support</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <ansi>true</ansi>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Alternative Fonts</example.title>
+      </properties>
+    </profile>
+
+    <!--
+        The JavaHelp format (combined with its java based framework) will allow
+        you to create professional online help systems from your documentations.
+    -->
+    <!--
+        Docbkx Maven Plugin will help you in generating the JavaHelp main content
+        but will not create all the glue needed to have a JavaHelp up and running
+        within your application.
+    -->
+    <!--
+        Concerning the configuration properties of the goal 'generate-javahelp' they are the
+        same as the 'generate-html' (chunked mode) ones except these additional ones:
+        javahelp.encoding
+    -->
+    <profile>
+      <id>docbkx.javahelp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-javahelp</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>JavaHelp example</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        The Eclipse help format allows your documentation to be accessible into the
+        Eclipse platform as a Plugin.
+     -->
+    <!--
+        The only operation needed to enable it into Eclipse platform is to create a directory
+        inside the 'plugins' directory of your Eclipse installation using the same name as the 'eclipsePluginId'
+        The help will then be available inside the menu named 'Help contents'
+    -->
+    <profile>
+      <id>docbkx.eclipse</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-eclipse</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>article.xml</includes>
+              <eclipsePluginId>docbkx.sample</eclipsePluginId>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Eclipse help example</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        This samples shows you how to use profiling stylesheets (in this case the html one).
+        In order to do this you will have to make an empty (at least) stylesheet customization
+        layer and just point to the profiling stylesheet of the official docbook distribution.
+    -->
+    <!--
+        This can be done using something like that:
+    -->
+    <!--
+       <xsl:import href="urn:docbkx:stylesheet/profile-docbook.xsl" />
+    -->
+    <profile>
+      <id>docbkx.profile</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-html</goal>
+                </goals>
+                <phase>pre-site</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>profile/*.xml</includes>
+              <profileStatus>draft</profileStatus>
+              <htmlCustomization>src/docbkx/profile/profile-docbook-html.xsl</htmlCustomization>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Attached to a phase</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
+        This sample shows you how to generate EPub documents (@see http://en.wikipedia.org/wiki/EPUB)
+    -->
+    <profile>
+      <id>docbkx.epub</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-epub</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+              <configuration>
+                <includes>epubbook/orm.book.001.xml</includes>
+                <htmlStylesheet>test.css</htmlStylesheet>
+                <chunkQuietly>true</chunkQuietly>
+                  
+                <preProcess>
+                  <!-- Copy the images -->
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001/covers">
+                    <fileset dir="src/docbkx/epubbook/covers/" />
+                  </copy>
+                  <!-- Copy the font -->
+                  <!-- Copy the css -->
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001" file="src/docbkx/epubbook/test.css">
+                  </copy>
+                </preProcess>
+              </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- This sample shows different outputs (here PDF and RTF) based on FO stylesheet -->
+    <profile>
+      <id>docbkx.rtf</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>generate-rtf</goal>
+                  <goal>generate-pdf</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+                <highlightSource>1</highlightSource>
+                <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
+            </configuration>
+          </plugin>
+        </plugins>
+        </build>
+      </profile>
+
+    <!--
+        This sample shows the webhelp output, a browser and platform independent output with a javascript search
+        engine.
+     -->
+    <profile>
+      <id>docbkx.webhelp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-webhelp</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+              <configuration>
+                <includes>webhelpsite/readme.xml</includes>
+                <webhelpIndexerLanguage>fr</webhelpIndexerLanguage>
+                <webhelpIncludeSearchTab>1</webhelpIncludeSearchTab>
+                <!--templateDirectory>path/to/your/webhelptemplate/</templateDirectory-->
+              </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+</project>
