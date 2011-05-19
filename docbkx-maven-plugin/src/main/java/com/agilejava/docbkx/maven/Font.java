@@ -10,12 +10,12 @@ import java.net.URI;
  * @author Wilfred Springer
  */
 public class Font {
-  private File    metricsFile;
+  private File metricsFile;
   private boolean kerning;
-  private File    embedFile;
-  private String  name;
-  private String  style;
-  private String  weight;
+  private File embedFile;
+  private String name;
+  private String style;
+  private String weight;
 
   /**
    * DOCUMENT ME!
