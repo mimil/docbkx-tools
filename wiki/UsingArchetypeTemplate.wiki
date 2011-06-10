@@ -41,6 +41,8 @@ Choose a number:  (1/2/3/4/5 ...
 
 And choose the number corresponding to _docbkx-quickstart-archetype_
 
+If you are not prompted for a local repository you can try this command: `mvn org.apache.maven.plugins:maven-archetype-plugin:2.0:generrchetype -DarchetypeGroupId=com.agilejava.docbkx -DarchetypeCatalog=local`
+
 == Run ==
 If everything runs fine you should have your project.
 
