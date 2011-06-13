@@ -5,6 +5,21 @@
   </properties>
   <body>
 
+    <release version="2.0.13">
+      <action dev="mimil" type="update">
+Update of samples to use docbook namespace stylesheets (remove of DTD usage)
+      </action>
+      <action dev="mimil" type="update">
+Fo outputs (pdf and rtf) were not correctly defining the output filename when multiple input files were given
+      </action>
+      <action dev="mimil" type="update">
+The jalopy:format plugin has suppressed many maven javadoc tags causing many docbkx plugins to not work as expected
+      </action>
+      <action dev="mimil" type="update">
+The WebHelp indexer is now correctly resetting the indexer
+      </action>
+    </release>
+
     <release version="2.0.12">
       <action dev="mimil" type="update">
 Outputs having the property useStandardOutput set to false will generate their content to a dedicated directory using
