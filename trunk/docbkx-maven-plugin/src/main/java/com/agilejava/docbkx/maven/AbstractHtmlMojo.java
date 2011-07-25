@@ -65,13 +65,14 @@ public abstract class AbstractHtmlMojo extends AbstractMojoBase {
   public void adjustTransformer(Transformer transformer, String sourceFilename, File targetFile) {
     super.adjustTransformer(transformer, sourceFilename, targetFile);
 
+    transformer.setParameter("base.dir", targetFile.getParent() + File.separator);
+
     if (chunkedOutput) {
       getLog().info("Chunking output.");
 
       String rootFilename = targetFile.getName();
       rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
       transformer.setParameter("root.filename", rootFilename);
-      transformer.setParameter("base.dir", targetFile.getParent() + File.separator);
     }
   }
 }
