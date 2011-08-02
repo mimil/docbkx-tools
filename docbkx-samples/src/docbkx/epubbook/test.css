@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "DejaVu Serif";
+  font-family: "League Script thin";
   font-style: normal;
   font-weight: normal;
-  src:url(DejaVuSerif.otf);
+  src:url(fonts/LeagueScript.otf);
 }
 @font-face {
   font-family: "DejaVu Serif Italic";
@@ -11,7 +11,7 @@
   src:url(DejaVuSerif-Italic.otf);
 }
 h2 {
-  font-family: "DejaVu Serif";
+  font-family: "League Script thin";
   text-align: center;
   color: #dda0dd;
 }

@@ -34,13 +34,6 @@ import javax.xml.transform.Transformer;
  * @author Brian Richard Jackson
  */
 public abstract class AbstractEpubMojo extends AbstractMojoBase {
-  /**
-   * To look up Archiver/UnArchiver implementations
-   *
-   * @component
-   * @required
-   */
-  protected ArchiverManager archiverManager;
 
   /**
    * {@inheritDoc} This implementation will set the root.filename property,
@@ -56,20 +49,10 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
     transformer.setParameter("epub.oebps.dir", targetFile.getParent() + File.separator);
     transformer.setParameter("epub.metainf.dir", targetFile.getParent() + File.separator + "META-INF" + File.separator);
 
-    validateFont();
   }
 
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
-
-    // TODO: temporary trick, svn version of docbook xsl epub stylesheet works differently
-    final File targetDirectory = result.getParentFile();
-    try {
-      final URL containerURL = getClass().getResource("/epub/container.xml");
-      FileUtils.copyURLToFile(containerURL, new File(targetDirectory, "META-INF" + File.separator + "container.xml"));
-    } catch (IOException e) {
-      throw new MojoExecutionException("Unable to copy hardcoded container.xml file", e);
-    }
 
     // copy mimetype file
     try {
@@ -80,7 +63,7 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
     }
 
     try {
-      ZipArchiver zipArchiver = (ZipArchiver) archiverManager.getArchiver("zip");
+      ZipArchiver zipArchiver = new ZipArchiver();
       zipArchiver.addDirectory(targetDirectory);
       zipArchiver.setCompress(true); // seems to not be a problem to have mimetype compressed
       zipArchiver.setDestFile(new File(targetDirectory.getParentFile(), result.getName())); // copy it to parent dir
@@ -92,19 +75,4 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
     }
   }
 
-  private void validateFont() {
-    final String font = getProperty("epubEmbeddedFont");
-
-    if (font != null) {
-      final File f = new File(font);
-
-      if (!f.exists()) {
-        getLog().warn("Unable to find specified font: " + f.getAbsolutePath());
-      }
-
-      if (!font.endsWith("otf")) {
-        getLog().warn("Only otf font is supported: " + font);
-      }
-    }
-  }
 }
