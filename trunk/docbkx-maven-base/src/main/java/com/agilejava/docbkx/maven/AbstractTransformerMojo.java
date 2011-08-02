@@ -882,9 +882,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         return o.toString();
       }
     } catch (NoSuchFieldException e) {
-      getLog().warn("Property not found in " + this.getClass().getName(), e);
+      getLog().warn("Property not found in " + this.getClass().getName());
     } catch (IllegalAccessException e) {
-      getLog().warn("Unable to get " + propertyname + " value", e);
+      getLog().warn("Unable to get " + propertyname + " value");
     }
     return null;
   }
