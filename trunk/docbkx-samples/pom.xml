@@ -938,6 +938,7 @@
               <configuration>
                 <includes>epubbook/orm.book.001.xml</includes>
                 <htmlStylesheet>test.css</htmlStylesheet>
+                <epubEmbeddedFonts>fonts/LeagueScript.otf</epubEmbeddedFonts>
                 <chunkQuietly>true</chunkQuietly>
                   
                 <preProcess>
@@ -946,6 +947,9 @@
                     <fileset dir="src/docbkx/epubbook/covers/" />
                   </copy>
                   <!-- Copy the font -->
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001/fonts">
+                    <fileset dir="src/docbkx/epubbook/fonts/" />
+                  </copy>
                   <!-- Copy the css -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001" file="src/docbkx/epubbook/test.css">
                   </copy>
@@ -1013,6 +1017,45 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>docbkx.issue.xref</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+             <dependencies>
+               <dependency>
+                       <groupId>net.sf.docbook</groupId>
+                       <artifactId>docbook-xml</artifactId>
+                       <version>5.0-all</version>
+                       <classifier>resources</classifier>
+                       <type>zip</type>
+                       <scope>runtime</scope>
+               </dependency>
+       </dependencies>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-html</goal>
+                  <goal>generate-pdf</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+              <configuration>
+                <includes>xref/sample.xml</includes>
+                <chunkedOutput>false</chunkedOutput>
+                <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
+                <xincludeSupported>true</xincludeSupported>
+              </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
 
   </profiles>
 </project>
