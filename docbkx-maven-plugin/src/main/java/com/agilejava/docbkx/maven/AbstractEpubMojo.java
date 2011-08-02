@@ -48,11 +48,18 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
     transformer.setParameter("base.dir", targetFile.getParent() + File.separator);
     transformer.setParameter("epub.oebps.dir", targetFile.getParent() + File.separator);
     transformer.setParameter("epub.metainf.dir", targetFile.getParent() + File.separator + "META-INF" + File.separator);
-
   }
 
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
+
+    final File targetDirectory = result.getParentFile();
+    try {
+      final URL containerURL = getClass().getResource("/epub/container.xml");
+      FileUtils.copyURLToFile(containerURL, new File(targetDirectory, "META-INF" + File.separator + "container.xml"));
+    } catch (IOException e) {
+      throw new MojoExecutionException("Unable to copy hardcoded container.xml file", e);
+    }
 
     // copy mimetype file
     try {
