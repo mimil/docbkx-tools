@@ -93,7 +93,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
    * Points to the an external FOP configuration file (eg fop.xconf). The use of this
    * parameter will disable the use of maven inline FOP configuration.
    *
-   * @paramter
+   * @parameter
    */
   File externalFOPConfiguration = null;
   private String currentFileExtension;
