@@ -25,6 +25,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.xml.transform.Transformer;
 
+import com.nexwave.nquindexer.IndexerTask;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.nexwave.nquindexer.SaxHTMLIndex;
@@ -149,6 +150,13 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
       //create a html file description list
       ArrayList filesDescription = new ArrayList();
 
+      String indexerLanguage = getProperty("webhelpIndexerLanguage");
+      indexerLanguage = ((indexerLanguage == null) ? "en" : indexerLanguage);
+      //TODO: change this when updating webhelpindexer in order to use the new WriteJSFiles.WriteIndex method
+      IndexerTask.indexerLanguage = indexerLanguage;
+        if (getLog().isDebugEnabled())
+          getLog().debug("Indexer language is: " + indexerLanguage);
+
       // parse each html files
       for (int f = 0; f < htmlFiles.size(); f++) {
         File ftemp = (File) htmlFiles.get(f);
@@ -158,9 +166,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
 
         //tempMap.put(key, value);
         //The HTML file information are added in the list of FileInfoObject
-        String indexerLanguage = getProperty("webhelpIndexerLanguage");
-        DocFileInfo docFileInfoTemp = new DocFileInfo(spe.runExtractData(ftemp, (indexerLanguage == null) ? "en"
-            : indexerLanguage));
+        DocFileInfo docFileInfoTemp = new DocFileInfo(spe.runExtractData(ftemp, indexerLanguage));
 
         ftemp = docFileInfoTemp.getFullpath();
 
