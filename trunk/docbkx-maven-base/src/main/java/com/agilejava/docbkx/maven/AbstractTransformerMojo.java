@@ -151,7 +151,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
           // eval PI
           final PreprocessingFilter filter = createPIHandler(resolver, reader);
           // configure SAXSource for XInclude
-          final SAXSource xmlSource = createSAXSource(inputFilename, sourceFile, filter);
+          final Source xmlSource = createSource(inputFilename, sourceFile, filter);
 
           // XSL Transformation
           final Transformer transformer = builder.build();
@@ -195,7 +195,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    * @return An XInclude configured SAXSource
    * @throws MojoExecutionException
    */
-  private SAXSource createSAXSource(String inputFilename, File sourceFile, PreprocessingFilter filter)
+  protected Source createSource(String inputFilename, File sourceFile, PreprocessingFilter filter)
       throws MojoExecutionException {
     // if both properties are set, XOM is used for a better XInclude support.
     if (getXIncludeSupported() && getGeneratedSourceDirectory() != null) {
