@@ -22,7 +22,6 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
   public void preProcess() throws MojoExecutionException {
     super.preProcess();
     configureXslthl();
-    configureXslMessages();
   }
 
   private void configureXslthl() {
@@ -44,14 +43,6 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
     } else {
       setProperty("highlightXslthlConfig", url.toExternalForm());
     }
-  }
-
-  private void configureXslMessages() {
-    Parameter xslMessage = new Parameter();
-    xslMessage.setName("show.xsl.messages");
-    xslMessage.setValue(isShowXslMessages() ? "1" : "0");
-
-    getCustomizationParameters().add(xslMessage);
   }
 
   /**
