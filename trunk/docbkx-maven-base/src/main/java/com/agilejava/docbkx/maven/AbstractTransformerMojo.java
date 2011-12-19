@@ -387,6 +387,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   abstract void setUseStandardOutput(boolean useStandardOutput);
 
+  abstract protected boolean isShowXslMessages();
+
   /**
    * The operation to override when it is required to make some adjustments to the {@link Transformer} right before it is
    * applied to a certain source file. The two parameters provide some context, allowing implementers to respond to
@@ -631,7 +633,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         Source source = new StreamSource(url.openStream(), url.toExternalForm());
         Transformer transformer = transformerFactory.newTransformer(source);
 
-        if (!getLog().isDebugEnabled()) {
+        if (!isShowXslMessages()) {
           Controller controller = (Controller) transformer;
           try {
             controller.makeMessageEmitter();
