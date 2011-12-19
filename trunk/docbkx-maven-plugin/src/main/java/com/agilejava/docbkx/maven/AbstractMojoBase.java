@@ -48,7 +48,7 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
 
   private void configureXslMessages() {
     Parameter xslMessage = new Parameter();
-    xslMessage.setName("showXslMessages");
+    xslMessage.setName("show.xsl.messages");
     xslMessage.setValue(isShowXslMessages() ? "1" : "0");
 
     getCustomizationParameters().add(xslMessage);
