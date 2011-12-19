@@ -651,6 +651,7 @@
             <version>${project.version}</version>
             <configuration>
               <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
+              <externalFOPConfiguration>/projet/docbkx/docbkx-maven-plugin/src/test/resources/fop.xconf</externalFOPConfiguration>
             </configuration>
           </plugin>
         </plugins>
@@ -936,22 +937,24 @@
               </execution>
             </executions>
               <configuration>
-                <includes>epubbook/orm.book.001.xml</includes>
+                <includes>epubbook/book.001.xml</includes>
                 <htmlStylesheet>test.css</htmlStylesheet>
                 <epubEmbeddedFonts>fonts/LeagueScript.otf</epubEmbeddedFonts>
                 <chunkQuietly>true</chunkQuietly>
                   
                 <preProcess>
                   <!-- Copy the images -->
-                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001/covers">
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/book.001/covers">
                     <fileset dir="src/docbkx/epubbook/covers/" />
                   </copy>
                   <!-- Copy the font -->
-                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001/fonts">
-                    <fileset dir="src/docbkx/epubbook/fonts/" />
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/book.001/fonts">
+                    <fileset dir="src/docbkx/epubbook/fonts/">
+                      <include name="*.otf"/>
+                    </fileset>
                   </copy>
                   <!-- Copy the css -->
-                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/orm.book.001" file="src/docbkx/epubbook/test.css">
+                  <copy todir="${project.build.directory}/docbkx/epub/epubbook/book.001" file="src/docbkx/epubbook/test.css">
                   </copy>
                 </preProcess>
               </configuration>
@@ -1055,7 +1058,5 @@
         </plugins>
       </build>
     </profile>
-
-
   </profiles>
 </project>
