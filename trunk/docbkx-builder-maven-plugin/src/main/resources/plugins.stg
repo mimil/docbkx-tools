@@ -260,6 +260,10 @@ public class $spec.className$
         return showXslMessages;
     }
 
+    protected void setShowXslMessages(boolean showXslMessages) {
+        this.showXslMessages = showXslMessages;
+    }
+
     protected void setUseStandardOutput(boolean useStandardOutput) {
         this.useStandardOutput = useStandardOutput;
     }

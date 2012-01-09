@@ -387,7 +387,14 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   abstract void setUseStandardOutput(boolean useStandardOutput);
 
+  /**
+   * Returns true if the xslt engine have to print xsl:messages to standard output.
+   *
+   * @return If the xslt engine have to print messages.
+   */
   abstract protected boolean isShowXslMessages();
+
+  abstract protected void setShowXslMessages(boolean showXslMessages);
 
   /**
    * The operation to override when it is required to make some adjustments to the {@link Transformer} right before it is
