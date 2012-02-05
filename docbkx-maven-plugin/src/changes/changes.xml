@@ -5,6 +5,28 @@
   </properties>
   <body>
 
+    <release version="2.0.14">
+      <action dev="mimil" type="add">
+        Add of property showXslMessages in order to activate the print of xsl:messages, default is set to false.
+      </action>
+      <action dev="mimil" type="update">
+        The plugin version is not anymore harcoded in the archetype
+      </action>
+      <action dev="mimil" type="update">
+        The property base.dir for html output in non chunking mode was not set thus causing long description to be
+        generated in the root dir.
+      </action>
+      <action dev="mimil" type="update">
+        The new docbook stylesheets make use of property epubEmbeddedFonts instead of epubEmbeddedFont previously
+      </action>
+      <action dev="mimil" type="update">
+        The webhelp output to correctly set the language
+      </action>
+      <action dev="mimil" type="update">
+        Due to the remove of a maven annotation the external fop configuration was not taken into account anymore
+      </action>
+    </release>
+
     <release version="2.0.13">
       <action dev="mimil" type="update">
 Update of samples to use docbook namespace stylesheets (remove of DTD usage)
