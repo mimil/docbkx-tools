@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<project name="Docbkx Tools">
+  <skin>
+    <groupId>com.agilejava.docbkx</groupId>
+    <artifactId>docbkx-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+
+  <body>
+
+    <menu name="Documentation">
+      <item name="Usage and Customization"
+            href="http://docbkx-tools.sourceforge.net/docbkx-samples/manual.html"/>
+      <item name="Advanced Customization"
+            href="http://docbkx-tools.sourceforge.net/advanced.html"/>
+      <item name="Super Advanced Customization" 
+            href="http://docbkx-tools.sourceforge.net/builder.html"/>
+    </menu>
+ 
+    <menu ref="modules"/>
+    <menu ref="reports"/>
+    
+  </body>
+
+</project>
