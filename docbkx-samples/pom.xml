@@ -950,7 +950,7 @@
                   <!-- Copy the font -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/book.001/fonts">
                     <fileset dir="src/docbkx/epubbook/fonts/">
-                      <include name="*.otf"/>
+                      <include name="*.otf" />
                     </fileset>
                   </copy>
                   <!-- Copy the css -->
