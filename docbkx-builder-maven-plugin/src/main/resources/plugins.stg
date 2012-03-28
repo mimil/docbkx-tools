@@ -275,7 +275,7 @@ public class $spec.className$
 variable() ::= <<
 /**
  * $it.description$
- * (Original XSL attribuut: <code>$it.name$</code>.)
+ * (Original XSL attribut: <code>$it.name$</code>.)
  *
  * @parameter
  */  
