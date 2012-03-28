@@ -536,10 +536,14 @@ public class GeneratorMojo extends AbstractMojo {
       Result result = new StreamResult(out);
       transformer.transform(source, result);
       out.flush();
-
-      String[] paramNames = new String(out.toByteArray()).split("\n");
-
-      return new HashSet(Arrays.asList(paramNames));
+      if(out.size() != 0) {
+        // at least one param has been found, because the split with return an empty string if there is no data
+        String[] paramNames = new String(out.toByteArray()).split("\n");
+        return new HashSet(Arrays.asList(paramNames));
+      } else {
+        // else no param found
+        return new HashSet();
+      }
     } catch (IOException ioe) {
       // Impossible, but let's satisfy PMD and FindBugs
       getLog().warn("Failed to flush ByteArrayOutputStream.");
