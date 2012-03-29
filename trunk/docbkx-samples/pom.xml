@@ -1021,6 +1021,36 @@
       </build>
     </profile>
 
+    <!--
+        This sample shows how to generate titlepage stylesheet that may be needed to customize other outputs, it makes use of
+        an xml input file.
+        -->
+    <profile>
+      <id>docbkx.template</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-template</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>titlepage/titlepage.templates.xml</includes>
+              <!--templateCustomization>src/docbkx/docbook-titlepage.xsl</templateCustomization-->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
     <profile>
       <id>docbkx.issue.xref</id>
       <build>
