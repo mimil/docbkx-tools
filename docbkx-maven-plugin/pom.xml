@@ -208,6 +208,19 @@
                 <useStandardOutput>false</useStandardOutput>
             </configuration>
           </execution>
+          <execution>
+            <id>generate-template</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <type>template</type>
+              <stylesheetPath>template/titlepage.xsl</stylesheetPath>
+              <superClassName>com.agilejava.docbkx.maven.AbstractTransformerMojo</superClassName>
+              <useStandardOutput>true</useStandardOutput>
+              <targetFileExtension>xsl</targetFileExtension>
+            </configuration>
+          </execution>
         </executions>
         <configuration>
 
