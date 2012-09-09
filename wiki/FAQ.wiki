@@ -49,6 +49,16 @@ In order to handle this case we added a manual way to define arbitrary xsl param
 
 From the API point of view, `AbstractTransformerMojo.getProperty()` and `AbstractTransformerMojo.setProperty()` give access to regular docbook-xsl parameters and `AbstractTransformerMojo.getCustomizationParameters()` returns a list of `Parameter` instances, each of them representing a custom xsl parameter.
 
+=== Can I define parameters from the command line? ===
+
+Yes, it is handy to allow configuration from outside the pom file.
+
+Since 2.0.15 you can set docbook-xsl parameter using the command line, in order to not interfere with other plugins all the parameters will be prefixed with `docbkx.` and followed by the Docbkx plugin parameter name.
+
+{{{
+$ mvn docbkx:generate-pdf -Ddocbkx.draftMode="true"
+}}}
+
 === Generation is slow ===
 If your source files are specifying the docbook DTD or any other element pointing to docbook 'public identifier', you will need to setup correctly the XML catalog resolution. The plugin does the hard work, you just need to set the right dependency in your pom.
 
