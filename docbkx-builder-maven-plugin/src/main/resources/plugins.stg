@@ -155,7 +155,7 @@ public class $spec.className$
     /**
      * If the xslt engine should print the to standard output the xsl:messages.
      *
-     * @parameter
+     * @parameter expression="\${docbkx.showXslMessages}"
      */
     private boolean showXslMessages = false;
 
@@ -277,7 +277,7 @@ variable() ::= <<
  * $it.description$
  * (Original XSL attribut: <code>$it.name$</code>.)
  *
- * @parameter
+ * @parameter expression="\${docbkx.$it.javaIdentifier$}"
  */  
 protected $typeMap.(it.type)$ $it.javaIdentifier$;
 >>

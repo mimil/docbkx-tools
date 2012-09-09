@@ -847,7 +847,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    */
   protected Object convertBooleanToXsltParam(String value) {
     String trimmed = value.trim();
-    if ("false".equals(trimmed) || "0".equals(trimmed)) {
+    if ("false".equalsIgnoreCase(trimmed) || "0".equals(trimmed) || "no".equalsIgnoreCase(trimmed)) {
       return "0";
     } else {
       return "1";
