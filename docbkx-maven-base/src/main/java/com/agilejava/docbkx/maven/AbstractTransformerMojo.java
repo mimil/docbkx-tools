@@ -82,6 +82,11 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    * Builds the actual output document.
    */
   public void execute() throws MojoExecutionException, MojoFailureException {
+    if (isSkip()) {
+      getLog().info("Skipping plugin execution");
+      return;
+    }
+
     preProcess();
 
     final File targetDirectory = getTargetDirectory();
@@ -834,6 +839,11 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    * Returns the type of conversion.
    */
   protected abstract String getType();
+  
+  /**
+   * @return <code>true</code> if execution should be skipped
+   */
+  protected abstract boolean isSkip();
 
   /**
    * Converts a String parameter to the type expected by the XSLT processor.

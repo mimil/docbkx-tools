@@ -5,6 +5,12 @@
   </properties>
   <body>
 
+    <release version="2.0.15">
+      <action dev="fschwarz" type="add">
+        Add of property skip in order to skip execution of the plugin.
+      </action>
+    </release>
+
     <release version="2.0.14">
       <action dev="mimil" type="add">
         Add of property showXslMessages in order to activate the print of xsl:messages, default is set to false.
