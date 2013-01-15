@@ -159,6 +159,14 @@ public class $spec.className$
      */
     private boolean showXslMessages = false;
 
+    /**
+    * Skip the execution of the plugin.
+    *
+    * @parameter expression="\${docbkx.skip}" default-value="false" 
+    * @since 2.0.15
+    */
+    private boolean skip;
+
     $spec.parameters:variable(); separator="\n\n"$
 
     protected void configure(Transformer transformer) {
@@ -267,8 +275,14 @@ public class $spec.className$
     protected void setUseStandardOutput(boolean useStandardOutput) {
         this.useStandardOutput = useStandardOutput;
     }
-
     
+    protected void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
+    protected boolean isSkip() {
+        return this.skip;
+    }
 }
 >>
 

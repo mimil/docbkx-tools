@@ -1050,6 +1050,32 @@
       </build>
     </profile>
 
+      <!--This sample shows how to skip the plugin execution in an easy way. It will likely be used as a command line
+      parameter instead as in the pom definition using '-Ddocbkx.skip=true'.
+      -->
+    <profile>
+      <id>docbkx.skip</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-pdf</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
     <profile>
       <id>docbkx.issue.xref</id>
