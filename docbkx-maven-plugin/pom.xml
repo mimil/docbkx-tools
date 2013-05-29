@@ -62,29 +62,43 @@
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl</artifactId>
-      <version>1.76.1</version>
+      <version>1.78.0</version>
       <type>zip</type>
       <classifier>ns-resources</classifier>
     </dependency>
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl-saxon</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1-pre</version>
     </dependency>
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl-webhelpindexer</artifactId>
-      <version>1.0.0</version>
-    </dependency>  
-
+      <version>1.0.1-pre</version>
+    </dependency>
     <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-analyzers</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+      <dependency>
+          <groupId>org.ccil.cowan.tagsoup</groupId>
+          <artifactId>tagsoup</artifactId>
+          <version>1.2.1</version>
+      </dependency>
+      <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>1.0-beta-1</version>
       <scope>test</scope>
     </dependency>
-      
-      
+
+
   </dependencies>
   <build>
     <plugins>

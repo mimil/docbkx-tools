@@ -655,8 +655,10 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
           }
         }
 
+        configure(transformer);
+
         if (getCustomizationParameters() != null) {
-          getLog().info("Applying customization parameters");
+          getLog().info("Applying customization parameters after docbkx parameters");
           final Iterator iterator = getCustomizationParameters().iterator();
           while (iterator.hasNext()) {
             Parameter param = (Parameter) iterator.next();
@@ -666,7 +668,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
             }
           }
         }
-        configure(transformer);
+
         return transformer;
       } catch (IOException ioe) {
         throw new TransformerBuilderException("Failed to read stylesheet from " + url.toExternalForm(), ioe);
