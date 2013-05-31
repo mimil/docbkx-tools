@@ -1014,13 +1014,6 @@
                 <includes>webhelpsite/readme.xml</includes>
                 <webhelpIndexerLanguage>fr</webhelpIndexerLanguage>
                 <webhelpIncludeSearchTab>1</webhelpIncludeSearchTab>
-                <!-- temporary hack to get webhelp javascript properly generated -->
-                <customizationParameters>
-                  <parameter>
-                    <name>webhelp.include.search.tab</name>
-                    <value>true</value>
-                  </parameter>
-                </customizationParameters>
                 <!--templateDirectory>path/to/your/webhelptemplate/</templateDirectory-->
               </configuration>
           </plugin>
