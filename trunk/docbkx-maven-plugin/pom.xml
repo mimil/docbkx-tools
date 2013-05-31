@@ -62,7 +62,7 @@
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl</artifactId>
-      <version>1.78.0</version>
+      <version>1.78.1</version>
       <type>zip</type>
       <classifier>ns-resources</classifier>
     </dependency>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl-webhelpindexer</artifactId>
-      <version>1.0.1-pre</version>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.lucene</groupId>

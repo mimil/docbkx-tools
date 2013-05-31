@@ -144,7 +144,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     copyTemplate();
 
     // Creating a DirList with index page excluded, and all other html pages included
-    DirList nsiDoc = new DirList(targetBaseDir, "^.*\\.html?$", 1);
+    DirList nsiDoc = new DirList(targetBaseDir, new String[]{"ix01.html","^.*\\.html?$"}, 1);
     //new String[]{"ix01.html","^.*\\.html?$"}
 
     // topic files listed in the given directory
@@ -260,7 +260,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
     FileInputStream input;
 
     // Get the list of the props file containing the words to remove (not the punctuation)
-    DirList props = new DirList(targetBaseDir, "^(?!(punctuation)).*\\.props$", 1);
+    DirList props = new DirList(targetBaseDir, new String[]{"", "^(?!(punctuation)).*\\.props$"}, 1);
     //new String[]{"", "^(?!(punctuation)).*\\.props$"}
     ArrayList wordsList = props.getListFiles();
 
