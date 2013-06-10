@@ -261,6 +261,48 @@
     </profile>
 
     <!--
+       This sample shows how to setup a dependency to docbook xml 4.5 in order to enable xml catalog resolution for
+       Docbook 4.5 public identifier. It is especially needed if you want to work offline. You will need to add a
+       thirdparty sonatype repository in your pom configuration:
+    -->
+    <!--
+    <repositories>
+      <repository>
+        <id>sonatype-public</id>
+        <name>Sonatype Public</name>
+        <url>http://repository.sonatype.org/content/groups/public</url>
+      </repository>
+    </repositories>
+    -->
+    <profile>
+      <id>docbkx.dtd4.5</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.5</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <includes>4.5/article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Docbook XML 4.5 DTD</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
+
+    <!--
         This sample is same nature of the previous one but this time it enables the xml catalog resolution for
         Docbook 5.0 public identifer.
      -->
