@@ -228,6 +228,36 @@
       </properties>
     </profile>
 
+    <!-- This samples shows how to generate a manpage software documentation, a simple sample is
+    provided in "manpages/first-command.xml" file.-->
+    <profile>
+      <id>docbkx.manpages</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-manpages</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <includes>manpages/first-command.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Manpages output</example.title>
+        <example.input>first-command.xml</example.input>
+      </properties>
+    </profile>
+
     <!--
         This sample shows how to setup a dependency to docbook xml 4.4 in order to enable xml catalog resolution for
         Docbook 4.4 public identifier. It is especially needed if you want to work offline
