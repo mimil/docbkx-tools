@@ -723,7 +723,6 @@
             <version>${project.version}</version>
             <configuration>
               <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
-              <externalFOPConfiguration>src/test/resources/fop.xconf</externalFOPConfiguration>
             </configuration>
           </plugin>
         </plugins>
@@ -808,6 +807,16 @@
         customization stylesheets you created yourself. In this case,
         we are overriding the default body font.
     -->
+    <!--
+        The configuration parameter <ansi>true</ansi> should be set to false if your document
+        contains special characters.
+    -->
+    <!--
+        If you need to get full access to the FOP configuration file properties,
+        you can specify a custom configuration file using <externalFOPConfiguration/>
+        parameter. The current <fonts/> parameter is deprecated since FOP 1.0 because
+        the xml metric file is only used on specific cases (see FOP website).
+    -->
     <profile>
       <id>docbkx.alternative.fonts</id>
       <build>
@@ -835,6 +844,7 @@
                   <metricsFile>${basedir}/target/fonts/YanoneKaffeesatz-Regular-metrics.xml</metricsFile>
                 </font>
               </fonts>
+              <!--externalFOPConfiguration>src/test/resources/fop.xconf</externalFOPConfiguration-->
             </configuration>
           </plugin>
           <plugin>
