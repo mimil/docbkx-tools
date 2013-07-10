@@ -117,3 +117,12 @@ For Docbook 5.0 the dependency is the following:
     </dependency>
 ...
 }}}
+
+=== I need to see the xsl:message ===
+If you need to see <xsl:message/> debugs from your xsl stylesheet, use the following configuration:
+
+{{{
+<configuration>
+   <showXslMessages>true</showXslMessages>
+</configuration>
+}}} 
