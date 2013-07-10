@@ -723,7 +723,7 @@
             <version>${project.version}</version>
             <configuration>
               <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
-              <externalFOPConfiguration>/projet/docbkx/docbkx-maven-plugin/src/test/resources/fop.xconf</externalFOPConfiguration>
+              <externalFOPConfiguration>src/test/resources/fop.xconf</externalFOPConfiguration>
             </configuration>
           </plugin>
         </plugins>
