@@ -767,6 +767,8 @@
               <highlightSource>1</highlightSource>
               <!--highlightXslthlConfig>/file/.../xslthl-config.xml</highlightXslthlConfig-->
               <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
+              <hyphenate>true</hyphenate>
+              <hyphenateVerbatim>true</hyphenateVerbatim>
             </configuration>
           </plugin>
         </plugins>
