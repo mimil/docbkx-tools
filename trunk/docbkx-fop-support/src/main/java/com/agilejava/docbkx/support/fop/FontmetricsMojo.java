@@ -210,7 +210,7 @@ public class FontmetricsMojo extends AbstractMojo {
       TTFReader reader = new TTFReader();
       getLog().debug("Parsing font: " + fontFile);
 
-      TTFFile ttf = reader.loadTTF(fontFile, null);
+      TTFFile ttf = reader.loadTTF(fontFile, null, true, true);
 
       if (ttf == null) {
         throw new IOException("Unable to load TTF file: " + fontFile);
