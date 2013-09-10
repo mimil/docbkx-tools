@@ -126,3 +126,13 @@ If you need to see `<xsl:message/>` debugs from your xsl stylesheet, use the fol
    <showXslMessages>true</showXslMessages>
 </configuration>
 }}} 
+
+=== I need to configure xsl parameters referencing a file ===
+
+Sometime xsl parameters are pointing to directories or file and you don't want to hard code the path, properties like `<imgSrcPath>` or `admonGraphicsPath`. You can configure them relative to the `${basedir}` of maven pom. As for example:
+
+{{{
+<imgSrcPath>file:///${basedir}/src/docbkx/</imgSrcPath>
+}}} 
+
+(you can notice that there is 3 '/' for multi os issue)
