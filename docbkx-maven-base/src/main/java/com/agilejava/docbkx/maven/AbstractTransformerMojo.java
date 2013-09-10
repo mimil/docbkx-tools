@@ -147,7 +147,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
           getLog().debug("TargetDirectory: " + targetDirectory.getAbsolutePath());
         }
 
-        if (!targetFile.exists() || (targetFile.exists() && FileUtils.isFileNewer(sourceFile, targetFile))) {
+        if (!targetFile.exists() || (targetFile.exists() && FileUtils.isFileNewer(sourceFile, targetFile)) || (targetFile.exists() && getXIncludeSupported())) {
           getLog().info("Processing input file: " + inputFilename);
 
           final XMLReader reader = factory.newSAXParser().getXMLReader();
