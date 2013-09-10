@@ -119,7 +119,7 @@ public class $spec.className$
      *
      * @parameter
      */
-    private String $spec.type$Customization;
+    private File $spec.type$Customization;
 
     /**
      * The extension of the target file name.
@@ -197,7 +197,7 @@ public class $spec.className$
     public String getStylesheetLocation() {
     	getLog().debug("Customization: " + $spec.type$Customization);
         if ($spec.type$Customization != null) {
-            return $spec.type$Customization;
+            return $spec.type$Customization.getAbsolutePath();
         } else if (getNonDefaultStylesheetLocation() == null) {
             return getDefaultStylesheetLocation();
         } else {
