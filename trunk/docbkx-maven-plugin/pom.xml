@@ -131,6 +131,18 @@
             </configuration>
           </execution>
           <execution>
+            <id>generate-xhtml5</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <type>xhtml5</type>
+              <superClassName>com.agilejava.docbkx.maven.AbstractHtmlMojo</superClassName>
+              <excludedProperties>${excluded.properties},root.filename,base.dir</excludedProperties>
+              <targetFileExtension>xhtml</targetFileExtension>
+            </configuration>
+          </execution>
+          <execution>
             <id>generate-xhtml</id>
             <goals>
               <goal>build</goal>
