@@ -1003,7 +1003,7 @@
     </profile>
 
     <!--
-        This sample shows you how to generate EPub documents (@see http://en.wikipedia.org/wiki/EPUB)
+        This sample shows you how to generate EPub documents verion 2 and version 3(@see http://en.wikipedia.org/wiki/EPUB)
     -->
     <profile>
       <id>docbkx.epub</id>
@@ -1017,6 +1017,7 @@
               <execution>
                 <goals>
                   <goal>generate-epub</goal>
+                  <goal>generate-epub3</goal>
                 </goals>
                 <phase>generate-sources</phase>
               </execution>
@@ -1026,8 +1027,9 @@
                 <htmlStylesheet>test.css</htmlStylesheet>
                 <epubEmbeddedFonts>fonts/LeagueScript.otf</epubEmbeddedFonts>
                 <chunkQuietly>true</chunkQuietly>
-                  
+                <showXslMessages>true</showXslMessages>
                 <preProcess>
+                  <!-- EPUB2 execution -->
                   <!-- Copy the images -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/book.001/covers">
                     <fileset dir="src/docbkx/epubbook/covers/" />
@@ -1040,6 +1042,21 @@
                   </copy>
                   <!-- Copy the css -->
                   <copy todir="${project.build.directory}/docbkx/epub/epubbook/book.001" file="src/docbkx/epubbook/test.css">
+                  </copy>
+
+                  <!-- EPUB3 execution -->
+                  <!-- Copy the images -->
+                  <copy todir="${project.build.directory}/docbkx/epub3/epubbook/book.001/covers">
+                    <fileset dir="src/docbkx/epubbook/covers/" />
+                  </copy>
+                  <!-- Copy the font -->
+                  <copy todir="${project.build.directory}/docbkx/epub3/epubbook/book.001/fonts">
+                    <fileset dir="src/docbkx/epubbook/fonts/">
+                      <include name="*.otf" />
+                    </fileset>
+                  </copy>
+                  <!-- Copy the css -->
+                  <copy todir="${project.build.directory}/docbkx/epub3/epubbook/book.001" file="src/docbkx/epubbook/test.css">
                   </copy>
                 </preProcess>
               </configuration>

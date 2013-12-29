@@ -1,7 +1,7 @@
 package com.agilejava.docbkx.maven;
 
 /*
- * Copyright 2006 Wilfred Springer
+ * Copyright 2013 Cedric Pronzato
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,28 +12,24 @@ package com.agilejava.docbkx.maven;
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-import org.apache.maven.plugin.MojoExecutionException;
 
-import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.manager.ArchiverManager;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 
+import javax.xml.transform.Transformer;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.xml.transform.Transformer;
-
 /**
- * A dedicated base class for plugins generating ePub version 2 output, in order to allow
+ * A dedicated base class for plugins generating ePub version 3 output, in order to allow
  * the specific stylesheet chosen to be dependent on the {@link #chunkedOutput}
  * property.
  *
  * @author Cedric Pronzato
- * @author Brian Richard Jackson
  */
-public abstract class AbstractEpubMojo extends AbstractMojoBase {
+public abstract class AbstractEpub3Mojo extends AbstractMojoBase {
 
   /**
    * {@inheritDoc} This implementation will set the root.filename property,
@@ -46,28 +42,26 @@ public abstract class AbstractEpubMojo extends AbstractMojoBase {
     rootFilename = rootFilename.substring(0, rootFilename.lastIndexOf('.'));
     transformer.setParameter("root.filename", rootFilename);
     transformer.setParameter("base.dir", targetFile.getParent() + File.separator);
-    transformer.setParameter("epub.oebps.dir", targetFile.getParent() + File.separator);
-    transformer.setParameter("epub.metainf.dir", targetFile.getParent() + File.separator + "META-INF" + File.separator);
+    transformer.setParameter("epub.package.dir",  targetFile.getParent()  + File.separator);
+    transformer.setParameter("epub.metainf.dir", File.separator + "META-INF" + File.separator);
+    transformer.setParameter("chunk.base.dir", targetFile.getParent()  + File.separator);
+    transformer.setParameter("epub.package.filename", "content.opf"); // hack to reuse hard coded container.xml
+
   }
 
   public void postProcessResult(File result) throws MojoExecutionException {
     super.postProcessResult(result);
 
     final File targetDirectory = result.getParentFile();
+
+    // override current container.xml
     try {
-      final URL containerURL = getClass().getResource("/epub/container.xml");
+      final URL containerURL = getClass().getResource("/epub/container.xml"); // reuse of container.cml from epub output
       FileUtils.copyURLToFile(containerURL, new File(targetDirectory, "META-INF" + File.separator + "container.xml"));
     } catch (IOException e) {
       throw new MojoExecutionException("Unable to copy hardcoded container.xml file", e);
     }
 
-    // copy mimetype file
-    try {
-      final URL mimetypeURL = getClass().getResource("/epub/mimetype");
-      FileUtils.copyURLToFile(mimetypeURL, new File(targetDirectory, "mimetype"));
-    } catch (IOException e) {
-      throw new MojoExecutionException("Unable to copy hardcoded mimetype file", e);
-    }
 
     try {
       ZipArchiver zipArchiver = new ZipArchiver();
