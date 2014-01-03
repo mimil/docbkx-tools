@@ -73,7 +73,7 @@
     <dependency>
       <groupId>net.sf.docbook</groupId>
       <artifactId>docbook-xsl-webhelpindexer</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.0-9777</version>
     </dependency>
     <dependency>
       <groupId>org.apache.lucene</groupId>
