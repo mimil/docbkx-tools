@@ -1179,39 +1179,38 @@
       </build>
     </profile>
 
+    <!-- This sample shows how to collect xref for cross references to other docbook documents -->
     <profile>
-      <id>docbkx.issue.xref</id>
+      <id>docbkx.xref</id>
       <build>
         <plugins>
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
             <version>${project.version}</version>
-             <dependencies>
-               <dependency>
-                       <groupId>net.sf.docbook</groupId>
-                       <artifactId>docbook-xml</artifactId>
-                       <version>5.0-all</version>
-                       <classifier>resources</classifier>
-                       <type>zip</type>
-                       <scope>runtime</scope>
-               </dependency>
-       </dependencies>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>5.0-all</version>
+                <classifier>resources</classifier>
+                <type>zip</type>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
             <executions>
               <execution>
                 <goals>
-                  <goal>generate-html</goal>
                   <goal>generate-pdf</goal>
                 </goals>
                 <phase>generate-sources</phase>
               </execution>
             </executions>
-              <configuration>
-                <includes>xref/sample.xml</includes>
-                <chunkedOutput>false</chunkedOutput>
-                <generatedSourceDirectory>${project.build.directory}/docbkx/generated</generatedSourceDirectory>
-                <xincludeSupported>true</xincludeSupported>
-              </configuration>
+            <configuration>
+              <includes>article.xml</includes>
+              <collectXrefTargets>yes</collectXrefTargets>
+              <!--collectXrefTargets>only</collectXrefTargets-->
+            </configuration>
           </plugin>
         </plugins>
       </build>
