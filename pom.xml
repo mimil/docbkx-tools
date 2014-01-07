@@ -49,6 +49,9 @@
     <system>Google Code</system>
     <url>http://code.google.com/p/docbkx-tools/issues/list</url>
   </issueManagement>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <plugins>
       <plugin>
