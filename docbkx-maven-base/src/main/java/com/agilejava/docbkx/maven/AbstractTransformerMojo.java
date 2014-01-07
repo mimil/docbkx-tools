@@ -87,6 +87,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
       return;
     }
 
+    // userland (ant tasks) pre process
     preProcess();
 
     final File targetDirectory = getTargetDirectory();
@@ -130,6 +131,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         final String targetFilename = baseTargetFile + "." + getTargetFileExtension();
         final File sourceFile = new File(sourceDirectory, inputFilename);
         getLog().debug("SourceFile: " + sourceFile.toString());
+
+
+        // creating targetFile
         File targetFile = null;
         if (isUseStandardOutput()) {
           targetFile = new File(targetDirectory, targetFilename);
@@ -142,7 +146,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
           } else { // else append the relative directory to targetDirectory
             targetFile = new File(targetDirectory, dir);
           }
-          targetFile = new File(targetFile, name);
           targetFile = new File(targetFile, name + "." + getTargetFileExtension());
           getLog().debug("TargetDirectory: " + targetDirectory.getAbsolutePath());
         }
@@ -158,23 +161,50 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
           // configure SAXSource for XInclude
           final Source xmlSource = createSource(inputFilename, sourceFile, filter);
 
-          // XSL Transformation
+          configureXref(targetFile);
+
+          // XSL Transformation setup
           final Transformer transformer = builder.build();
           adjustTransformer(transformer, sourceFile.getAbsolutePath(), targetFile);
-          final Result result = new StreamResult(targetFile.getAbsolutePath());
-          if (isUseStandardOutput()) {
-            transformer.transform(xmlSource, result);
+
+          // configure the output file
+          Result result = null;
+          if(!shouldProcessResult()) {
+            // if the output is not the main result of the transformation, ie xref database
+            if(getLog().isDebugEnabled()) {
+              result = new StreamResult(System.out);
+            } else {
+              result = new StreamResult(new NullOutputStream());
+            }
+          } else if (isUseStandardOutput()) {
+            // if the output of the main result is the standard output
+            result = new StreamResult(targetFile.getAbsolutePath());
           } else {
-            transformer.transform(xmlSource, new StreamResult(System.out));
+            // if the output of the main result is not the standard output
+            if(getLog().isDebugEnabled()) {
+              result = new StreamResult(System.out);
+            } else {
+              result = new StreamResult(new NullOutputStream());
+            }
           }
 
-          postProcessResult(targetFile);
+          transformer.transform(xmlSource, result);
 
-          if (isUseStandardOutput()) {
-            getLog().info(targetFile + " has been generated.");
+          if(shouldProcessResult()) {
+            // if the transformation has produce the expected main results, we can continue
+            // the chain of processing in the output mojos which can override postProcessResult
+            postProcessResult(targetFile);
+
+            if (isUseStandardOutput()) {
+              getLog().info(targetFile + " has been generated.");
+            } else {
+              getLog().info("See " + targetFile.getParentFile().getAbsolutePath() + " for generated file(s)");
+            }
           } else {
-            getLog().info("See " + targetFile.getParentFile().getAbsolutePath() + " for generated file(s)");
+            // if the output is not the main result
+            getLog().info("See " + targetFile.getParentFile().getAbsolutePath() + " for generated secondary file(s)");
           }
+
         } else {
           getLog().info(targetFile + " is up to date.");
         }
@@ -187,7 +217,23 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
       }
     }
 
+    // userland (ant tasks) post process
     postProcess();
+  }
+
+  /**
+   * Tells if the stylesheet generate any main outputs, if not the chain of processing will be
+   * stopped.
+   *
+   * @return Returns true if the chain of processing have to continue
+   */
+  protected boolean shouldProcessResult() {
+    String collectXrefTargets = this.getProperty("collectXrefTargets");
+    if(collectXrefTargets == null) {
+      return true;
+    }
+
+    return !"only".equalsIgnoreCase(collectXrefTargets);
   }
 
   /**
@@ -462,6 +508,16 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   }
 
+  public void configureXref(File result) throws MojoExecutionException {
+
+    // creating xref db file
+    File targetXrefFile = new File(result.getParentFile(), result.getName() + ".target.db");
+
+    this.setProperty("targetsFilename", targetXrefFile.getAbsolutePath());
+    //getLog().info("See " + targetFile.getParentFile().getAbsolutePath() + " for xref file(s)");
+
+  }
+
   /**
    * Creates a <code>CatalogManager</code>, used to resolve DTDs and other entities.
    *
@@ -564,6 +620,13 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
     }
   }
 
+  /**
+   * Configures and executes the given ant tasks, mainly preprocess and postprocess defined in the pom configuration.
+   *
+   * @param antTasks The tasks to execute
+   * @param mavenProject The current maven project
+   * @throws MojoExecutionException If something wrong occurs while executing the ant tasks.
+   */
   protected void executeTasks(Target antTasks, MavenProject mavenProject) throws MojoExecutionException {
     try {
       ExpressionEvaluator exprEvaluator = (ExpressionEvaluator) antTasks.getProject().getReference(
@@ -607,6 +670,17 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
       getLog().info("Executed tasks");
     } catch (Exception e) {
       throw new MojoExecutionException("Error executing ant tasks", e);
+    }
+  }
+
+  //------------ inner classes -----------
+
+  /**
+   * This output stream does nothing, it is void.
+   */
+  private class NullOutputStream extends OutputStream {
+
+    public void write(int b) throws IOException {
     }
   }
 
