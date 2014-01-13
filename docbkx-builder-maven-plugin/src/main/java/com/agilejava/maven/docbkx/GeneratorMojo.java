@@ -53,6 +53,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.ZipEntry;
 
@@ -238,6 +239,13 @@ public class GeneratorMojo extends AbstractMojo {
    */
   protected String excludedProperties;
 
+  /**
+   * Specify source file encoding; e.g., UTF-8
+   *
+   * @parameter expression="${project.build.sourceEncoding}"
+   */
+  private String encoding;
+
   public GeneratorMojo() {
     try {
       selectDescription = new DOMXPath("//refsection[position()=1]/para[position()=1]/text()");
@@ -329,7 +337,7 @@ public class GeneratorMojo extends AbstractMojo {
 
     ClassLoader loader = this.getClass().getClassLoader();
     InputStream in = loader.getResourceAsStream("plugins.stg");
-    Reader reader = new InputStreamReader(in);
+    Reader reader = new InputStreamReader(in, Charset.forName(encoding));
     StringTemplateGroup group = new StringTemplateGroup(reader);
     StringTemplate template = group.getInstanceOf("plugin");
     File targetFile = new File(sourcesDir, getClassName() + ".java");
@@ -339,7 +347,7 @@ public class GeneratorMojo extends AbstractMojo {
       specification = createSpecification();
       getLog().info("Number of parameters: " + specification.getParameters().size());
       template.setAttribute("spec", specification);
-      FileUtils.writeStringToFile(targetFile, template.toString(), null);
+      FileUtils.writeStringToFile(targetFile, template.toString(), encoding);
     } catch (IOException ioe) {
       if (specification == null) {
         throw new MojoExecutionException("Failed to read parameters.", ioe);
