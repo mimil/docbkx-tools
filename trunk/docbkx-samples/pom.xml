@@ -211,7 +211,6 @@
                 <goals>
                   <goal>generate-html</goal>
                   <goal>generate-pdf</goal>
-                  <goal>generate-manpages</goal>
                   <goal>generate-eclipse</goal>
                 </goals>
                 <phase>generate-sources</phase>
