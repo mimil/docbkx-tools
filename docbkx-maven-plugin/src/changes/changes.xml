@@ -4,10 +4,58 @@
     <title>Changes</title>
   </properties>
   <body>
+    <release version="2.0.16">
+
+    </release>
 
     <release version="2.0.15">
       <action dev="fschwarz" type="add">
         Add of property skip in order to skip execution of the plugin.
+      </action>
+      <action dev="mimil" type="add">
+        Add of a new target "generate-titlepage" in order generate titlepage stylesheet that may be needed to configure
+        some customization layers. A sample configuration is available on "docbkx.template" profile.
+      </action>
+      <action dev="mimil" type="add">
+        Allow to pass xsl and some docbkx parameters using the command line or pom properties, they are prefixed with
+        "docbkx.". Example mvn docbkx:generate-pdf -Ddocbkx.draftMode="true"
+      </action>
+      <action dev="andreas.veithen" type="update">
+        The xxxCustomization parameter is now properly interpreted relative to basedir.
+      </action>
+      <action dev="frank.schwarz.78" type="add">
+        Add of a possibility to skip execution of this plug-in.
+      </action>
+      <action dev="mimil" type="update">
+        The plugin incorrectly report up-to-date generated PDF when xInclude is used, now when xInclude
+        is used files are regenerated because you do not have much handles on the xml processor for now.
+      </action>
+      <action dev="tdemande" type="update">
+        Uppate to latest webhelp-indexer compatible with docbook stylesheets in 1.78.1.
+      </action>
+      <action dev="mimil" type="add">
+        Add of a generate-manpage sample.
+      </action>
+      <action dev="mimil" type="update">
+        "docbkx.external" sample was using an hardcoded path in externalFOPConfiguration.
+      </action>
+      <action dev="mimil" type="update">
+        Update to FOP 1.1 to support hyphenateVerbatim option.
+      </action>
+      <action dev="samharwell" type="update">
+        Allow project to specify source file encoding, default UTF-8.
+      </action>
+      <action dev="vincent.nap" type="add">
+        Add of a new target "generate-xhtml5".
+      </action>
+      <action dev="mimil" type="add">
+        Allow the targets to generate xref database files, they will be named &lt;filename&gt;.&lt;extension&gt;.target.db
+      </action>
+      <action dev="mimil" type="add">
+        Add of a new target "generate-epub3".
+      </action>
+      <action dev="mimil" type="add">
+        Update copyright headers and setup maven-license-plugin.
       </action>
     </release>
 
