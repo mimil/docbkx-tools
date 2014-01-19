@@ -7,6 +7,10 @@
   <name>Docbkx Tools</name>
   <description>A number of tools for handling DocBook XML transformations.</description>
   <inceptionYear>2006</inceptionYear>
+  <organization>
+    <name>Wilfred Springer, Cedric Pronzato</name>
+    <url>http://code.google.com/p/docbkx-tools/</url>
+  </organization>
   <scm>
     <connection>scm:svn:https://docbkx-tools.googlecode.com/svn/trunk</connection>
     <developerConnection>scm:svn:https://docbkx-tools.googlecode.com/svn/trunk</developerConnection>
@@ -80,7 +84,7 @@
         <version>1.5</version>
         <configuration>
 
-          <licenseName>Apache License, Version 2.0</licenseName>
+          <licenseName>apache_v2</licenseName>
 
           <acceptPomPackaging>true</acceptPomPackaging>
           <useMissingFile>true</useMissingFile>
@@ -88,16 +92,13 @@
           <failIfWarning>true</failIfWarning>
           <failOnMissingHeader>true</failOnMissingHeader>
           <failOnNotUptodateHeader>true</failOnNotUptodateHeader>
+          <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 
           <excludedScopes>none</excludedScopes>
-          <!--includes>
-              <include>**/*.groovy</include>
-              <include>**/*.ftl</include>
-          </includes-->
+          <includes>
+              <include>**/*.java</include>
+          </includes>
 
-          <!--licenseMerges>
-              <licenseMerge>gpl-2.0+|GNU General Public License Version 2</licenseMerge>
-          </licenseMerges-->
         </configuration>
       </plugin>
     </plugins>
