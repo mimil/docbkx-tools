@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.agilejava.docbkx</groupId>
   <artifactId>docbkx</artifactId>
@@ -106,7 +107,7 @@
 
           <excludedScopes>none</excludedScopes>
           <includes>
-              <include>**/*.java</include>
+            <include>**/*.java</include>
           </includes>
 
         </configuration>
@@ -126,6 +127,33 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -139,16 +167,6 @@
   </modules>
 
   <distributionManagement>
-    <repository>
-      <id>docbkx-tools-sourceforge</id>
-      <name>Docbkx Tools Repository</name>
-      <url>sftp://web.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/repository</url>
-    </repository>
-    <snapshotRepository>
-      <id>docbkx-tools-sourceforge</id>
-      <name>Docbkx Tools Snapshot Repository</name>
-      <url>sftp://web.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/snapshots</url>
-    </snapshotRepository>
     <site>
       <id>docbkx-tools-sourceforge</id>
       <name>Docbkx Tools Site</name>
