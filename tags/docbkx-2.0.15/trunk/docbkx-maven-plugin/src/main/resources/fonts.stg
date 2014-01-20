@@ -1,0 +1,32 @@
+group fonts;
+
+config(fonts, targetResolution, sourceResolution) ::= <<
+<fop version="1.0">
+  $if(targetResolution)$
+  <target-resolution>$targetResolution$</target-resolution>
+  $endif$
+  $if(sourceResolution)$
+  <source-resolution>$sourceResolution$</source-resolution>
+  $endif$
+  <renderers>
+  	<renderer mime="application/pdf">
+  	  <fonts>
+  	    $fonts:font()$
+  	  </fonts>
+  	</renderer>
+  </renderers>
+</fop>
+>>
+
+font() ::= <<
+<font metrics-url="$it.metricsURI$"
+      $if (it.embedURI)$
+      embed-url="$it.embedURI$"
+      $endif$
+      kerning="$if (it.kerning)$yes$else$no$endif$">
+  <font-triplet name="$it.name$"
+                style="$it.style$"
+                weight="$it.weight$"
+  />
+</font>
+>>

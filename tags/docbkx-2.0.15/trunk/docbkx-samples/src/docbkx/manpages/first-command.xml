@@ -1,0 +1,60 @@
+<article xmlns='http://docbook.org/ns/docbook'>
+<title>man-page title</title>
+<info>
+<productname>productname</productname> blahblah
+<author>
+  <orgname>docbkx</orgname>
+</author>
+</info>
+
+<refentry xml:id="first-command">
+
+  <refmeta>
+    <refentrytitle>first-command</refentrytitle>
+    <manvolnum>8</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>first-command</refname>
+    <refpurpose>This is the first command</refpurpose>
+    <refclass>UNIX/Linux</refclass>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>first-command</command>
+      <arg><option>--option1</option></arg>
+      <arg><option>--option2</option> A|B</arg>
+      </cmdsynopsis>
+  </refsynopsisdiv>
+  
+  <refsect1><title>Options</title>
+  <variablelist>
+    
+    <varlistentry>
+      <term><option>--option1</option></term>
+      <listitem>
+        <para>This is the first option description</para>
+      </listitem>
+    </varlistentry>
+    
+    <varlistentry>
+      <term><option>--option2</option></term>
+      <listitem>
+        <para>This is the second option description</para>
+      </listitem>
+    </varlistentry>
+
+
+  </variablelist>
+  </refsect1>
+
+  <refsect1><title>Description</title>
+    <para><command>first-command</command> helps you to whatever ...</para>
+
+  </refsect1>
+
+
+</refentry>
+
+</article>
