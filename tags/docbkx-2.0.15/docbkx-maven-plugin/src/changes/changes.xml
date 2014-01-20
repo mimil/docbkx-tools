@@ -1,0 +1,330 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+  </properties>
+  <body>
+    <release version="2.0.16">
+
+    </release>
+
+    <release version="2.0.15">
+      <action dev="fschwarz" type="add">
+        Add of property skip in order to skip execution of the plugin.
+      </action>
+      <action dev="mimil" type="add">
+        Add of a new target "generate-titlepage" in order generate titlepage stylesheet that may be needed to configure
+        some customization layers. A sample configuration is available on "docbkx.template" profile.
+      </action>
+      <action dev="mimil" type="add">
+        Allow to pass xsl and some docbkx parameters using the command line or pom properties, they are prefixed with
+        "docbkx.". Example mvn docbkx:generate-pdf -Ddocbkx.draftMode="true"
+      </action>
+      <action dev="andreas.veithen" type="update">
+        The xxxCustomization parameter is now properly interpreted relative to basedir.
+      </action>
+      <action dev="frank.schwarz.78" type="add">
+        Add of a possibility to skip execution of this plug-in.
+      </action>
+      <action dev="mimil" type="update">
+        The plugin incorrectly report up-to-date generated PDF when xInclude is used, now when xInclude
+        is used files are regenerated because you do not have much handles on the xml processor for now.
+      </action>
+      <action dev="tdemande" type="update">
+        Uppate to latest webhelp-indexer compatible with docbook stylesheets in 1.78.1.
+      </action>
+      <action dev="mimil" type="add">
+        Add of a generate-manpage sample.
+      </action>
+      <action dev="mimil" type="update">
+        "docbkx.external" sample was using an hardcoded path in externalFOPConfiguration.
+      </action>
+      <action dev="mimil" type="update">
+        Update to FOP 1.1 to support hyphenateVerbatim option.
+      </action>
+      <action dev="samharwell" type="update">
+        Allow project to specify source file encoding, default UTF-8.
+      </action>
+      <action dev="vincent.nap" type="add">
+        Add of a new target "generate-xhtml5".
+      </action>
+      <action dev="mimil" type="add">
+        Allow the targets to generate xref database files, they will be named &lt;filename&gt;.&lt;extension&gt;.target.db
+      </action>
+      <action dev="mimil" type="add">
+        Add of a new target "generate-epub3".
+      </action>
+      <action dev="mimil" type="add">
+        Update copyright headers and setup maven-license-plugin.
+      </action>
+    </release>
+
+    <release version="2.0.14">
+      <action dev="mimil" type="add">
+        Add of property showXslMessages in order to activate the print of xsl:messages, default is set to false.
+      </action>
+      <action dev="mimil" type="update">
+        The plugin version is not anymore harcoded in the archetype
+      </action>
+      <action dev="mimil" type="update">
+        The property base.dir for html output in non chunking mode was not set thus causing long description to be
+        generated in the root dir.
+      </action>
+      <action dev="mimil" type="update">
+        The new docbook stylesheets make use of property epubEmbeddedFonts instead of epubEmbeddedFont previously
+      </action>
+      <action dev="mimil" type="update">
+        The webhelp output to correctly set the language
+      </action>
+      <action dev="mimil" type="update">
+        Due to the remove of a maven annotation the external fop configuration was not taken into account anymore
+      </action>
+    </release>
+
+    <release version="2.0.13">
+      <action dev="mimil" type="update">
+Update of samples to use docbook namespace stylesheets (remove of DTD usage)
+      </action>
+      <action dev="mimil" type="update">
+Fo outputs (pdf and rtf) were not correctly defining the output filename when multiple input files were given
+      </action>
+      <action dev="mimil" type="update">
+The jalopy:format plugin has suppressed many maven javadoc tags causing many docbkx plugins to not work as expected
+      </action>
+      <action dev="mimil" type="update">
+The WebHelp indexer is now correctly resetting the indexer
+      </action>
+    </release>
+
+    <release version="2.0.12">
+      <action dev="mimil" type="update">
+Outputs having the property useStandardOutput set to false will generate their content to a dedicated directory using
+the input filename as directory name. Current outputs concerned are: (x)html chunked, epub, webhelp, man, eclipse, javahelp
+      </action>
+      <action dev="mimil" type="update">
+Move to FOP 1.0
+      </action>
+      <action dev="mimil" type="update">
+Remove deprecated maven configuration keys, mandatory for maven 3 fresh install to compile the plugin
+      </action>
+      <action dev="mimil" type="update">
+Move to docbook xsl stylesheets 1.76.1
+      </action>
+      <action dev="mimil" type="add">
+Add support for WebHelp output. WebHelp is a feature-rich, nice looking XSL customization and is a better
+alternative for web deployments.
+      </action>
+      <action dev="mimil" type="add">
+Add support for RTF output (Rich Text Format)
+      </action>
+      <action dev="mimil" type="update">
+EPUB output was not correctly zipping content when multiple input documents were specified
+      </action>
+    </release>
+
+    <release version="2.0.11">
+      <action dev="mimil" type="update">
+Docbook XML catalogs of both previous and current versions are now correctly loaded.
+      </action>
+      <action dev="mimil" type="add">
+Add of epub plugin
+      </action>
+      <action dev="mimil" type="update">
+docbkx-tools plugin now works correctly under maven 3
+      </action>
+        <action dev="mimil" type="update">
+Bugs in the fop-support plugin was causing the plugin to stop and not working when space characters
+were encountered into the path.
+      </action>
+    </release>
+
+    <release version="2.0.10">
+      <action dev="mimil" type="add">
+Add of optional &lt;useStandardOutput/&gt; in docbkx-builder-maven-plugin and the generated
+Mojos for stylesheets directly writing the target filename (manpages ...)
+instead of using stdout as transformation result.
+      </action>
+      <action dev="mimil" type="update">
+Use of latest docbook stylesheets artifacts as dependency instead of embedding parts
+of docbook stylesheet distribution.
+      </action>
+      <action dev="mimil" type="add">
+Add of docbkx-quickstart-archetype (@see http://code.google.com/p/docbkx-tools/wiki/UsingArchetypeTemplate)
+      </action>
+      <action dev="mimil" type="update">
+Fails to create directory with xom xinclude
+      </action>
+      <action dev="mimil" type="add">
+Add of XHTML support (generate-xhtml goal)
+      </action>
+    </release>
+
+    <release version="2.0.9">
+      <action dev="mimil" type="update">
+	Correction of generation failure when spaces in path.
+      </action>
+      <action dev="mimil" type="update">
+	Moved to FOP 0.95.
+      </action>
+      <action dev="mimil" type="update">
+	Removed use of ExpressionUtils class to avoid property clashes.
+      </action>
+      <action dev="mimil" type="update">
+	Added support of http url in xxxCustomization parameters.
+      </action>
+      <action dev="mimil" type="add">
+	Added generate-javahelp goal.
+      </action>
+      <action dev="mimil" type="add">
+	Added support for setting additional XSL parameters which are not
+	part of the regular docbook parameters using
+	&lt;customizationParameters&gt;.
+      </action>
+      <action dev="mimil" type="add">
+	Added support for setting system properties using &lt;systemProperties&gt;
+	which contains &lt;name&gt; &lt;value&gt; elements pair inside &lt;property&gt; elements.
+      </action>
+      <action dev="mimil" type="update">
+	XSLT Highlighting can now be configured with &lt;xslthlConfig&gt; property or
+	using &lt;systemProperties&gt;.
+      </action>
+      <action dev="mimil" type="update">
+	Enhancement of urn:docbkx:stylesheet which points to the docbook release stylesheet
+	to allow urn:docbkx:stylesheet/xxxx to point to other files of the docbook release.
+	Example: &lt; import href="urn:docbkx:stylesheet/pagesetup.xsl" /&gt;.
+      </action>
+    </release>
+
+    <release version="2.0.8"
+	     description="Better PDF support and stylesheet update">
+      <action dev="wis" type="add">
+	Added support for alternative fonts in PDF output.
+      </action>
+      <action dev="wis" type="update">
+	Replaced FOP 0.20.5 with FOP 0.94.
+      </action>
+      <action dev="wis" type="update">
+	Moved on to version 1.73.2 of the DocBook XSL stylesheets.
+      </action>
+      <action dev="wis" type="add">
+	Made sure that documents are not re-built when the sources did
+	not change.
+      </action>
+      <action dev="mimil" type="add">
+	Better support for XInclude allowing includes by id and xml:id.
+      </action>
+    </release>
+
+    <release version="2.0.7"
+	     description="Syntax highlighting support"
+	     date="5-10-2007">
+      <action dev="wis" type="add">
+	Added support for syntax highlighting.
+      </action>
+    </release>
+
+    <release version="2.0.6"
+	     description="Eclipse help support"
+	     date="27-7-2007">
+      <action dev="wis" type="add">
+	Added rudimentary support for generating Eclipse help.
+      </action>
+    </release>
+    
+    <release version="2.0.5"
+	     description="DocBook stylesheets upgrade + expression language">
+      <action dev="wis" type="update">
+	Upgraded the styleseets to version 1.72.0.
+      </action>
+      <action dev="wis" type="add">
+	Added experimental support for using expression language in
+	processing instructions. 
+      </action>
+    </release>
+
+    <release version="2.0.4"
+	     description="DocBook stylesheets upgrade">
+      <action dev="wis" type="update">
+	Upgraded the stylesheets to version 1.70.1.
+      </action>
+    </release>
+
+    <release version="2.0.3"
+	     description="Customization enhancements">
+
+      <action dev="wis" type="add">
+	Added support for inserting customization stylesheets. Simply
+	set the foCustomization or htmlCustomization properties, and
+	link the original stylesheets back in by using a symbolic
+	xsl:import. After that, you can use all Bob Sagehills
+	sugestions for customization the output.
+      </action>
+
+      <action dev="wis" type="add">
+	Added support for type specific content. The plugin will by
+	default look for a file called docbbkx.{type}.ent. If it
+	exists, then it will be automatically included in the XML
+	document.
+      </action>
+      
+    </release>
+
+    <release version="2.0.2"
+	     description="A few enhancements and bug fixes.">
+      <action dev="wis" type="fix">
+	Fixed support for xinclude.
+      </action>
+    </release>
+    
+    <release version="2.0.1" 
+	     description="Only version number update."
+	     date="2006-10-23">
+
+      <action dev="wis" type="update">
+	Updated all version numbers to be in sync. (So the link to the
+	specific version of the DocBook templates has been dropped.)
+      </action>
+
+    </release>
+
+    <release version="1.69.1.7"
+	     description="Support for XInclude">
+      
+      <action dev="wis" type="add">
+	Added support for XInclude. You can now instruct the plugin to
+	process xinclude tags by setting the 'xincludeSupport'
+	property to true.
+      </action>
+
+    </release>
+
+    <release version="1.69.1.6" 
+	     description="Handling unparsed entity references.">
+      
+      <action dev="wis" type="fix">
+	Unparsed entity references were not handled correctly. As a
+	result, images would not appear in PDF and HTML output.
+      </action>
+
+    </release>
+    
+    <release version="1.69.1.5"
+	     description="Chunked output and Java 1.4 compliance.">
+
+      <action dev="wis" type="add">
+	Added support for chunked HTML output.
+      </action>
+
+      <action dev="wis" type="update">
+	Refactored the code to be Java 1.4 compliant.
+      </action>
+      
+      <action dev="wis" type="add">
+	Added a user guide.
+      </action>
+
+    </release>
+
+    
+  </body>
+</document>
