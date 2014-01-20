@@ -7,7 +7,9 @@ Our public repository is synchronized with the maven central repository (http://
 
 = Stable releases =
 
-However if you really need our public repository you can use the following statement:
+Since 2.0.15 version, releases are published into oss sonatype repository. It is already synched with maven central repository. 
+
+However if you really need our public previous repository you can use the following statement:
 
 {{{
 <pluginRepositories>
@@ -31,7 +33,25 @@ Before making a public stable release with a number of new functionalities or bu
 
 Snapshot release artifacts are not accessible through the Maven Central Repository thus you will need to modify your maven configuration (pom.xml or settings.xml)
 
-You can use the following statement:
+Since 2.0.15 snapshot releases are published into oss sonatype repository, you can use the following statement:
+
+{{{
+<pluginRepositories>
+  <pluginRepository>
+    <id>sonatype.snapshots</id>
+    <name>Maven Plugin Snapshots</name>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </pluginRepository>
+</pluginRepositories>
+}}}
+
+However if you need our previous repository, you can use the following statement:
 
 {{{
 <pluginRepositories>
