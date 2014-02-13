@@ -515,13 +515,13 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
   }
 
   public void configureXref(File result) throws MojoExecutionException {
+    // if supported by the output
+    if(this.getProperty("targetsFilename") != null) {
+      // creating xref db file
+      File targetXrefFile = new File(result.getParentFile(), result.getName() + ".target.db");
 
-    // creating xref db file
-    File targetXrefFile = new File(result.getParentFile(), result.getName() + ".target.db");
-
-    this.setProperty("targetsFilename", targetXrefFile.getAbsolutePath());
-    //getLog().info("See " + targetFile.getParentFile().getAbsolutePath() + " for xref file(s)");
-
+      this.setProperty("targetsFilename", targetXrefFile.getAbsolutePath());
+    }
   }
 
   /**
