@@ -739,7 +739,12 @@
          the language of the sources within that element. In your
          pom.xml configuration, set highlightSource to true and import
          highlight.xsl in your customization layer in order to enable
-         highlighting support. (&lt;xsl:import href="urn:docbkx:stylesheet/highlight.xsl"/&gt;)
+         highlighting support. (&lt;xsl:import href="urn:docbkx:stylesheet/highlight.xsl"/&gt;).
+    -->
+    <!--
+         The highlightXslthlConfig attribute can be used to configure xslthl to add new highlighters, ...
+         if you want to customize the highlighting properties you will have to do it in your xslt
+         customization layer (you can start from highlight.xsl from the docbook distribution).
     -->
     <profile>
       <id>docbkx.highlighter</id>
@@ -765,7 +770,7 @@
             </dependencies>
             <configuration>
               <highlightSource>1</highlightSource>
-              <!--highlightXslthlConfig>/file/.../xslthl-config.xml</highlightXslthlConfig-->
+              <!--highlightXslthlConfig>src/docbkx/highlight/xslthl-config.xml</highlightXslthlConfig-->
               <foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
               <hyphenate>true</hyphenate>
               <hyphenateVerbatim>true</hyphenateVerbatim>
