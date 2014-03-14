@@ -50,12 +50,17 @@ import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 
 import org.apache.commons.io.IOUtils;
 
+import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
+import org.apache.log4j.PatternLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import org.codehaus.plexus.util.FileUtils;
@@ -103,6 +108,15 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
    * @parameter
    */
   File externalFOPConfiguration = null;
+
+  /**
+   * Configures the loglevel of fop and xmlgraphics that can be really noisy.
+   * Values are: OFF,FATAL,ERROR,WARN,INFO,DEBUG,TRACE,ALL
+   *
+   * @parameter default-value="WARN" expression="\${docbkx.fopLogLevel}"
+   */
+  String fopLogLevel = null;
+
   private String currentFileExtension;
 
   /**
@@ -117,6 +131,24 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
     // expected targetFileExtension later.
     currentFileExtension = getTargetFileExtension();
     setTargetFileExtension(getType());
+
+    configureLog();
+  }
+
+  protected void configureLog() {
+    Logger rootLogger = Logger.getRootLogger();
+    if (!rootLogger.getAllAppenders().hasMoreElements()) {
+      // configure a default logger if there is no previous configuration
+      rootLogger.setLevel(Level.WARN);
+      rootLogger.addAppender(new ConsoleAppender(
+          new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN)));
+      }
+
+    // then configure loggers for fop and xmlgraphics
+    Logger fopLogger = rootLogger.getLoggerRepository().getLogger("org.apache.fop");
+    fopLogger.setLevel(Level.toLevel(fopLogLevel));
+    Logger xmlgraphicsLogger = rootLogger.getLoggerRepository().getLogger("org.apache.xmlgraphics");
+    xmlgraphicsLogger.setLevel(Level.toLevel(fopLogLevel));
   }
 
   /**
