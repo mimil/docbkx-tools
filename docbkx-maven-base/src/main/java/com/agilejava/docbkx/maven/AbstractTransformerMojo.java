@@ -442,7 +442,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    */
   abstract protected boolean isUseStandardOutput();
 
-  abstract void setUseStandardOutput(boolean useStandardOutput);
+  abstract protected void setUseStandardOutput(boolean useStandardOutput);
 
   /**
    * Returns true if the xslt engine have to print xsl:messages to standard output.
