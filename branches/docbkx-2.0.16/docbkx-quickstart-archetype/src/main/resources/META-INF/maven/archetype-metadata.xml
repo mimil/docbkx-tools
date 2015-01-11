@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype-descriptor name="docbkx-quickstart">
+  <fileSets>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/docbkx</directory>
+      <includes>
+        <include>**/*.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/docbkx-stylesheet</directory>
+      <includes>
+        <include>**/*.xsl</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="false">
+      <directory>src/docbkx/media</directory>
+      <includes>
+        <include>**/*.jpg</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</archetype-descriptor>
