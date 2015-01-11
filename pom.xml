@@ -154,8 +154,71 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <dependencies>
+          <dependency><!-- add support for ssh/scp -->
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>2.5</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+
+      <!-- Default Site Pages -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.7</version>
+      </plugin>
+
+      <!-- Java Documentation -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+      </plugin>
+
+      <!-- mojo Documentation -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <modules>
     <module>docbkx-builder-maven-plugin</module>
@@ -170,11 +233,21 @@
     <site>
       <id>docbkx-tools-sourceforge</id>
       <name>Docbkx Tools Site</name>
-      <url>sftp://web.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs/</url>
+      <url>sftp://web.sourceforge.net/home/groups/d/do/docbkx-tools/htdocs</url>
     </site>
   </distributionManagement>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>1.0</version>
+      </dependency>
       <dependency>
         <groupId>antlr</groupId>
         <artifactId>stringtemplate</artifactId>
