@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><archetype>
+  <id>docbkx-quickstart</id>
+  <resources>
+    <resource filtered="false">src/docbkx/book.xml</resource>
+    <resource filtered="false">src/docbkx/included_section.xml</resource>
+    <resource filtered="false">src/docbkx/media/martin-luther-king.jpg</resource>
+    <resource filtered="false">src/docbkx-stylesheet/fo/docbook.xsl</resource>
+  </resources>
+</archetype>
