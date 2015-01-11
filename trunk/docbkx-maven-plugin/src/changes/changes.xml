@@ -5,7 +5,18 @@
   </properties>
   <body>
     <release version="2.0.16">
-
+      <action dev="mimil" type="add">
+        generate-titlepage using the property targetsFilename which does not exist because
+        it is not a conventional docbook stylesheet.
+      </action>
+      <action dev="mimil" type="add">
+        configure loggers for fop, a new property can be used FopLogLevel or -Ddocbkx.fopLogLevel
+        Values are: OFF,FATAL,ERROR,WARN,INFO,DEBUG,TRACE,ALL
+        Default is: WARN
+      </action>
+      <action dev="mimil" type="add">
+        wrong method scope for setUseStandardOutput in order to allow extending.
+      </action>
     </release>
 
     <release version="2.0.15">
