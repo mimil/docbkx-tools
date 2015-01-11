@@ -1,0 +1,304 @@
+group plugins;
+
+typeMap ::= [
+  "boolean":"String",
+  default:"String"
+]
+
+conversionMap ::= [
+  "boolean":"convertBooleanToXsltParam",
+  default:"convertStringToXsltParam"
+]
+
+plugin(spec) ::= <<
+package $spec.packageName$;
+
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.Transformer;
+import org.apache.maven.plugin.MojoExecutionException;
+import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Properties;
+import org.apache.maven.project.MavenProject;
+import org.apache.tools.ant.Target;
+import org.xml.sax.XMLReader;
+import org.xml.sax.SAXException;
+
+
+/**
+ * A Maven plugin for generating $spec.type$ output from DocBook documents, using version
+ * $spec.docbookXslVersion$ of the DocBook XSL stylesheets.
+ *
+ * @see http://docbook.sourceforge.net/
+ * @goal generate-$spec.pluginSuffix$
+ * @configurator override
+ */
+public class $spec.className$
+  extends $spec.superClassName$
+{
+
+    /**
+     * The plugin dependencies.
+     *
+     * @parameter expression="\${plugin.artifacts}"
+     * @required
+     * @readonly
+     */
+    List artifacts;
+
+    /**
+     * Ant tasks to be executed before the transformation. Comparable
+     * to the tasks property in the maven-antrun-plugin.
+     *
+     * @parameter
+     */
+    private Target preProcess;
+
+    /**
+     * Ant tasks to be executed after the transformation. Comparable
+     * to the tasks property in the maven-antrun-plugin.
+     *
+     * @parameter
+     */
+    private Target postProcess;
+
+    /**
+     * @parameter expression="\${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+
+    /**
+     * A list of entities to be substituted in the source
+     * documents. Note that you can <em>only</em> specify entities if
+     * your source DocBook document contains a DTD
+     * declaration. Otherwise it will not have any effect at all.
+     *
+     * @parameter
+     */
+    private List entities;
+
+    /**
+     * A list of additional XSL parameters to give to the XSLT engine.
+     * These parameters overrides regular docbook ones as they are last
+     * configured.<br/>
+     * For regular docbook parameters perfer the use of this plugin facilities
+     * offering nammed paramters.<br/>
+     * These parameters feet well for custom properties you may have defined
+     * within your customization layer.
+     *
+     * @parameter
+     */
+    private List customizationParameters = new ArrayList();
+
+    /**
+     * List of additional System properties.
+     *
+     * @parameter
+     */
+    private Properties systemProperties;
+
+    /**
+     * The pattern of the files to be included.
+     *
+     * @parameter default-value="*.xml"
+     */
+    private String includes;
+
+    /**
+     * A boolean, indicating if XInclude should be supported.
+     *
+     * @parameter default="false"
+     */
+     private boolean xincludeSupported;
+
+    /**
+     * The location of the stylesheet customization.
+     *
+     * @parameter
+     */
+    private File $spec.type$Customization;
+
+    /**
+     * The extension of the target file name.
+     *
+     * @parameter default-value="$spec.targetFileExtension$"
+     */
+    private String targetFileExtension;
+
+
+    /**
+     * The target directory to which all output will be written.
+     *
+     * @parameter expression="\${basedir}/target/docbkx/$spec.pluginSuffix$"
+     */
+    private File targetDirectory;
+
+    /**
+     * The directory containing the source DocBook files.
+     *
+     * @parameter expression="\${basedir}/src/docbkx"
+     */
+    private File sourceDirectory;
+
+    /**
+     * The directory containing the resolved DocBook source before given to the transformer.
+     *
+     * @parameter
+     */
+    private File generatedSourceDirectory;
+
+    private boolean useStandardOutput = $spec.useStandardOutput$;
+
+    /**
+     * If the xslt engine should print the to standard output the xsl:messages.
+     *
+     * @parameter expression="\${docbkx.showXslMessages}"
+     */
+    private boolean showXslMessages = false;
+
+    /**
+    * Skip the execution of the plugin.
+    *
+    * @parameter expression="\${docbkx.skip}" default-value="false" 
+    * @since 2.0.15
+    */
+    private boolean skip;
+
+    $spec.parameters:variable(); separator="\n\n"$
+
+    protected void configure(Transformer transformer) {
+        getLog().debug("Configure the transformer.");
+        $spec.parameters:parameterPassing(); separator="\n"$
+    }
+
+    public File getSourceDirectory() {
+        return sourceDirectory;
+    }
+
+    public File getTargetDirectory() {
+        return targetDirectory;
+    }
+
+    public File getGeneratedSourceDirectory() {
+        return generatedSourceDirectory;
+    }
+
+	public String getDefaultStylesheetLocation() {
+        return "$spec.stylesheetLocation$";
+	}
+
+	public String getType() {
+	    return "$spec.type$";
+	}
+
+    public String getStylesheetLocation() {
+    	getLog().debug("Customization: " + $spec.type$Customization);
+        if ($spec.type$Customization != null) {
+            return $spec.type$Customization.getAbsolutePath();
+        } else if (getNonDefaultStylesheetLocation() == null) {
+            return getDefaultStylesheetLocation();
+        } else {
+            return getNonDefaultStylesheetLocation();
+        }
+    }
+
+    public String getTargetFileExtension() {
+        return targetFileExtension;
+    }
+
+    public void setTargetFileExtension(String extension) {
+        targetFileExtension = extension;
+    }
+
+    public String[] getIncludes() {
+        String[] results = includes.split(",");
+        for (int i = 0; i < results.length; i++) {
+            results[i] = results[i].trim();
+        }
+        return results;
+    }
+
+    public List getEntities() {
+        return entities;
+    }
+
+    public List getCustomizationParameters()
+    {
+    	return customizationParameters;
+    }
+
+    public Properties getSystemProperties()
+    {
+        return systemProperties;
+    }
+
+    public Target getPreProcess() {
+        return preProcess;
+    }
+
+    public Target getPostProcess() {
+        return postProcess;
+    }
+
+    public MavenProject getMavenProject() {
+        return project;
+    }
+
+    public List getArtifacts() {
+        return artifacts;
+    }
+
+    protected boolean getXIncludeSupported() {
+        return xincludeSupported;
+    }
+
+    /**
+     * Returns false if the stylesheet is responsible to create the output file(s) using its own naming scheme.
+     *
+     * @return If using the standard output.
+     */
+    protected boolean isUseStandardOutput() {
+        return useStandardOutput;
+    }
+
+    protected boolean isShowXslMessages() {
+        return showXslMessages;
+    }
+
+    protected void setShowXslMessages(boolean showXslMessages) {
+        this.showXslMessages = showXslMessages;
+    }
+
+    protected void setUseStandardOutput(boolean useStandardOutput) {
+        this.useStandardOutput = useStandardOutput;
+    }
+    
+    protected void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
+    protected boolean isSkip() {
+        return this.skip;
+    }
+}
+>>
+
+variable() ::= <<
+/**
+ * $it.description$
+ * (Original XSL attribut: <code>$it.name$</code>.)
+ *
+ * @parameter expression="\${docbkx.$it.javaIdentifier$}"
+ */  
+protected $typeMap.(it.type)$ $it.javaIdentifier$;
+>>
+
+parameterPassing() ::= <<
+if ($it.javaIdentifier$ != null) {
+    transformer.setParameter("$it.name$", 
+        $conversionMap.(it.type)$($it.javaIdentifier$));
+}                     
+>>

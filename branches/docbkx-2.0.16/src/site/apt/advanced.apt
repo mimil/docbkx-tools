@@ -1,0 +1,73 @@
+                        ----------------------
+                        Advanced Customization
+                        ----------------------
+
+Advanced Customization
+
+  Sometimes, just having the ability to customize the properties
+doesn't cut it. You need something a little bit more advanced. You
+might know that this is typically achieved by creating a new
+stylesheet with customizations. The Maven Docbkx Plugin supports this
+as well.
+
+  In order to use your customizations stylesheet with the plugin, you
+(1) first of all need to register your customization stylesheet as a
+customization, and (2) then you need to make sure the references to
+the DocBook stylesheets resolve into stylesheets packaged with the
+plugin.
+
+  Let's assume you want to customize the stylesheet used for rendering
+HTML. In order to do that, you create a new stylesheet, add an import
+to urn:docbkx:stylesheet, and set the htmlCustomization property of
+the Maven plugin to the location of this new stylesheet, as
+illustrated below. That's all. The Maven plugin will detect the
+replacement, and use the customizations in <this> stylesheet to
+override the templates in the <original> stylesheets.
+
+[images/customization.png] Simple customization
+
+  The example below shows an example. In this customization
+stylesheet, I change the way comments are rendered, if you use the
+plugin's syntax highlighting support. Again, note that the
+customization layer is <not> explicitly pointing to the physical
+location of the stylesheet to customize. Instead, it imports that
+original stylesheet using a 'symbolic' reference. The symbolic
+reference is resolved by the plugin.
+
++-------------------------+
+<xsl:stylesheet 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xslthl="http://xslthl.sf.net"
+    exclude-result-prefixes="xslthl"
+    version="1.0">
+
+  <xsl:import href="urn:docbkx:stylesheet"/>
+
+  <xsl:template match="xslthl:comment">
+    <i class="hl-comment"><xsl:apply-templates/></i>
+  </xsl:template>
+  
+</xsl:stylesheet>
++-------------------------+
+
+  A good practice to create a maintainable customization layer is to apply
+the docbook framework layout (files and directories) to your files, it
+will help you to remember exactly which files you have extended. For this
+matter we allow the previously explained 'symbolic' reference to point to
+other original docbook files.
+It is as easy as appending '/'+file.xsl to urn:docbkx:stylesheet as you could
+see in the example bellow:
+
++-------------------------+
+<xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
+
+  <xsl:import href="urn:docbkx:stylesheet/inline.xsl"/>
+
+  <xsl:template match="d:guibutton|d:guiicon|d:guilabel|d:guimenu">
+    <xsl:call-template name="inline.boldmonoseq"/>
+  </xsl:template>
+
+</xsl:stylesheet>
++-------------------------+

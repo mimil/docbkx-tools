@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V5.0//EN"
+"http://www.oasis-open.org/docbook/xml/5.0/dtd/docbook.dtd" [
+]>
+<article id="article1" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+  
+  <info>
+    <title>Example Document</title>
+    <releaseinfo><?eval Version ${project.version}?></releaseinfo>
+  </info>
+
+  <section xml:id="section1">
+    <title>Use of processing instructions</title>
+
+    <para>
+      Note that it is possible to evaluate expressions inline, using
+      the <tag>eval</tag> processing instruction: '<?eval ${example.title}?>'
+      and '<?eval ${2 * 34 / 3}?>' or '<?eval ${foo}?>'. Processing instructions
+      can only be used inside xml elements and cannot be used in xml attributes.
+    </para>
+
+
+  </section>
+
+  <section>
+    <title>Use of entity substitutions</title>
+    
+    <para>
+      This sample shows the use of entity substitution defined in your
+      pom.xml configuration: &amp;version; = &version;. The entity substitution is
+      also working within xml attributes as you can see in the following link:
+      <link xlink:href="http://&version;">this is a link</link>.
+
+    </para>
+    <para>Another type of entity is the one defined in a dedicated file named
+    <filename>docbkx.<replaceable>type</replaceable>.ent</filename>. These
+    files must me located on same directory as your xml input file. Here
+    is an example with &amp;type; = &type;</para>
+
+    <para>For both of these entities format, you must define the Docbook DTD DOCTYPE
+    even if you are using docbook 5 and XSL schema otherwise it will not work.
+    This feature relies on an old feature of the plugin but sometimes it can help, so
+    check the logs</para>
+
+
+  </section>
+  
+  
+</article>
