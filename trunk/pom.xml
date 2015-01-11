@@ -12,9 +12,9 @@
     <url>http://code.google.com/p/docbkx-tools/</url>
   </organization>
   <scm>
-    <connection>scm:svn:https://docbkx-tools.googlecode.com/svn/tags/docbkx-2.0.16</connection>
-    <developerConnection>scm:svn:https://docbkx-tools.googlecode.com/svn/tags/docbkx-2.0.16</developerConnection>
-    <url>http://svn.sonatype.org/spice/tags/docbkx-2.0.16</url>
+    <connection>scm:svn:https://docbkx-tools.googlecode.com/svn/branches/docbkx-2.0.16</connection>
+    <developerConnection>scm:svn:https://docbkx-tools.googlecode.com/svn/branches/docbkx-2.0.16</developerConnection>
+    <url>http://svn.sonatype.org/spice/branches/docbkx-2.0.16</url>
   </scm>
   <url>http://docbkx-tools.sourceforge.net/</url>
   <licenses>
