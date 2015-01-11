@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+
+  <target name="generate-manual">
+    <mkdir dir="${basedir}/target/docbkx"/>
+    <xslt style="${basedir}/src/xslt/pom-to-docbkx.xsl"
+          in="pom.xml"
+          out="target/docbkx/manual.xml"/>
+  </target>
+
+</project>

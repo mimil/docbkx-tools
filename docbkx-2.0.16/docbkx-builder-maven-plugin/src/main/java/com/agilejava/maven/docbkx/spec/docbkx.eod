@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ObjectDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="com.agilejava.maven.docbkx" id="platform:/resource/docbkx-builder-maven-plugin/src/main/java/com/agilejava/maven/docbkx/spec/docbkx.ecore#/" metadata="emf-1.0" tag="1000" key="323030363033323020646F63626B782D6275696C6465722D6D6176656E2D706C7567696E2F77696C66726564">
+  <model href="docbkx.ecore#/"/>
+  <diagramOptions xsi:type="options:ObjectDiagramOptions" level="0" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+</editmodel:ObjectDiagramEditModel>
