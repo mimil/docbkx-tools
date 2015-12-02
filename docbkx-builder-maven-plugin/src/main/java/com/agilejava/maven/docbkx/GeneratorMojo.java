@@ -107,7 +107,7 @@ public class GeneratorMojo extends AbstractMojo {
    * The classname of the super class from which the generate Mojo will
    * inherit.
    *
-   * @parameter expression="com.agilejava.docbkx.maven.AbstractTransformerMojo"
+   * @parameter property="com.agilejava.docbkx.maven.AbstractTransformerMojo"
    */
   private String superClassName;
 
@@ -121,7 +121,7 @@ public class GeneratorMojo extends AbstractMojo {
   /**
    * Target directory.
    *
-   * @parameter expression="${project.build.directory}/generated-sources"
+   * @parameter default-value="${project.build.directory}/generated-sources"
    */
   private File targetDirectory;
 
@@ -135,14 +135,14 @@ public class GeneratorMojo extends AbstractMojo {
   /**
    * The directory where all new resources need to be stored.
    *
-   * @parameter expression="${basedir}/target/generated-resources"
+   * @parameter default-value="${basedir}/target/generated-resources"
    */
   private File targetResourcesDirectory;
 
   /**
    * A reference to the project.
    *
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    */
   private MavenProject project;
@@ -210,7 +210,7 @@ public class GeneratorMojo extends AbstractMojo {
   /**
    * The groupId of any results coming out of this plugin.
    *
-   * @parameter expression="net.sf.docbook";
+   * @parameter property="net.sf.docbook";
    */
   private String groupId;
 
@@ -246,7 +246,7 @@ public class GeneratorMojo extends AbstractMojo {
   /**
    * Specify source file encoding; e.g., UTF-8
    *
-   * @parameter expression="${project.build.sourceEncoding}"
+   * @parameter property="project.build.sourceEncoding"
    */
   private String encoding;
 
@@ -461,6 +461,7 @@ public class GeneratorMojo extends AbstractMojo {
       result = result.substring(0, result.indexOf('.') + 1);
       result = result.trim();
       result = result.replace('\n', ' ');
+      result = result.replace(">", "&gt;");
       parameter.setDescription(result);
       node = (Node) selectType.selectSingleNode(document);
 
