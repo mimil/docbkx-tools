@@ -43,7 +43,7 @@ public class PreprocessingFilter extends XMLFilterImpl {
   /**
    * Constructs a new instance.
    *
-   * @param reader The parent reader.
+   * @param parent The parent reader.
    */
   public PreprocessingFilter(XMLReader parent) {
     super(parent);

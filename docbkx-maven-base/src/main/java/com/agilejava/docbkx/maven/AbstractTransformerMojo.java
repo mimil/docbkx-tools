@@ -250,7 +250,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    * @param sourceFile    The docbook source file.
    * @param filter        The XML PI filter.
    * @return An XInclude configured SAXSource
-   * @throws MojoExecutionException
+   * @throws MojoExecutionException DOCUMENT ME!
    */
   protected Source createSource(String inputFilename, File sourceFile, PreprocessingFilter filter)
       throws MojoExecutionException {
@@ -361,7 +361,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    * @param initialFilename Filename of the root docbook source file.
    * @param doc             XOM Document resolved.
    * @return The new file generated.
-   * @throws MojoExecutionException
+   * @throws MojoExecutionException DOCUMENT ME!
    */
   protected File dumpResolvedXML(String initialFilename, nu.xom.Document doc) throws MojoExecutionException {
     final File file = new File(initialFilename);
@@ -422,7 +422,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
   /**
    * Returns the directory to use to save the resolved docbook XML before it is given to the Transformer.
    *
-   * @return
+   * @return DOCUMENT ME!
    */
   protected abstract File getGeneratedSourceDirectory();
 
@@ -509,6 +509,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
    * to prevent the file from being parsed.)
    *
    * @param result An individual result.
+   * @throws MojoExecutionException DOCUMENT ME!
    */
   public void postProcessResult(File result) throws MojoExecutionException {
 
@@ -600,6 +601,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   /**
    * Constructs the default {@link TransformerBuilder}.
+   *
+   * @param resolver DOCUMENT ME!
+   * @return DOCUMENT ME!
    */
   protected TransformerBuilder createTransformerBuilder(URIResolver resolver) {
     return new CachingTransformerBuilder(new DefaultTransformerBuilder(resolver));
@@ -782,6 +786,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   /**
    * Returns the include patterns, as a comma-seperate collection of patterns.
+   *
+   * @return DOCUMENT ME!
    */
   protected abstract String[] getIncludes();
 
@@ -863,16 +869,20 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   /**
    * Returns a list of {@link Entity Entities}
+   *
+   * @return list of {@link Entity Entities}
    */
   protected abstract List getEntities();
 
   /**
    * A list of additional XSL parameters to give to the XSLT engine. These parameters overrides regular docbook ones as
-   * they are last configured.<br/> For regular docbook parameters prefer the use of this plugin facilities offering
-   * named paramters.<br/> These parameters feet well for custom properties you may have defined within your
+   * they are last configured.<br> For regular docbook parameters prefer the use of this plugin facilities offering
+   * named paramters.<br> These parameters feet well for custom properties you may have defined within your
    * customization layer.
-   * <p/>
+   *
    * {@link Parameter customizationParameters}
+   *
+   * @return DOCUMENT ME!
    */
   protected abstract List getCustomizationParameters();
 
@@ -919,6 +929,8 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   /**
    * Returns the type of conversion.
+   *
+   * @return The type of conversion.
    */
   protected abstract String getType();
   
@@ -929,6 +941,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   /**
    * Converts a String parameter to the type expected by the XSLT processor.
+   *
+   * @param value A string intended to be an XSLT object.
+   * @return An XSLT parameter object.
    */
   protected Object convertStringToXsltParam(String value) {
     return value;
@@ -936,6 +951,9 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
 
   /**
    * Converts a Boolean parameter to the type expected by the XSLT processor.
+   *
+   * @param value Strings "false", "0", and "no" return false, else true.
+   * @return An XSLT parameter object.
    */
   protected Object convertBooleanToXsltParam(String value) {
     String trimmed = value.trim();
