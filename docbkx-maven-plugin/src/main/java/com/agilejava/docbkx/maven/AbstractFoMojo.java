@@ -113,7 +113,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
    * Configures the loglevel of fop and xmlgraphics that can be really noisy.
    * Values are: OFF,FATAL,ERROR,WARN,INFO,DEBUG,TRACE,ALL
    *
-   * @parameter default-value="WARN" expression="\${docbkx.fopLogLevel}"
+   * @parameter property="docbkx.fopLogLevel" default-value="WARN" 
    */
   String fopLogLevel = null;
 
