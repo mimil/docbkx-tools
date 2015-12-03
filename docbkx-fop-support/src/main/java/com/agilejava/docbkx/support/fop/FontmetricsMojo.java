@@ -58,14 +58,14 @@ public class FontmetricsMojo extends AbstractMojo {
   /**
    * The directory containing the font files.
    *
-   * @parameter expression="${basedir}/src/fonts"
+   * @parameter default-value="${basedir}/src/fonts"
    */
   protected File sourceDirectory;
 
   /**
    * The directory to which the metrics files will be generated.
    *
-   * @parameter expression="${basedir}/target/fonts"
+   * @parameter default-value="${basedir}/target/fonts"
    */
   protected File targetDirectory;
 
