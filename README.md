@@ -1,5 +1,5 @@
 # docbkx-tools
-The official docbkx-tools maven plugin (previously on code.google.com/p/docbkx-tools)
+The official docbkx-tools maven plugin (previously on http://code.google.com/p/docbkx-tools)
 
 
 ## What is it?
