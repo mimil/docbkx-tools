@@ -28,9 +28,9 @@ import org.xml.sax.SAXException;
 
 /**
  * A Maven plugin for generating $spec.type$ output from DocBook documents, using version
- * $spec.docbookXslVersion$ of the DocBook XSL stylesheets.
+ * $spec.docbookXslVersion$ of the DocBook XSL stylesheets. See
+ * <a href="http://docbook.sourceforge.net/">http://docbook.sourceforge.net/</a>.
  *
- * @see http://docbook.sourceforge.net/
  * @goal generate-$spec.pluginSuffix$
  * @configurator override
  */
@@ -41,7 +41,7 @@ public class $spec.className$
     /**
      * The plugin dependencies.
      *
-     * @parameter expression="\${plugin.artifacts}"
+     * @parameter property="plugin.artifacts"
      * @required
      * @readonly
      */
@@ -64,7 +64,7 @@ public class $spec.className$
     private Target postProcess;
 
     /**
-     * @parameter expression="\${project}"
+     * @parameter property="project"
      * @required
      * @readonly
      */
@@ -128,18 +128,17 @@ public class $spec.className$
      */
     private String targetFileExtension;
 
-
     /**
      * The target directory to which all output will be written.
      *
-     * @parameter expression="\${basedir}/target/docbkx/$spec.pluginSuffix$"
+     * @parameter default-value="\${basedir}/target/docbkx/$spec.pluginSuffix$"
      */
     private File targetDirectory;
 
     /**
      * The directory containing the source DocBook files.
      *
-     * @parameter expression="\${basedir}/src/docbkx"
+     * @parameter default-value="\${basedir}/src/docbkx"
      */
     private File sourceDirectory;
 
@@ -153,16 +152,16 @@ public class $spec.className$
     private boolean useStandardOutput = $spec.useStandardOutput$;
 
     /**
-     * If the xslt engine should print the to standard output the xsl:messages.
+     * If the XSLT engine should print xsl:messages to standard output.
      *
-     * @parameter expression="\${docbkx.showXslMessages}"
+     * @parameter property="docbkx.showXslMessages"
      */
     private boolean showXslMessages = false;
 
     /**
     * Skip the execution of the plugin.
     *
-    * @parameter expression="\${docbkx.skip}" default-value="false" 
+    * @parameter property="docbkx.skip" default-value="false"
     * @since 2.0.15
     */
     private boolean skip;
@@ -275,7 +274,7 @@ public class $spec.className$
     protected void setUseStandardOutput(boolean useStandardOutput) {
         this.useStandardOutput = useStandardOutput;
     }
-    
+
     protected void setSkip(boolean skip) {
         this.skip = skip;
     }
@@ -289,16 +288,16 @@ public class $spec.className$
 variable() ::= <<
 /**
  * $it.description$
- * (Original XSL attribut: <code>$it.name$</code>.)
+ * (Original XSL attribute: <code>$it.name$</code>.)
  *
- * @parameter expression="\${docbkx.$it.javaIdentifier$}"
- */  
+ * @parameter property="docbkx.$it.javaIdentifier$"
+ */
 protected $typeMap.(it.type)$ $it.javaIdentifier$;
 >>
 
 parameterPassing() ::= <<
 if ($it.javaIdentifier$ != null) {
-    transformer.setParameter("$it.name$", 
+    transformer.setParameter("$it.name$",
         $conversionMap.(it.type)$($it.javaIdentifier$));
-}                     
+}
 >>
