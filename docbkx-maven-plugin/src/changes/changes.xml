@@ -4,6 +4,11 @@
     <title>Changes</title>
   </properties>
   <body>
+    <release version="2.0.17-SNAPSHOT">
+      <action dev="Robert-Crews" type="update">
+        better maven3 support and some fix of various documentations.
+      </action>
+    </release>
     <release version="2.0.16">
       <action dev="mimil" type="add">
         generate-titlepage using the property targetsFilename which does not exist because
