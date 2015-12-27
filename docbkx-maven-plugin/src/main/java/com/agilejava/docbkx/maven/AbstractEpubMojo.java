@@ -33,9 +33,7 @@ import java.net.URL;
 import javax.xml.transform.Transformer;
 
 /**
- * A dedicated base class for plugins generating ePub version 2 output, in order to allow
- * the specific stylesheet chosen to be dependent on the {@link #chunkedOutput}
- * property.
+ * A dedicated base class for plugins generating ePub version 2 output.
  *
  * @author Cedric Pronzato
  * @author Brian Richard Jackson

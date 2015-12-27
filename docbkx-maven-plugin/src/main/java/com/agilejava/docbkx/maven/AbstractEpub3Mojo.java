@@ -35,9 +35,7 @@ import java.net.URL;
 import java.util.zip.CRC32;
 
 /**
- * A dedicated base class for plugins generating ePub version 3 output, in order to allow
- * the specific stylesheet chosen to be dependent on the {@link #chunkedOutput}
- * property.
+ * A dedicated base class for plugins generating ePub version 3 output.
  *
  * @author Cedric Pronzato
  */

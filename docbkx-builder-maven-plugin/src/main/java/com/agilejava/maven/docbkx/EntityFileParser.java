@@ -58,7 +58,7 @@ public class EntityFileParser {
   /**
    * Tests the parser. TODO: Take this out.
    *
-   * @param args
+   * @param args Not used.
    */
   public final static void main(String[] args) {
     StringBuffer builder = new StringBuffer();
