@@ -13,9 +13,9 @@
     <url>https://github.com/mimil/docbkx-tools</url>
   </organization>
   <scm>
-    <connection>scm:git:git@github.com:mimil/dockbx-tools.git</connection>
-    <url>scm:git:git@github.com:mimil/dockbx-tools.git</url>
-    <developerConnection>scm:git:git@github.com:mimil/dockbx-tools.git</developerConnection>
+    <connection>scm:git:git@github.com:mimil/docbkx-tools.git</connection>
+    <url>scm:git:git@github.com:mimil/docbkx-tools.git</url>
+    <developerConnection>scm:git:git@github.com:mimil/docbkx-tools.git</developerConnection>
   </scm>
   <url>https://github.com/mimil/docbkx-tools</url>
   <licenses>
