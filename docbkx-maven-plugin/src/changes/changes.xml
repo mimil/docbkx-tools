@@ -12,7 +12,7 @@
         making classpath docbook customization working back, now using 'classpath://'.
       </action>
       <action dev="mimil" type="update">
-        add support for docbook xsl 1.78.1.
+        add support for docbook xsl 1.79.1.
       </action>
     </release>
     <release version="2.0.16">
