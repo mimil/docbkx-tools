@@ -8,6 +8,12 @@
       <action dev="Robert-Crews" type="update">
         better maven3 support and some fix of various documentations.
       </action>
+      <action dev="mimil" type="update">
+        making classpath docbook customization working back, now using 'classpath://'.
+      </action>
+      <action dev="mimil" type="update">
+        add support for docbook xsl 1.78.1.
+      </action>
     </release>
     <release version="2.0.16">
       <action dev="mimil" type="add">

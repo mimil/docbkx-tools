@@ -194,12 +194,22 @@ public class $spec.className$
 	}
 
     public String getStylesheetLocation() {
-    	getLog().debug("Customization: " + $spec.type$Customization);
         if ($spec.type$Customization != null) {
-            return $spec.type$Customization.getAbsolutePath();
+            int foundOffcet = $spec.type$Customization.toString().indexOf("classpath:");
+
+            if(foundOffcet != -1) {
+                final String withinPath = $spec.type$Customization.toString().substring(foundOffcet + 11);
+                getLog().debug("User Customization changed to classpath: " + withinPath);
+                return withinPath;
+            } else {
+                getLog().debug("User Customization provided: " + $spec.type$Customization.getAbsolutePath());
+                return $spec.type$Customization.getAbsolutePath();
+             }
         } else if (getNonDefaultStylesheetLocation() == null) {
+            getLog().debug("Using default Customization: " + getDefaultStylesheetLocation());
             return getDefaultStylesheetLocation();
         } else {
+            getLog().debug("Using non-default Customization: " + getNonDefaultStylesheetLocation());
             return getNonDefaultStylesheetLocation();
         }
     }

@@ -1220,5 +1220,38 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- This sample shows how to use a stylesheet customization located in the dependency classpath. It must start
+    by 'classpath:/'. -->
+    <profile>
+      <id>docbkx.jar-configuration</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>${project.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>net.sf.docbook</groupId>
+                <artifactId>docbook-xsl</artifactId>
+                <version>1.78.1</version>
+                <classifier>ns-resources</classifier>
+                <type>zip</type>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <foCustomization>classpath:/docbook/fo/docbook.xsl</foCustomization>
+              <includes>article.xml</includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <example.title>Additional customization</example.title>
+        <example.input>article.xml</example.input>
+      </properties>
+    </profile>
   </profiles>
 </project>
