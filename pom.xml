@@ -10,14 +10,14 @@
   <inceptionYear>2006</inceptionYear>
   <organization>
     <name>Wilfred Springer, Cedric Pronzato</name>
-    <url>http://code.google.com/p/docbkx-tools/</url>
+    <url>https://github.com/mimil/docbkx-tools</url>
   </organization>
   <scm>
-    <connection>scm:svn:https://docbkx-tools.googlecode.com/svn/tags/docbkx-2.0.16</connection>
-    <developerConnection>scm:svn:https://docbkx-tools.googlecode.com/svn/tags/docbkx-2.0.16</developerConnection>
-    <url>http://svn.sonatype.org/spice/tags/docbkx-2.0.16</url>
+    <connection>scm:git:git@github.com:mimil/dockbx-tools.git</connection>
+    <url>scm:git:git@github.com:mimil/dockbx-tools.git</url>
+    <developerConnection>scm:git:git@github.com:mimil/dockbx-tools.git</developerConnection>
   </scm>
-  <url>http://docbkx-tools.sourceforge.net/</url>
+  <url>https://github.com/mimil/docbkx-tools</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -52,9 +52,10 @@
     </mailingList>
   </mailingLists>
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/docbkx-tools/issues/list</url>
+    <system>GitHub Issues</system>
+    <url>https://github.com/mimil/docbkx-tools/issues</url>
   </issueManagement>
+
 
   <parent>
     <groupId>org.sonatype.oss</groupId>
@@ -222,6 +223,12 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.2.1</version>
       </plugin>
 
     </plugins>
