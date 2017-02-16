@@ -122,20 +122,6 @@ public class GeneratorMojo extends AbstractMojo {
   private File targetDirectory;
 
   /**
-   * The maven project helper class for adding resources.
-   *
-   * @component role="org.apache.maven.project.MavenProjectHelper"
-   */
-  private MavenProjectHelper projectHelper;
-
-  /**
-   * The directory where all new resources need to be stored.
-   *
-   * @parameter default-value="${basedir}/target/generated-resources"
-   */
-  private File targetResourcesDirectory;
-
-  /**
    * A reference to the project.
    *
    * @parameter property="project"
