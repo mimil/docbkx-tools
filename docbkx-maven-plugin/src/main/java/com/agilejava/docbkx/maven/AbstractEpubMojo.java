@@ -21,8 +21,6 @@ package com.agilejava.docbkx.maven;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
-import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 

@@ -50,7 +50,6 @@ import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 
 import org.apache.commons.io.IOUtils;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
