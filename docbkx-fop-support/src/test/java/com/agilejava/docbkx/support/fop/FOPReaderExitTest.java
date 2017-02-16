@@ -119,6 +119,7 @@ public class FOPReaderExitTest extends PlexusTestCase {
   // classes to intercept System.exit()
   //
   protected static class ExitException extends SecurityException {
+    static final long serialVersionUID = 96L;
     public final int status;
 
     public ExitException(int status) {
