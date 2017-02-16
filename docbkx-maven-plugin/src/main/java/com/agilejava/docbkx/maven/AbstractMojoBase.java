@@ -65,7 +65,7 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
   }
 
   /**
-   * Converts a conventional path to url format bzcause XSLTHL only takes as input a
+   * Converts a conventional path to url format because XSLTHL only takes as input a
    * configuration file path given as an url.
    *
    * @param path The path to format.

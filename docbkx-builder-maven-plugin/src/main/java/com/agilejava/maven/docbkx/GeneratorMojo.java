@@ -366,7 +366,7 @@ public class GeneratorMojo extends AbstractMojo {
   /**
    * Creates the {@link Specification} used for generating the plugin code.
    *
-   * @return The {@link Specification} uesd for generating the plugin source
+   * @return The {@link Specification} used for generating the plugin source
    *         code.
    * @throws MojoExecutionException
    *             If the {@link Specification} cannot be created.
