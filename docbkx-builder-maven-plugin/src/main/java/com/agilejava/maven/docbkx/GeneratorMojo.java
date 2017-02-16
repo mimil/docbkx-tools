@@ -349,11 +349,7 @@ public class GeneratorMojo extends AbstractMojo {
       template.setAttribute("spec", specification);
       FileUtils.writeStringToFile(targetFile, template.toString(), encoding);
     } catch (IOException ioe) {
-      if (specification == null) {
-        throw new MojoExecutionException("Failed to read parameters.", ioe);
-      } else {
-        throw new MojoExecutionException("Failed to create " + targetFile + ".", ioe);
-      }
+      throw new MojoExecutionException("Failed to create " + targetFile + ".", ioe);
     }
 
     project.addCompileSourceRoot(targetDirectory.getAbsolutePath());

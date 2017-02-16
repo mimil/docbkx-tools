@@ -392,7 +392,6 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         bos.flush();
         bos.close();
         fos.close();
-        return resolvedXML;
       } catch (IOException e) {
         throw new MojoExecutionException("Failed to write to dump file", e);
       } finally {
@@ -400,7 +399,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         IOUtils.closeQuietly(fos);
       }
     }
-    throw new MojoExecutionException("Failed to open dump file");
+    return resolvedXML;
   }
 
   /**
