@@ -805,7 +805,7 @@ public abstract class AbstractTransformerMojo extends AbstractMojo {
         if (getStylesheetLocation().startsWith("http://")) {
           return new URL(getStylesheetLocation());
         }
-        return new File(getStylesheetLocation()).toURL();
+        return new File(getStylesheetLocation()).toURI().toURL();
       } catch (MalformedURLException mue) {
         return null;
       }

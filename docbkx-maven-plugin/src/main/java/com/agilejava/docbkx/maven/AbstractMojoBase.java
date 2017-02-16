@@ -86,7 +86,7 @@ public abstract class AbstractMojoBase extends AbstractTransformerMojo {
       getLog().warn("The given XSLTHL config file seems to not be legal: " + path);
     } else {
       try {
-        return file.toURL();
+        return file.toURI().toURL();
       } catch (MalformedURLException e) {
         getLog().error(e);
       }

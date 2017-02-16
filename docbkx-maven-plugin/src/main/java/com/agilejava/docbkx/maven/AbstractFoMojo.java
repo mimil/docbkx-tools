@@ -317,7 +317,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
     super.adjustTransformer(transformer, sourceFilename, targetFile);
 
     try {
-      final String str = (new File(sourceFilename)).getParentFile().toURL().toExternalForm();
+      final String str = (new File(sourceFilename)).getParentFile().toURI().toURL().toExternalForm();
       baseUrl = str.replace("file:/", "file:///");
     } catch (MalformedURLException e) {
       getLog().warn("Failed to get FO basedir", e);

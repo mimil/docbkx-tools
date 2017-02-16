@@ -514,7 +514,7 @@ public class GeneratorMojo extends AbstractMojo {
     try {
       StringBuilder builder = new StringBuilder();
       builder.append("jar:");
-      builder.append(distribution.toURL().toExternalForm());
+      builder.append(distribution.toURI().toURL().toExternalForm());
       builder.append("!/");
       builder.append(sourceRootDirectory);
       builder.append(filename);
