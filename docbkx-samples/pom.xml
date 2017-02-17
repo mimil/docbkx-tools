@@ -134,10 +134,10 @@
         will find out in one of the following examples.
     -->
     <!--
-       Using this configuration, you can build a document from the
-       sources by invoking docbkx:generate-html. This will try to
-       convert all files matching the *.xml file pattern in
-       ${basedir}/src/docbkx to HTML pages.
+        Using this configuration, you can build a document from the
+        sources by invoking docbkx:generate-html. This will try to
+        convert all files matching the *.xml file pattern in
+        ${basedir}/src/docbkx to HTML pages.
     -->
     <profile>
       <id>docbkx.simple</id>
@@ -160,7 +160,7 @@
         Normally you would of course want generation of the documents
         to happen automatically. In this sense, the Docbkx Maven
         Plugin is hardly any different than all of the other existing
-        Maven 2 plugins. Simply add an execution element to specify
+        Maven plugins. Simply add an execution element to specify
         the goal and the phase. The example below specifies that the
         documents in src/docbkx should be turned into HTML and XHTML in the
         pre-site phase.
@@ -195,13 +195,15 @@
       </properties>
     </profile>
 
-    <!-- Adding other output formats is easy. Simply specify it as
+    <!--
+        Adding other output formats is easy. Simply specify it as
         additional goals. In the example below, we are not only
         rendering HTML but also PDF, UNIX man pages and Eclipse help
         files. (Note however that it does not make a lot of sense to
         render man pages from an appendix. You still need to add your
         own common sense to figure out which output formats make sense
-        with your documents.  -->
+        with your documents.
+    -->
     <profile>
       <id>docbkx.multipleFormats</id>
       <build>
@@ -232,8 +234,11 @@
       </properties>
     </profile>
 
-    <!-- This samples shows how to generate a manpage software documentation, a simple sample is
-    provided in "manpages/first-command.xml" file.-->
+    <!--
+        This samples shows how to generate a manpage software
+        documentation, a simple sample is provided in
+        "manpages/first-command.xml" file.
+    -->
     <profile>
       <id>docbkx.manpages</id>
       <build>
@@ -263,9 +268,10 @@
     </profile>
 
     <!--
-        This sample shows how to setup a dependency to docbook xml 4.4 in order to enable xml catalog resolution for
-        Docbook 4.4 public identifier. It is especially needed if you want to work offline
-     -->
+        This sample shows how to setup a dependency to docbook xml 4.4
+        in order to enable xml catalog resolution for Docbook 4.4 public
+        identifier. It is especially needed if you want to work offline
+    -->
      <profile>
       <id>docbkx.dtd4.4</id>
       <build>
@@ -295,9 +301,11 @@
     </profile>
 
     <!--
-       This sample shows how to setup a dependency to docbook xml 4.5 in order to enable xml catalog resolution for
-       Docbook 4.5 public identifier. It is especially needed if you want to work offline. You will need to add a
-       thirdparty sonatype repository in your pom configuration:
+        This sample shows how to setup a dependency to docbook xml 4.5
+        in order to enable xml catalog resolution for Docbook 4.5 public
+        identifier. It is especially needed if you want to work offline.
+        You will need to add a thirdparty sonatype repository in your
+        pom configuration:
     -->
     <!--
     <repositories>
@@ -337,9 +345,10 @@
     </profile>
 
     <!--
-        This sample is same nature of the previous one but this time it enables the xml catalog resolution for
-        Docbook 5.0 public identifer.
-     -->
+        This sample is same nature of the previous one but this time it
+        enables the xml catalog resolution for Docbook 5.0 public
+        identifer.
+    -->
     <profile>
       <id>docbkx.5.0</id>
       <build>
@@ -488,18 +497,18 @@
         version number defined in your POM.
     -->
     <!--
-	As of version 2.0.5 of the plugin it got even better. Version
-	2.0.5 allows you to refer to properties *directly*,
-	introducing the mapping to entities.
+        As of version 2.0.5 of the plugin it got even better. Version
+        2.0.5 allows you to refer to properties *directly*,
+        introducing the mapping to entities.
     -->
     <!--
-	The procedure is simple. The plugin defines a dedicated
-	processing instruction for inserting Maven properties. The
-	processing instruction relies on the JSP Expression Language
-	(probably familiar to many of you). So, you would for example
-	be able to inject this <?eval ${project.version}?> to include
-	the version number of your pom.xml file anywhere in your
-	DocBook content.
+        The procedure is simple. The plugin defines a dedicated
+        processing instruction for inserting Maven properties. The
+        processing instruction relies on the JSP Expression Language
+        (probably familiar to many of you). So, you would for example
+        be able to inject this <?eval ${project.version}?> to include
+        the version number of your pom.xml file anywhere in your
+        DocBook content.
     -->
     <profile>
       <id>docbkx.entities</id>
@@ -638,8 +647,10 @@
         'xincludeSupport' property to 'true'. Note that this feature
         is still fairly experimental.
     -->
-    <!-- As no goal is specified nor attached to a phase, you must specify it on the command line like
-    'docbkx:generate-pdf' -->
+    <!--
+        As no goal is specified nor attached to a phase, you must specify
+        it on the command line like 'docbkx:generate-pdf'
+    -->
     <profile>
       <id>docbkx.xinclude</id>
       <build>
@@ -660,12 +671,15 @@
     </profile>
 
     <!--
-        The advanced XInclude mode is activated by specifying the additional 'generatedSourceDirectory' parameter.
-        By doing this XOM xml parser will be used instead of Xerces, XOM being more powerful concerning XML Inclusions
+        The advanced XInclude mode is activated by specifying the
+        additional 'generatedSourceDirectory' parameter.
+        By doing this XOM xml parser will be used instead of Xerces,
+        XOM being more powerful concerning XML Inclusions
         (xpointer ...)
      -->
     <!--
-        As no goal is specified nor attached to a phase, you must specify it on the command line like
+        As no goal is specified nor attached to a phase, you must specify
+        it on the command line like
         'docbkx:generate-pdf'
      -->
     <profile>
@@ -706,13 +720,14 @@
     -->
     <!--
         The trick is to use a 'symbolic' reference instead of a real
-        location in your import. By using this import: <xsl:import href="urn:docbkx:stylesheet" />, you basically tell the plugin
+        location in your import. By using this import: <xsl:import
+        href="urn:docbkx:stylesheet" />, you basically tell the plugin
         to import the standard stylesheet for your specific output
         format.
     -->
     <!--
         Once you have your own customization stylesheet (probably
-        based on some of the tips in Bob Sagehills excellent book),
+        based on some of the tips in Bob Stayton's excellent book),
         you can simply tell the plugin to use that customization, by
         setting the foCustomization property (in case of PDF output)
         or/and the htmlCustomization property (for HTML output).
@@ -743,12 +758,15 @@
          the language of the sources within that element. In your
          pom.xml configuration, set highlightSource to true and import
          highlight.xsl in your customization layer in order to enable
-         highlighting support. (&lt;xsl:import href="urn:docbkx:stylesheet/highlight.xsl"/&gt;).
+         highlighting support.
+         (&lt;xsl:import href="urn:docbkx:stylesheet/highlight.xsl"/&gt;).
     -->
     <!--
-         The highlightXslthlConfig attribute can be used to configure xslthl to add new highlighters, ...
-         if you want to customize the highlighting properties you will have to do it in your xslt
-         customization layer (you can start from highlight.xsl from the docbook distribution).
+         The highlightXslthlConfig attribute can be used to configure
+         xslthl to add new highlighters, ... if you want to customize
+         the highlighting properties you will have to do it in your xslt
+         customization layer (you can start from highlight.xsl from the
+         docbook distribution).
     -->
     <profile>
       <id>docbkx.highlighter</id>
@@ -819,14 +837,15 @@
         we are overriding the default body font.
     -->
     <!--
-        The configuration parameter <ansi>true</ansi> should be set to false if your document
-        contains special characters.
+        The configuration parameter <ansi>true</ansi> should be set to
+        false if your document contains special characters.
     -->
     <!--
-        If you need to get full access to the FOP configuration file properties,
-        you can specify a custom configuration file using <externalFOPConfiguration />
-        parameter. The current <fonts /> parameter is deprecated since FOP 1.0 because
-        the xml metric file is only used on specific cases (see FOP website).
+        If you need to get full access to the FOP configuration file
+        properties, you can specify a custom configuration file using
+        <externalFOPConfiguration /> parameter. The current <fonts />
+        parameter is deprecated since FOP 1.0 because the xml metric
+        file is only used on specific cases (see FOP website).
     -->
     <profile>
       <id>docbkx.alternative.fonts</id>
@@ -882,17 +901,19 @@
     </profile>
 
     <!--
-        The JavaHelp format (combined with its java based framework) will allow
-        you to create professional online help systems from your documentations.
+        The JavaHelp format (combined with its java based framework)
+        will allow you to create professional online help systems from
+        your documentations.
     -->
     <!--
-        Docbkx Maven Plugin will help you in generating the JavaHelp main content
-        but will not create all the glue needed to have a JavaHelp up and running
-        within your application.
+        Docbkx Maven Plugin will help you in generating the JavaHelp
+        main content but will not create all the glue needed to have a
+        JavaHelp up and running within your application.
     -->
     <!--
-        Concerning the configuration properties of the goal 'generate-javahelp' they are the
-        same as the 'generate-html' (chunked mode) ones except these additional ones:
+        Concerning the configuration properties of the goal
+        'generate-javahelp' they are the same as the 'generate-html'
+        (chunked mode) ones except these additional ones:
         javahelp.encoding
     -->
     <profile>
@@ -924,13 +945,15 @@
     </profile>
 
     <!--
-        The Eclipse help format allows your documentation to be accessible into the
-        Eclipse platform as a Plugin.
+        The Eclipse help format allows your documentation to be
+        accessible into the Eclipse platform as a Plugin.
      -->
     <!--
-        The only operation needed to enable it into Eclipse platform is to create a directory
-        inside the 'plugins' directory of your Eclipse installation using the same name as the 'eclipsePluginId'
-        The help will then be available inside the menu named 'Help contents'
+        The only operation needed to enable it into Eclipse platform is
+        to create a directory inside the 'plugins' directory of your
+        Eclipse installation using the same name as the
+        'eclipsePluginId' The help will then be available inside the
+        menu named 'Help contents'
     -->
     <profile>
       <id>docbkx.eclipse</id>
@@ -962,9 +985,10 @@
     </profile>
 
     <!--
-        This samples shows you how to use profiling stylesheets (in this case the html one).
-        In order to do this you will have to make an empty (at least) stylesheet customization
-        layer and just point to the profiling stylesheet of the official docbook distribution.
+        This samples shows you how to use profiling stylesheets (in this
+        case the html one). In order to do this you will have to make an
+        empty (at least) stylesheet customization layer and just point
+        to the profiling stylesheet of the official docbook distribution.
     -->
     <!--
         This can be done using something like that:
@@ -1011,7 +1035,8 @@
     </profile>
 
     <!--
-        This sample shows you how to generate EPub documents verion 2 and version 3(@see http://en.wikipedia.org/wiki/EPUB)
+        This sample shows you how to generate EPub documents verion 2
+        and version 3(@see http://en.wikipedia.org/wiki/EPUB)
     -->
     <profile>
       <id>docbkx.epub</id>
@@ -1073,7 +1098,10 @@
       </build>
     </profile>
 
-    <!-- This sample shows different outputs (here PDF and RTF) based on FO stylesheet -->
+    <!--
+        This sample shows different outputs (here PDF and RTF) based on
+        FO stylesheet
+    -->
     <profile>
       <id>docbkx.rtf</id>
       <build>
@@ -1101,8 +1129,8 @@
       </profile>
 
     <!--
-        This sample shows the webhelp output, a browser and platform independent output with a javascript search
-        engine.
+        This sample shows the webhelp output, a browser and platform
+        independent output with a javascript search engine.
      -->
     <profile>
       <id>docbkx.webhelp</id>
@@ -1132,8 +1160,9 @@
     </profile>
 
     <!--
-        This sample shows how to generate titlepage stylesheet that may be needed to customize other outputs, it makes use of
-        an xml input file.
+        This sample shows how to generate titlepage stylesheet that may
+        be needed to customize other outputs, it makes use of an xml
+        input file.
         -->
     <profile>
       <id>docbkx.template</id>
@@ -1160,9 +1189,11 @@
       </build>
     </profile>
 
-      <!--This sample shows how to skip the plugin execution in an easy way. It will likely be used as a command line
-      parameter instead as in the pom definition using '-Ddocbkx.skip=true'.
-      -->
+    <!--
+        This sample shows how to skip the plugin execution in an easy
+        way. It will likely be used as a command line parameter instead
+        as in the pom definition using '-Ddocbkx.skip=true'.
+    -->
     <profile>
       <id>docbkx.skip</id>
       <build>
@@ -1187,7 +1218,10 @@
       </build>
     </profile>
 
-    <!-- This sample shows how to collect xref for cross references to other docbook documents -->
+    <!--
+        This sample shows how to collect xref for cross references to
+        other docbook documents
+    -->
     <profile>
       <id>docbkx.xref</id>
       <build>
@@ -1224,8 +1258,10 @@
       </build>
     </profile>
 
-    <!-- This sample shows how to use a stylesheet customization located in the dependency classpath. It must start
-    by 'classpath:/'. -->
+    <!--
+        This sample shows how to use a stylesheet customization located
+        in the dependency classpath. It must start by 'classpath:/'.
+    -->
     <profile>
       <id>docbkx.jar-configuration</id>
       <build>
