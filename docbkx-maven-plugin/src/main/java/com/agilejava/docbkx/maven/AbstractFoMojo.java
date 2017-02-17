@@ -50,7 +50,6 @@ import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 
 import org.apache.commons.io.IOUtils;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
@@ -317,7 +316,7 @@ public abstract class AbstractFoMojo extends AbstractMojoBase {
     super.adjustTransformer(transformer, sourceFilename, targetFile);
 
     try {
-      final String str = (new File(sourceFilename)).getParentFile().toURL().toExternalForm();
+      final String str = (new File(sourceFilename)).getParentFile().toURI().toURL().toExternalForm();
       baseUrl = str.replace("file:/", "file:///");
     } catch (MalformedURLException e) {
       getLog().warn("Failed to get FO basedir", e);

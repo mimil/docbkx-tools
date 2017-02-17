@@ -4,8 +4,13 @@
     <title>Changes</title>
   </properties>
   <body>
+    <release version="2.0.18-SNAPSHOT">
+      <action dev="rcrews" type="update">
+        additional maven3 support. documentation and code updates.
+      </action>
+    </release>
     <release version="2.0.17-SNAPSHOT">
-      <action dev="Robert-Crews" type="update">
+      <action dev="rcrews" type="update">
         better maven3 support and some fix of various documentations.
       </action>
       <action dev="mimil" type="update">
@@ -278,7 +283,7 @@ Add of XHTML support (generate-xhtml goal)
 	Added support for inserting customization stylesheets. Simply
 	set the foCustomization or htmlCustomization properties, and
 	link the original stylesheets back in by using a symbolic
-	xsl:import. After that, you can use all Bob Sagehills
+	xsl:import. After that, you can use all Bob Stayton's
 	sugestions for customization the output.
       </action>
 

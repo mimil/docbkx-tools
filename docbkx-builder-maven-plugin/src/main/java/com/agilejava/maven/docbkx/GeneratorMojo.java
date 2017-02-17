@@ -35,7 +35,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
 
 import org.jaxen.JaxenException;
 
@@ -49,17 +48,14 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -124,20 +120,6 @@ public class GeneratorMojo extends AbstractMojo {
    * @parameter default-value="${project.build.directory}/generated-sources"
    */
   private File targetDirectory;
-
-  /**
-   * The maven project helper class for adding resources.
-   *
-   * @component role="org.apache.maven.project.MavenProjectHelper"
-   */
-  private MavenProjectHelper projectHelper;
-
-  /**
-   * The directory where all new resources need to be stored.
-   *
-   * @parameter default-value="${basedir}/target/generated-resources"
-   */
-  private File targetResourcesDirectory;
 
   /**
    * A reference to the project.
@@ -353,11 +335,7 @@ public class GeneratorMojo extends AbstractMojo {
       template.setAttribute("spec", specification);
       FileUtils.writeStringToFile(targetFile, template.toString(), encoding);
     } catch (IOException ioe) {
-      if (specification == null) {
-        throw new MojoExecutionException("Failed to read parameters.", ioe);
-      } else {
-        throw new MojoExecutionException("Failed to create " + targetFile + ".", ioe);
-      }
+      throw new MojoExecutionException("Failed to create " + targetFile + ".", ioe);
     }
 
     project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
@@ -366,7 +344,7 @@ public class GeneratorMojo extends AbstractMojo {
   /**
    * Creates the {@link Specification} used for generating the plugin code.
    *
-   * @return The {@link Specification} uesd for generating the plugin source
+   * @return The {@link Specification} used for generating the plugin source
    *         code.
    * @throws MojoExecutionException
    *             If the {@link Specification} cannot be created.
@@ -514,7 +492,7 @@ public class GeneratorMojo extends AbstractMojo {
     try {
       StringBuilder builder = new StringBuilder();
       builder.append("jar:");
-      builder.append(distribution.toURL().toExternalForm());
+      builder.append(distribution.toURI().toURL().toExternalForm());
       builder.append("!/");
       builder.append(sourceRootDirectory);
       builder.append(filename);

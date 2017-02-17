@@ -115,7 +115,7 @@ public abstract class AbstractWebhelpMojo extends AbstractMojoBase {
 
       } else {
         getLog().debug("Copying template from custom directory: " + templateDirectory.getAbsolutePath());
-        FileUtils.copyResourcesRecursively(templateDirectory.toURL(), targetBaseDir);
+        FileUtils.copyResourcesRecursively(templateDirectory.toURI().toURL(), targetBaseDir);
       }
     } catch (Exception e) {
       throw new MojoExecutionException("Unable to copy template", e);

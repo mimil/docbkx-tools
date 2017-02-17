@@ -42,6 +42,7 @@ public interface TransformerBuilder {
    * the Transformer.
    */
   public class TransformerBuilderException extends RuntimeException {
+    static final long serialVersionUID = 7526471199622776147L;
     public TransformerBuilderException(String message, Throwable cause) {
       super(message, cause);
     }
